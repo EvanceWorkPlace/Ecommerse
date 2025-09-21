@@ -1,0 +1,116 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+<br/>
+<br/>
+<br/>
+        <div class="container">
+           <div class="card mb-3" style="max-width: 1150px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    
+    <div class="col-md-8">
+      <div class="card-body">
+        <center>
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.description }}.</p>
+        {% if product.is_sale %}
+            <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                     <strike>
+                                        R {{ product.price }}
+                                     </strike>
+                                     &nbsp;
+                                     R {{ product.sale_price }}
+                                    
+                                    <br/>
+                                    {{ product.description }}
+                                    <br/>
+<br/>
+<br/>
+        {% else %}
+                    R {{ product.price }}
+                                    
+                                    <br/>
+                                    {{ product.description }}
+<p class="card-text">R {{ product.price }}.</p>
+<br/>
+
+        {% endif %}
+        
+           <div class="row justify-content-center">
+        <div class="col-md-2 text-sm text-center">Quantity:</div>
+        <div class="col-md-2">
+       <select class="form-select form-select-md" aria-label="Default select example"
+       id="qty-cart">
+  <option selected>Quantity:</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+   <option value="2">4</option>
+  <option value="3">5</option>
+</select>
+</div>
+</div>
+ <br/><br/> <br/><br/> 
+        <br/>
+    
+       
+        <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+        
+        <button class="btn btn-secondary" value="{{ product.id }}"
+         id="add-cart">Add To Cart</button>
+                                     <br/>
+    </center>
+    </div>
+    </div>
+
+  </div>
+</div>
+
+        </div>
+<br/>
+<br/>
+<br/>
+<br/>
+
+<script>
+//check if the button pressed
+ $(document).on('click', '#add-cart', function(e){
+     e.preventDefault();
+      
+     $.ajax({
+         type: 'POST',
+         url: '{% url "cart_add" %}',
+         data: {
+          product_id: $('#add-cart').val(),
+          product_qty: $('#qty-cart option:selected').text(),
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          action:'post',
+         },
+         success: function(json){
+          // console.log(json);
+          document.getElementById('cart_quantity')
+          textContent = json.qty
+
+         },
+         error: function(xhr, errmsg,err){
+
+         }
+
+     });
+ })
+
+</script> 
+
+
+
+{% endblock %}

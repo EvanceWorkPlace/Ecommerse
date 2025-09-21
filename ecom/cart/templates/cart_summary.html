@@ -1,0 +1,143 @@
+
+{% extends 'base.html' %}
+{% block content %}
+
+        <header class="bg-dark py-3">
+            <div class="container px-2 px-lg-2 my-2">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">Shopping Cart</h1>
+                    <p class="lead fw-normal font-sans text-white-50 mb-0">With this Cart View!!</p>
+                </div>
+            </div>
+        </header>
+         
+                        
+{% for product in cart_products %}
+      
+ <br/><br/> <br/><br/>
+ 
+        <div class="container">
+           <div class="card mb-3" style="max-width: 1150px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    
+    <div class="col-md-8">
+      <div class="card-body">
+        <center>
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text">{{ product.description }}.</p>
+        {% if product.is_sale %}
+            <div class="d-flex justify-content-center small text-warning mb-2">
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                        <div class="bi-star-fill"></div>
+                                    </div>
+                                     <strike>
+                                        R {{ product.price }}
+                                     </strike>
+                                     &nbsp;
+                                     R {{ product.sale_price }}
+                                    
+                                    <br/>
+                                    {{ product.description }}
+                                    <br/>
+                        <br/>
+                        <br/>
+        {% else %}
+        R {{ product.price }}
+                                    
+                                    <br/>
+        {{ product.description }}
+
+
+<br/>
+
+        
+        <p class="card-text">R {{ product.price }}.</p>
+    
+     {% endif %}
+             <div class="row justify-content-center">
+        <div class="col-md-2 text-sm text-center">Quantity:</div>
+        <div class="col-md-2">
+       <select class="form-select form-select-sm" aria-label="Default select example"
+       id="select{{product.id}}">
+
+    {% for key, value in quantities.items %}
+        {% if key == product.id|slugify %}
+            <option selected>{{ value }}</option>
+        {% endif %}
+
+    {% endfor %}
+  
+
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+   <option value="2">4</option>
+  <option value="3">5</option>
+</select>
+</div>
+</div>
+<br/><br/>
+        <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+
+        <a href="#" data-index="{{ product.id }}"
+        class="btn btn-secondary update-cart">Update cart</a>
+                                     <br/>
+    </center>
+    </div>
+    </div>
+           </div>
+        </div>
+  </div>
+</div>
+{% endfor %}    
+
+there is nothing
+</div>
+                        
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+      
+
+                    </p>
+                </div>
+            </div>
+        <!-- Section-->
+       
+  
+
+
+<script>
+//check if the button pressed
+ $(document).on('click','.update-cart', function(e){
+     e.preventDefault();
+      //grab the product id 
+    var product_id = $(this).data('index');
+     $.ajax({
+         type: 'POST',
+         url: '{% url "cart_update" %}',
+         data: {
+          product_id: $(this).data('index'),
+          product_qty: $('#select{{product.id}}' + this+ 'option:selected').text(),
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          action:'post',
+         },
+         success: function(json){
+          // console.log(json);
+            location.reload();
+
+         },
+         error: function(xhr, errmsg,err){
+
+         }
+
+     });
+ })
+
+
+</script>
+{% endblock %}
