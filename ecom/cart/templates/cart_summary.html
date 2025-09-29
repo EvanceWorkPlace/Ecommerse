@@ -87,6 +87,8 @@
 
         <a href="#" data-index="{{ product.id }}"
         class="btn btn-secondary update-cart">Update cart</a>
+          <a href="#" data-index="{{ product.id }}"
+        class="btn btn-danger delete-cart">delete</a>
                                      <br/>
     </center>
     </div>
@@ -101,9 +103,7 @@ there is nothing
 </div>
                         
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-      
-
-                    </p>
+                              </p>
                 </div>
             </div>
         <!-- Section-->
@@ -138,6 +138,30 @@ there is nothing
      });
  })
 
+//check if the button pressed
+ $(document).on('click','.delete-cart', function(e){
+     e.preventDefault();
+      // grab the product id 
+    // var product_id = $(this).data('index');
+     $.ajax({
+         type: 'POST',
+         url: '{% url "cart_delete" %}',
+         data: {
+          product_id: $(this).data('index'),
+          // product_qty: $('#select{{product.id}}' + this+ 'option:selected').text(),
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          action:'post',
+         },
+         success: function(json){
+          // console.log(json);
+            location.reload();
+         },
+         error: function(xhr, errmsg,err){
+
+         }
+
+     });
+ })
 
 </script>
 {% endblock %}
