@@ -1,14 +1,72 @@
 from django.shortcuts import render, redirect
-from .models import Product, Category
+from .models import Product, Category, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from .forms import SignUpForm, UpdateUserForm, PasswordForm,UserInfoForm
 from django import forms
-from .forms import SignUpForm
+from django.db.models import Q
 
 
+def update_info(request):
+    if request.user.is_authenticated:
+        current_user = Profile.objects.filter(user__id=request.user.id).first()
+        form = UserInfoForm(request.POST or None, instance=current_user)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            if not current_user:
+                profile.user = request.user
+            profile.save()
+            messages.success(request,'User Info has been Updated!!!')
+            return redirect('home')
+        return render(request, "update_info.html", {'form': form})
+    else:
+        messages.success(request, "You must be logged In to Access That Page")
+        return redirect('home')
 
+
+def update_password(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+
+        if request.method == 'POST':
+            password_form = PasswordForm(request.user, request.POST)
+            if password_form.is_valid():
+                password_form.save()
+                messages.success(request, "Your Password has been updated. Please login.")
+                login(request, request.user)
+                return redirect('home')
+            else:
+                for field, errors in password_form.errors.items():
+                    for error in errors:
+                        messages.error(request, error)
+        else:
+            password_form = PasswordForm(request.user)
+        return render(request, "update_password.html", {'password_form': password_form})
+    else:
+        messages.success(request,'You must be logged in..')
+        return redirect('home')
+
+
+def update_user(request):
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
+        user_form = UpdateUserForm(request.POST or None, instance=current_user)
+        if user_form.is_valid():
+            user_form.save()
+            login(request, current_user)
+            messages.success(request,'User has been Updated!!!')
+            return redirect('home')
+        return render(request, "update_user.html", {'user_form': user_form})
+    else:
+        messages.success(request, "You must be logged In to Access That Page")
+        return redirect('home')
+
+    
+def category_summary(request):
+    categories = Category.objects.all()
+    return render(request, 'category_summary.html', {'categories':categories})
 
 # Create your views here.
 def home(request):
@@ -53,7 +111,7 @@ def register_user(request):
             user = authenticate(username=username,password=password)
             login(request,user)
             messages.success(request, ("You have register successfully Welcomee.."))
-            return redirect('home')
+            return redirect('update_user')
         else:
             messages.success(request, ("Something went wrong! Try again.."))
             return redirect('register')
@@ -74,3 +132,18 @@ def category(request,foo):
     except:
         messages.success(request, ("Something went wrong! Try again.."))
         return redirect('home')
+
+def search(request):
+    # determine if they filled out the form
+    if request.method == "POST":
+        searched_value = request.POST.get('searched', '')
+        # query of products in The db model
+        searched = Product.objects.filter(Q(name__icontains=searched_value) | Q(description__icontains=searched_value))
+        # Test for null
+        if not searched:
+            messages.success(request,'Sorry that Product does not exist..Please try again')
+            return render(request, 'search.html', {})
+        else:
+            return render(request, 'search.html', {'searched':searched})
+    else:
+        return render(request, 'search.html', {})

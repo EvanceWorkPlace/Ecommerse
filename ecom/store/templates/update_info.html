@@ -6,24 +6,26 @@
 <header class="bg-dark py-3">
             <div class="container px-4 px-lg-5 my-2">
                 <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Register</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Register for your user account...</p>
+                    <h1 class="display-4 fw-bolder">Update User Info</h1>
+                    <p class="lead fw-normal text-white-50 mb-0">Update user Info...</p>
                 </div>
             </div>
         </header>
+      
         <div class="container">
-            <div class="row">
-                
-                    <div class="col-md">
+               
+            <div class="ml-8 row">
+               
+                    <div class="ml-8 col-md">
                         <br/>
-                        <form method="post" action="{% url 'register' %}">
+                        <form method="POST" action="{% url 'update_info' %}">
                             <br/>
                             <br/>
                             {% csrf_token %}
-                             {{form.as_p}}
+                             {{ form.as_p }}
   <br/>
-                                    <button type="submit" class="btn btn-secondary">Register</button>
-                        <br/>
+                                    <button type="submit" class="btn btn-secondary">Update Info</button>
+                                                     <br/>
                                 </form>
                         <br/>
                     </div>

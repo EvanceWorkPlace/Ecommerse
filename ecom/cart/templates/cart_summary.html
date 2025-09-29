@@ -98,8 +98,8 @@
   </div>
 </div>
 {% endfor %}    
-
-there is nothing
+<center><h5> Total: R {{ totals }}</h5>
+There is nothing</center>
 </div>
                         
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -113,55 +113,98 @@ there is nothing
 
 <script>
 //check if the button pressed
- $(document).on('click','.update-cart', function(e){
-     e.preventDefault();
-      //grab the product id 
+//  $(document).on('click','.update-cart', function(e){
+//      e.preventDefault();
+//       //grab the product id 
+//     var product_id = $(this).data('index');
+//      $.ajax({
+//          type: 'POST',
+//          url: '{% url "cart_update" %}',
+//          data: {
+//           product_id: $(this).data('index'),
+//          // product_qty: $('#select{{product.id}}' + this+ 'option:selected').text(),
+//          product_qty: $('#select' + product_id).val(), 
+//          csrfmiddlewaretoken: '{{ csrf_token }}',
+//           action:'post',
+//          },
+//          success: function(json){
+//           // console.log(json);
+//             location.reload();
+
+//          },
+//          error: function(xhr, errmsg,err){
+
+//          }
+
+//      });
+//  })
+
+// //check if the button pressed
+//  $(document).on('click','.delete-cart', function(e){
+//      e.preventDefault();
+//       // grab the product id 
+//     // var product_id = $(this).data('index');
+//      $.ajax({
+//          type: 'POST',
+//          url: '{% url "cart_delete" %}',
+//          data: {
+//           product_id: $(this).data('index'),
+//           // product_qty: $('#select{{product.id}}' + this+ 'option:selected').text(),
+//           csrfmiddlewaretoken: '{{ csrf_token }}',
+//           action:'post',
+//          },
+//          success: function(json){
+//           // console.log(json);
+//             location.reload();
+//          },
+//          error: function(xhr, errmsg,err){
+
+//          }
+
+//      });
+//  })
+$(document).on('click', '.update-cart', function(e){
+    e.preventDefault();
     var product_id = $(this).data('index');
-     $.ajax({
-         type: 'POST',
-         url: '{% url "cart_update" %}',
-         data: {
-          product_id: $(this).data('index'),
-          product_qty: $('#select{{product.id}}' + this+ 'option:selected').text(),
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          action:'post',
-         },
-         success: function(json){
-          // console.log(json);
+    var product_qty = $('#select' + product_id).val();
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart_update" %}',
+        data: {
+            product_id: product_id,
+            product_qty: product_qty,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post',
+        },
+        success: function(json){
             location.reload();
+        },
+        error: function(xhr, errmsg, err){
+            console.log(errmsg);
+        }
+    });
+});
 
-         },
-         error: function(xhr, errmsg,err){
+$(document).on('click', '.delete-cart', function(e){
+    e.preventDefault();
+    var product_id = $(this).data('index');
 
-         }
-
-     });
- })
-
-//check if the button pressed
- $(document).on('click','.delete-cart', function(e){
-     e.preventDefault();
-      // grab the product id 
-    // var product_id = $(this).data('index');
-     $.ajax({
-         type: 'POST',
-         url: '{% url "cart_delete" %}',
-         data: {
-          product_id: $(this).data('index'),
-          // product_qty: $('#select{{product.id}}' + this+ 'option:selected').text(),
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          action:'post',
-         },
-         success: function(json){
-          // console.log(json);
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart_delete" %}',
+        data: {
+            product_id: product_id,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post',
+        },
+        success: function(json){
             location.reload();
-         },
-         error: function(xhr, errmsg,err){
-
-         }
-
-     });
- })
-
+        },
+        error: function(xhr, errmsg, err){
+            console.log(errmsg);
+        }
+    });
+});
 </script>
 {% endblock %}
