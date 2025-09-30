@@ -7,7 +7,8 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, UpdateUserForm, PasswordForm,UserInfoForm
 from django import forms
 from django.db.models import Q
-
+import json
+from cart.cart import Cart
 
 def update_info(request):
     if request.user.is_authenticated:
@@ -82,9 +83,26 @@ def login_user(request):
         password = request.POST['password']
 
         user = authenticate(request, username=username, password=password)
+        
 
         if user is not None:
             login(request, user)
+            # do some shopping cart stuff
+            current_user = Profile.objects.get(user__id=request.user.id)
+            #get the saved card from database
+            saved_cart = current_user.old_cart
+            #Convert database string to python dictionary
+            if saved_cart:
+                #convert using json
+                converted_cart = json.loads(saved_cart)
+                #Add the loaded cart dictory to our session
+                # get the cart
+                cart = Cart(request)
+                #Loop thru the cart and add the items from the database
+                for key,value in converted_cart.items():
+                    cart.db_add(product=key, quantity=value)
+
+
             messages.success(request, ("You have been Log In..."))
             return redirect('home')
         else:
