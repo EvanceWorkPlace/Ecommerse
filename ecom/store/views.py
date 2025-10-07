@@ -9,19 +9,27 @@ from django import forms
 from django.db.models import Q
 import json
 from cart.cart import Cart
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
 
 def update_info(request):
     if request.user.is_authenticated:
         current_user = Profile.objects.filter(user__id=request.user.id).first()
+        #Get Current shipping user
+        shipping_user = ShippingAddress.objects.filter(user__id=request.user.id).first()
+        #get users shipping form
+        #shipping_user = ShippingAddress.objects.filter(user__id=request.user.id).first()
         form = UserInfoForm(request.POST or None, instance=current_user)
-        if form.is_valid():
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)
+        if form.is_valid() or shipping_form.is_valid():
             profile = form.save(commit=False)
             if not current_user:
                 profile.user = request.user
             profile.save()
+            shipping_form.save()
             messages.success(request,'User Info has been Updated!!!')
             return redirect('home')
-        return render(request, "update_info.html", {'form': form})
+        return render(request, "update_info.html", {'form': form, 'shipping_form':shipping_form})
     else:
         messages.success(request, "You must be logged In to Access That Page")
         return redirect('home')

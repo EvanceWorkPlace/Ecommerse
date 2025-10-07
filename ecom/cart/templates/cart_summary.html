@@ -11,13 +11,15 @@
             </div>
         </header>
          
-                        
-{% for product in cart_products %}
+                       
+
       
  <br/><br/> <br/><br/>
  
         <div class="container">
-           <div class="card mb-3" style="max-width: 1150px;">
+
+{% for product in cart_products %}
+            <div class="card mb-3" style="max-width: 1150px;">
   <div class="row g-0">
     <div class="col-md-4">
       <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="...">
@@ -103,7 +105,9 @@
 <center>
 <div class="container px-2 px-lg-2 my-2">
   <div class="card card-body">
-     Total: R {{ totals }}
+     <h1> Total: R {{ totals }} </h1>
+
+        <a href="{% url 'checkout' %}" class="btn btn-success">Checkout</a>
   </div>
 </div><h5>There is nothing</h5></center>
 </div>

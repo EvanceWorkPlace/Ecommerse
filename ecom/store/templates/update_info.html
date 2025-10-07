@@ -17,13 +17,18 @@
             <div class="ml-8 row">
                
                     <div class="ml-8 col-md">
+                        <br/><strong>Billing Information</strong>
                         <br/>
                         <form method="POST" action="{% url 'update_info' %}">
                             <br/>
-                            <br/>
+                           
                             {% csrf_token %}
                              {{ form.as_p }}
   <br/>
+                            <Strong>Shipping Information</Strong>
+                            <br/>
+                             <br/>
+                            {{ shipping_form.as_p}}
                                     <button type="submit" class="btn btn-secondary">Update Info</button>
                                                      <br/>
                                 </form>
