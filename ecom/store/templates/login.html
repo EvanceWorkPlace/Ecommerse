@@ -1,43 +1,43 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
 
-<header class="bg-dark py-3">
-            <div class="container px-4 px-lg-5 my-2">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Login</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Log In to your account</p>
+<header class="bg-dark py-4 mb-3">
+    <div class="container px-4 px-lg-5 my-2">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; font-weight: 700; letter-spacing: 1px;">
+                Login
+            </h1>
+            <p class="lead fw-normal text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                Log In to your account
+            </p>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <input type="text" class="form-control" name="username" placeholder="Enter your user name" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" class="form-control" name="password" placeholder="Enter your user password" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                        </div>
+                        <br/>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-success btn-lg" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">Login</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </header>
-        <div class="container">
-            <div class="row">
-                <center>
-                    <div class="col-md-6">
-                        <br/>
-                        <form method="POST" action="{% url 'login' %}">
-                            {% csrf_token %}
-                            <br/>
-                            <br/>
-                                <div class="mb-3">
-    <br/>
-                                     <input type="text" class="form-control" name="username" placeholder="Enter your user name">
-    </div>
-                                <div class="mb-3">
-                                                 <input type="password" class="form-control" name="password" placeholder="Enter your user password">
-  </div>
-  <br/>
-  <br/>
-                                    <button type="submit" class="btn btn-secondary">Login</button>
-                                    </form>
-                        <br/>
-                    </div>
-                </center>
-
-            </div>
-
         </div>
+    </div>
+    <br/>
 
+</div>
 
 {% endblock %}

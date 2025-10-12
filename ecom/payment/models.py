@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from store.models import Product
+from django.db.models.signals import post_save
 
 # Create your models here.
 
@@ -50,3 +51,12 @@ class OrderItem(models.Model):
         return f'Order Item - {str(self.id)}'
 
     
+#create the user Profile by default
+def create_shipping(sender, instance, created, **kwargs):
+    if created:
+        user_shipping = ShippingAddress(user=instance)
+        user_shipping.save()
+
+
+#Automate the profile thing
+post_save.connect(create_shipping, sender=User)

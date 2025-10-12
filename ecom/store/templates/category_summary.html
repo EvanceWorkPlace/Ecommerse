@@ -1,33 +1,46 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
 
 <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-3 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-8 fw-bolder">Categories..</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">choose your category below!</p>
-                </div>
-            </div>
-        </header>
-        <div class="container">
-            <div class="row">
-                <center>
-                    <div class="col-8">
-                        <br/> <br/> 
-                           
-                                {% for category in categories %}
-                                <h3><a href="{% url 'category' category %}"> {{ category }} </a> </h3> 
-                           
-                                {% endfor %}
-                            <br/> <br/> <br/> <br/> 
-                    </div>
-                </center>
-
-            </div>
-
+    <div class="container px-4 px-lg-3 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-8 fw-bolder">Categories</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Choose your category below!</p>
         </div>
+    </div>
+</header>
 
+<div class="container my-5">
+    <div class="row justify-content-center">
+        {% for category in categories %}
+        <div class="col-md-3 col-sm-6 mb-4">
+            <a href="{% url 'category' category %}" class="text-decoration-none">
+                <div class="card text-center category-card shadow-sm border-0 py-4">
+                    <div class="card-body">
+                        <h5 class="card-title text-dark fw-bold">{{ category }}</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+/* Category Card Hover Effect */
+.category-card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 10px;
+}
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    background-color: #f8f9fa;
+}
+.category-card:hover .card-title {
+    color: #0d6efd; /* Bootstrap primary color */
+}
+</style>
 
 {% endblock %}

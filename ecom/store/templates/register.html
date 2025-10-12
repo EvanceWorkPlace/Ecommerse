@@ -1,37 +1,36 @@
-
 {% extends 'base.html' %}
 
 {% block content %}
 
-<header class="bg-dark py-3">
-            <div class="container px-4 px-lg-5 my-2">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">Register</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">Register for your user account...</p>
+<header class="bg-dark py-4 mb-3">
+    <div class="container px-4 px-lg-5 my-2">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; font-weight: 700; letter-spacing: 1px;">
+                Register
+            </h1>
+            <p class="lead fw-normal text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                Register for your user account...
+            </p>
+        </div>
+    </div>
+</header>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card border-0 shadow-sm mt-4">
+                <div class="card-body">
+                    <form method="post" action="{% url 'register' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <div class="d-grid gap-2 mt-3">
+                            <button type="submit" class="btn btn-success btn-lg" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">Register</button>
+                        </div>
+                    </form>
                 </div>
             </div>
-        </header>
-        <div class="container">
-            <div class="row">
-                
-                    <div class="col-md">
-                        <br/>
-                        <form method="post" action="{% url 'register' %}">
-                            <br/>
-                            <br/>
-                            {% csrf_token %}
-                             {{form.as_p}}
-  <br/>
-                                    <button type="submit" class="btn btn-secondary">Register</button>
-                        <br/>
-                                </form>
-                        <br/>
-                    </div>
-            
-
-            </div>
-
         </div>
-
+    </div>
+    <br/><br/>
+</div>
 
 {% endblock %}

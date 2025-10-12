@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<header class="bg-dark py-3">
+    <div class="container px-2 px-lg-2 my-2">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">process_order</h1>
+            <p class="lead fw-normal font-sans text-white-50 mb-0">View Your process_order information</p>
+        </div>
+    </div>
+</header>
+
+<br/><br/> 
+
+
+<div class="container">
+  <br/>
+    <div class="card">
+        <h5 class="card-header">Order Summary</h5>
+        <div class="card-body">
+            {% for product in cart_products %}
+                {{ product.name }}:
+                {% if product.is_sale %}
+                    R{{ product.sale_price }}
+                {% else %}
+                    R{{ product.price }}
+                {% endif %}
+<br/>
+                <small>Quantity:
+                {% for key, value in quantities.items %}
+                    {% if key == product.id|stringformat:"s" %}
+                        {{ value }}
+                    {% endif %}
+                {% endfor %}</small>
+                <br/><br/>
+                
+            {% endfor %}
+            Total: R {{ totals }}
+            <br/><br/>
+            <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Items</a>
+        </div>
+        <br/>
+        
+    </div>
+    <br/><br/>
+    <div class="card">
+  <h5 class="card-header">Shipping Info</h5>
+  <div class="card-body">
+   
+     Name:  {{ shipping_info.shipping_full_name }}<br/>
+     Email:  {{ shipping_info.shipping_email }}<br/>
+     Address 1:  {{ shipping_info.shipping_address1 }}<br/>
+     Address 2:  {{ shipping_info.shipping_address2 }}<br/>
+     City:  {{ shipping_info.shipping_city }}<br/>
+     state:  {{ shipping_info.state }}<br/>
+     Zipcode:  {{ shipping_info.shipping_zipcode }}<br/>
+     Country:  {{ shipping_info.shipping_country }}<br/>
+     <br/>
+     <a href="{% url 'checkout' %}" class="btn btn-outline-dark">Update Shipping</a>
+  </div>
+</div>
+<br/>
+<div class="card">
+  <h5 class="card-header">Billing Info</h5>
+  <div class="card-body">
+    <form method="POST" action="{% url 'process_order' %}">
+        {% csrf_token %}
+   {{ billing_form.as_p }}
+
+    </form>
+</div>
+</div>
+<br/><br/>
+<button class="btn btn-secondary" type="submit">Pay Now</button>
+<br/><br/>
+</div>
+
+{% endblock %}
