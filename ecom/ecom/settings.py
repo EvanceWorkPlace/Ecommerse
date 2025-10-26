@@ -100,7 +100,7 @@ else:
     DB_HOST = os.getenv('DB_HOST', 'containers-us-west-42.railway.app')
     DB_NAME = os.getenv('DB_NAME', 'railway')
     DB_USER = os.getenv('DB_USER', 'postgres')
-    DB_PASSWORD = os.getenv('DB_PASSWORD', 'DB_PASSWORD_TG')
+    DB_PASSWORD = os.environ['DB_PASSWORD_TG']
     DB_PORT = os.getenv('DB_PORT', '5432')
 
     DATABASES['default'] = {
