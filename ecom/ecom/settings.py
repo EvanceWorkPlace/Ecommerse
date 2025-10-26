@@ -17,12 +17,18 @@ SECRET_KEY = os.getenv(
     'django-insecure-h6b3-4j%4mdy=)djegypej)y+z6f#y=)5ng8tq$+jhw2j9$n)-'
 )
 
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+# DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
+
+# ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
+# CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
 # ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
 # CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
+
+
+ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
 
 
 # -------------------------------
@@ -102,7 +108,7 @@ else:
     DB_HOST = os.getenv('DB_HOST', 'containers-us-west-42.railway.app')
     DB_NAME = os.getenv('DB_NAME', 'railway')
     DB_USER = os.getenv('DB_USER', 'postgres')
-    DB_PASSWORD = os.getenv('DB_PASSWORD')
+    DB_PASSWORD = os.getenv('DB_PASSWORD', 'DB_PASSWORD_TG')
     DB_PORT = os.getenv('DB_PORT', '5432')
 
     DATABASES['default'] = {
