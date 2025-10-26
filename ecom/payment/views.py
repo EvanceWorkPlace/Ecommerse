@@ -166,7 +166,32 @@ def billing_info(request):
         totals = cart.cart_total()
 
         request.session['my_shipping'] = request.POST
+        # Get the host
+        host = request.get_host()
+        
+        # check  Paypal Form and Stuff
+        paypal_dict ={
+            'business': settings.PAYPAL_RECEIVER_EMAIL,
+            'amount': totals,
+            'Item_name': 'Book Order',
+            'no_shipping':'2',
+            'invoice': str(uuid.uuid4()),
+            'currency_code':'ZAR'
+            'notify_url':'https://{}{}'.format(host, reverse('paypal-inp')),
+            'notify_url':'https://{}{}'.format(host, reverse('payment_success')),
+            'cancel_return':'https://{}{}'.format(host, reverse('payment_failed')),
 
+        }
+        #create actual paypal button
+        paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+
+        if request.user.is_authenticated:
+            billing_form = PaymentForm()
+            return render(request,'payment/billing_info.html', {'paypal_form':paypal_form,'cart_products':cart_products,'quantity':quantity})
+        else:
+            billing_form = PaymentForm()
+            return render(request,'payment/billing_info.html', {'paypal_form':paypal_form,'cart_products':cart_products,'quantity':quantity})
+        
         billing_form = PaymentForm()
         return render(request, 'payments/billing_info.html', {
             "cart_products": cart_products,
@@ -184,6 +209,8 @@ def billing_info(request):
 def payment_success(request):
     return render(request, "payments/payment_success.html", {})
 
+def payment_failed(request):
+    return render(request, "payments/payment_failed.html", {})
 
 # 🧾 CHECKOUT PAGE
 def checkout(request):

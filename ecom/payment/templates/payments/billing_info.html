@@ -67,11 +67,14 @@
                 <a href="{% url 'checkout' %}" class="btn btn-outline-dark mt-2 shadow-sm">Update Shipping</a>
             </div>
         </div>
-
+<br/>
+<center>{{paypal_form.render}}</center>
+<br/>
         <!-- Billing Info -->
         <div class="card mb-4 shadow-sm border-0 rounded-4">
             <div class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing Info</div>
             <div class="card-body">
+                {% csrf_token %}
                 {{ billing_form.as_p }}
             </div>
         </div>
