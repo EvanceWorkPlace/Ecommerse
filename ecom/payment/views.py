@@ -10,7 +10,11 @@ from cart.cart import Cart
 from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
 from store.models import Product, Profile
-
+# import paypal
+from django.urls import reverse
+from paypal.standard.forms import PayPal
+from django.config import settings
+import uuid # unique user id for duplicate
 
 # 🧾 VIEW A SINGLE ORDER (ADMIN ONLY)
 def orders(request, pk):
