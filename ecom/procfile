@@ -1,2 +1,2 @@
 web:gunicorn WiseMarket.wsgi --log-file
-web:python manage.py migrate && gunicorn WiseMarket.wsg
+web:python manage.py migrate && gunicorn WiseMarket.wsgi
