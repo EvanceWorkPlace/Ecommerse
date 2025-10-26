@@ -19,10 +19,10 @@ SECRET_KEY = os.getenv(
 
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-# ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
-# CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
-ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
-CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
+ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
+# ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
+# CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
 
 
 # -------------------------------
