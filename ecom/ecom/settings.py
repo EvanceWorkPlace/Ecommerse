@@ -20,7 +20,7 @@ SECRET_KEY = os.getenv(
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
 
 
 # -------------------------------
