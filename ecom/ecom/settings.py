@@ -19,8 +19,10 @@ SECRET_KEY = os.getenv(
 
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
-CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
+# ALLOWED_HOSTS = ['ecommerse-production.up.railway.app', 'https://ecommerse-production.up.railway.app']
+# CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
+ALLOWED_HOSTS = ['.railway.app', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = ['https://*.railway.app']
 
 
 # -------------------------------
@@ -100,7 +102,7 @@ else:
     DB_HOST = os.getenv('DB_HOST', 'containers-us-west-42.railway.app')
     DB_NAME = os.getenv('DB_NAME', 'railway')
     DB_USER = os.getenv('DB_USER', 'postgres')
-    DB_PASSWORD = os.environ['DB_PASSWORD_TG']
+    DB_PASSWORD = os.getenv('DB_PASSWORD')
     DB_PORT = os.getenv('DB_PORT', '5432')
 
     DATABASES['default'] = {
