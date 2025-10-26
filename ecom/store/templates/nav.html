@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container px-4 px-lg-5">
         <a class="navbar-brand fw-bold" href="{% url 'home' %}" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; letter-spacing: 1px;">
-            IotComp
+            MrTs
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -26,7 +26,29 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
                             <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
                             <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{% url 'update_info' %}">User Info</a></li>
+                            <li><a class="dropdown-item" href="{% url 'update_info' %}">User Information</a></li>
+                        </ul>
+                    </li>
+                    {% if user.is_superuser %}
+                     <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownProfile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Orders
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
+                            <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Shipped Orders</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Not Shipped Orders</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownProfile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                AI-Help
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
+                            <li><a class="dropdown-item" href="{% url 'chatbot_view' %}">Assistance</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" href="{% url 'home' %}">Design-Your-Style</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
@@ -39,9 +61,9 @@
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
                             <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
                             <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Switch NVR' %}">Switch-NVR</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Camera Doom' %}">Camera-Doom</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Screen Monitor' %}">Screen-Monitor</a></li>
+                            <li><a class="dropdown-item" href="{% url 'category' 'Switch NVR' %}">Tech-Devices</a></li>
+                            <li><a class="dropdown-item" href="{% url 'category' 'Camera Doom' %}">Wear-Clothers</a></li>
+                            <li><a class="dropdown-item" href="{% url 'category' 'Screen Monitor' %}">eSkills-Selling</a></li>
                         </ul>
                     </li>
                 {% else %}

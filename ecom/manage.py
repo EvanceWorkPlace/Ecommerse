@@ -2,10 +2,14 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from dotenv import load_dotenv  # ✅ Add this import
 
 
 def main():
     """Run administrative tasks."""
+    # ✅ Load environment variables from .env before Django settings
+    load_dotenv()
+
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ecom.settings')
     try:
         from django.core.management import execute_from_command_line

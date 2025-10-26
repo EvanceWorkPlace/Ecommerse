@@ -12,6 +12,7 @@ from cart.cart import Cart
 from payment.forms import ShippingForm
 from payment.models import ShippingAddress
 
+
 def update_info(request):
     if request.user.is_authenticated:
         current_user = Profile.objects.filter(user__id=request.user.id).first()

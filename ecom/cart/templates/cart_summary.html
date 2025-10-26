@@ -57,8 +57,8 @@
                                 </div>
 
                                 <div class="d-flex gap-2">
-                                    <a href="{% url 'home' %}" class="btn btn-secondary btn-sm">Home</a>
-                                    <button class="btn btn-secondary btn-sm update-cart" data-index="{{ product.id }}">Update Cart</button>
+                                    <a href="{% url 'home' %}" class="btn btn-secondary btn-sm">Back</a>
+                                    <button class="btn btn-success btn-sm update-cart" data-index="{{ product.id }}">Update</button>
                                     <button class="btn btn-danger btn-sm delete-cart" data-index="{{ product.id }}">Delete</button>
                                 </div>
                             </div>
@@ -67,9 +67,9 @@
                 </div>
             {% endfor %}
 
-            <div class="card p-4 shadow-lg rounded-4 text-center">
+            <div class="card p-2 shadow-lg d-flex gap-2 rounded-4 text-center">
                 <h4>Total: R {{ totals }}</h4>
-                <a href="{% url 'checkout' %}" class="btn btn-success btn-lg mt-3">Proceed to Checkout</a>
+                <a href="{% url 'checkout' %}" class="btn btn-outline-success btn-lg mt-3">Proceed to Checkout</a>
             </div>
 
         {% else %}

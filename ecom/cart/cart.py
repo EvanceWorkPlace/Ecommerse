@@ -136,4 +136,8 @@ class Cart():
             # Save carty to the profile Model
             current_user.update(old_cart=str(carty))
     
+    def clear(self):
+        """Remove all items from the cart."""
+        self.session['session_key'] = {}
+        self.session.modified = True
 
