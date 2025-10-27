@@ -3,6 +3,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
 
+
 # -------------------------------
 # BASE & ENV
 # -------------------------------
@@ -87,19 +88,15 @@ TEMPLATES = [
 # -------------------------------
 # DATABASES
 # -------------------------------
-os.environ.setdefault('PGDATABASE','PGDATABASE')
-os.environ.setdefault('PGUSER','rsailway')
-os.environ.setdefault('PGPASSWORD','PGPASSWORD_D')
-os.environ.setdefault('PGHOST','localhost')
-os.environ.setdefault('PGPORT','5432')
+
 DATABASES = {
    'default':{
     'ENGINE': 'django.db.backends,postgresql',
-    'NAME': os.environ["PGDATABASE"],
-    'USER': os.environ["PGUSER"],
+    'NAME': 'railway',
+    'USER': 'postgres',
     'PASSWORD': os.environ["PGPASSWORD_D"],
-    'HOST': os.environ["PGHOST"],
-    'PORT': os.environ["PGPORT"],
+    'HOST': 'postgres.railway.internal',
+    'PORT': '5432',
 
    }
 }
