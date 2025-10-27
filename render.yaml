@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: ecom
+    env: python
+    root: ecom
+    buildCommand: bash ./install_requirements.sh
+    startCommand: gunicorn ecom.wsgi:application
