@@ -1,8 +1,6 @@
 # Cleaned requirements: removed obvious typos/unknown packages and duplicate pins.
 # - Removed: aiohappyeyeballs (likely typo), jiter (unknown package), typing-inspection (duplicate of typing-inspect).
 # - Kept explicit pins to minimize surprises; if you'd prefer ranges (>=), tell me and I can update.
-aiohttp==3.13.1
-aiohttp==3.13.1
 aiosignal==1.4.0
 annotated-types==0.7.0
 anyio==4.11.0
