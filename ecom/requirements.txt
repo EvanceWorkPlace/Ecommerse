@@ -65,3 +65,5 @@ whitenoise==6.11.0
 xxhash==3.6.0
 yarl==1.22.0
 zstandard==0.25.0
+# Add Gunicorn so the runtime can run the Django WSGI app
+gunicorn==20.1.0
