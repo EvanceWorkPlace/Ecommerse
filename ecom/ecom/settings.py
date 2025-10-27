@@ -163,12 +163,12 @@ DEBUG = os.getenv("DEBUG", "True") == "True"
 
 ALLOWED_HOSTS = os.getenv(
     "ALLOWED_HOSTS",
-    "localhost 127.0.0.1 ecommerse-production.up.railway.app"
+    "localhost 127.0.0.1 ecommerse-96t7.onrender.com"
 ).split()
 
 CSRF_TRUSTED_ORIGINS = os.getenv(
     "CSRF_TRUSTED_ORIGINS",
-    "https://ecommerse-production.up.railway.app"
+    "https://ecommerse-96t7.onrender.com"
 ).split()
 
 # -------------------------------
