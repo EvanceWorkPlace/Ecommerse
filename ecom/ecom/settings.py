@@ -89,7 +89,7 @@ TEMPLATES = [
 # -------------------------------
 os.environ.setdefault('PGDATABASE','PGDATABASE')
 os.environ.setdefault('PGUSER','rsailway')
-os.environ.setdefault('PGPASSWORD','PGPASSWORD')
+os.environ.setdefault('PGPASSWORD','PGPASSWORD_D')
 os.environ.setdefault('PGHOST','localhost')
 os.environ.setdefault('PGPORT','5432')
 DATABASES = {
@@ -97,7 +97,7 @@ DATABASES = {
     'ENGINE': 'django.db.backends,postgresql',
     'NAME': os.environ["PGDATABASE"],
     'USER': os.environ["PGUSER"],
-    'PASSWORD': os.environ["PGPASSWORD"],
+    'PASSWORD': os.environ["PGPASSWORD_D"],
     'HOST': os.environ["PGHOST"],
     'PORT': os.environ["PGPORT"],
 
