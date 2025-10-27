@@ -17,14 +17,11 @@ SECRET_KEY = os.getenv(
     "django-insecure-h6b3-4j%4mdy=)djegypej)y+z6f#y=)5ng8tq$+jhw2j9$n)-"
 )
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = True
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1 ecommerse-production.up.railway.app").split()
+ALLOWED_HOSTS = ['ecommerse-production.up.railway.app','https://ecommerse-production.up.railway.app']
 
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS",
-    "https://ecommerse-production.up.railway.app"
-).split()
+CSRF_TRUSTED_ORIGINS = ['https://ecommerse-production.up.railway.app']
 
 # -------------------------------
 # APPS
@@ -90,12 +87,21 @@ TEMPLATES = [
 # -------------------------------
 # DATABASES
 # -------------------------------
+os.environ.setdefault('PGDATABASE','PGDATABASE')
+os.environ.setdefault('PGUSER','rsailway')
+os.environ.setdefault('PGPASSWORD','PGPASSWORD')
+os.environ.setdefault('PGHOST','localhost')
+os.environ.setdefault('PGPORT','5432')
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
+   'default':{
+    'ENGINE': 'django.db.backends,postgresql',
+    'NAME': os.environ["PGDATABASE"],
+    'USER': os.environ["PGUSER"],
+    'PASSWORD': os.environ["PGPASSWORD"],
+    'HOST': os.environ["PGHOST"],
+    'PORT': os.environ["PGPORT"],
+
+   }
 }
 
 # -------------------------------
