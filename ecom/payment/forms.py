@@ -31,8 +31,8 @@ class PaymentForm(forms.Form):
     card_country = forms.CharField(label="", widget=forms.TextInput(attrs={'class':'form-control','placeholder':'card country'}), required=True)
 
     
-    # class Meta:
-    #     model = ShippingAddress
-    #     fields = ['card_name', 'card_number', 'card_cvv_number', 'card_exp_date', 'card_address1', 'card_address2', 'card_city', 'card_state', 'card_zipcode', 'card_country']
+    class Meta:
+        model = ShippingAddress
+        fields = ['card_name', 'card_number', 'card_cvv_number', 'card_exp_date', 'card_address1', 'card_address2', 'card_city', 'card_state', 'card_zipcode', 'card_country']
 
-    #     exclude = ['user',]
+        exclude = ['user',]
