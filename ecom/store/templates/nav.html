@@ -1,89 +1,131 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-    <div class="container px-4 px-lg-5">
-        <a class="navbar-brand fw-bold" href="{% url 'home' %}" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; letter-spacing: 1px;">
-            MrTs
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'search' %}">Search</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'about' %}">About</a>
-                </li>
-                {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownProfile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Profile
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
-                            <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{% url 'update_info' %}">User Information</a></li>
-                        </ul>
-                    </li>
-                    {% if user.is_superuser %}
-                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownProfile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Orders
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
-                            <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Shipped Orders</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Not Shipped Orders</a></li>
-                        </ul>
-                    </li>
-                    {% endif %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownProfile" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                AI-Help
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownProfile">
-                            <li><a class="dropdown-item" href="{% url 'chatbot_view' %}">Assistance</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{% url 'home' %}">Design-Your-Style</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="navbarDropdownCategories" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Categories
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
-                            <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
-                            <li><hr class="dropdown-divider" /></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Switch NVR' %}">Tech-Devices</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Camera Doom' %}">Wear-Clothers</a></li>
-                            <li><a class="dropdown-item" href="{% url 'category' 'Screen Monitor' %}">eSkills-Selling</a></li>
-                        </ul>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
-                {% endif %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm sticky-top">
+  <div class="container px-4 px-lg-5">
+
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold fs-4" href="{% url 'home' %}" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; letter-spacing: 1px;">
+      MrTs
+    </a>
+
+    <!-- Toggler for Mobile -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Nav Links -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'search' %}">Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
+
+        {% if user.is_authenticated %}
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Profile
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'update_info' %}">User Information</a></li>
             </ul>
-            <form class="d-flex ms-lg-4">
-                <a href="{% url 'cart_summary' %}" class="btn btn-outline-light position-relative">
-                    <i class="bi bi-cart-fill me-1"></i>
-                    Cart
-                    <span class="badge bg-danger text-white ms-1 rounded-pill position-absolute top-0 start-100 translate-middle" id="cart_quantity">
-                        {{ cart|length }}
-                    </span>
-                </a>
-            </form>
-        </div>
+          </li>
+
+          {% if user.is_superuser %}
+          <!-- Orders Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Orders
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Shipped Orders</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Not Shipped Orders</a></li>
+            </ul>
+          </li>
+          {% endif %}
+
+          <!-- AI Help Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              AI-Help
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'chatbot_view' %}">Assistance</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'home' %}">Design-Your-Style</a></li>
+            </ul>
+          </li>
+
+          <!-- Logout -->
+          <li class="nav-item">
+            <a class="nav-link text-danger fw-semibold" href="{% url 'logout' %}">Logout</a>
+          </li>
+
+          <!-- Categories Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Categories
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'category' 'Switch NVR' %}">Tech-Devices</a></li>
+              <li><a class="dropdown-item" href="{% url 'category' 'Camera Doom' %}">Wear-Clothes</a></li>
+              <li><a class="dropdown-item" href="{% url 'category' 'Screen Monitor' %}">eSkills-Selling</a></li>
+            </ul>
+          </li>
+
+        {% else %}
+          <!-- Login/Register Links -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+          </li>
+        {% endif %}
+      </ul>
+
+      <!-- Cart Button -->
+      <form class="d-flex ms-lg-4">
+        <a href="{% url 'cart_summary' %}" class="btn btn-outline-light position-relative shadow-sm">
+          <i class="bi bi-cart-fill me-1"></i> Cart
+          <span class="badge bg-danger text-white rounded-pill position-absolute top-0 start-100 translate-middle" id="cart_quantity">
+            {{ cart|length }}
+          </span>
+        </a>
+      </form>
     </div>
+  </div>
 </nav>
+
+<!-- Navbar Styling -->
+<style>
+.navbar-nav .nav-link {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    letter-spacing: 0.5px;
+    transition: color 0.3s ease, transform 0.2s ease;
+}
+.navbar-nav .nav-link:hover {
+    color: #0d6efd !important;
+    transform: translateY(-2px);
+}
+.dropdown-menu {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.15);
+}
+.btn-outline-light:hover {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+}
+</style>

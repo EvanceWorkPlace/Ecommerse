@@ -1,59 +1,78 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<br/><br/><br/>
+<br><br><br>
+
 <div class="container">
-    <div class="card mb-3 shadow-sm" style="max-width: 950px;">
+    <div class="card shadow-lg border-0 rounded-4 overflow-hidden mx-auto" style="max-width: 950px;">
         <div class="row g-0">
-            <div class="col-md-5">
-                <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+            
+            <!-- Product Image -->
+            <div class="col-md-5 bg-light d-flex align-items-center justify-content-center p-3">
+                <img src="{{ product.image.url }}" class="img-fluid rounded-3 shadow-sm" alt="{{ product.name }}">
             </div>
+
+            <!-- Product Details -->
             <div class="col-md-7">
-                <div class="card-body">
-                    <h3 class="card-title fw-bold" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">{{ product.name }}</h3>
-                    <p class="card-text" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">{{ product.description }}</p>
+                <div class="card-body p-4">
+                    <h2 class="fw-bold mb-3" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                        {{ product.name }}
+                    </h2>
+
+                    <p class="text-muted" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                        {{ product.description }}
+                    </p>
+
                     {% if product.is_sale %}
-                        <div class="d-flex justify-content-center small text-warning mb-2">
+                    <div class="d-flex align-items-center mb-2">
+                        <div class="text-warning me-2">
+                            {% for i in "12345" %}
                             <i class="bi-star-fill"></i>
-                            <i class="bi-star-fill"></i>
-                            <i class="bi-star-fill"></i>
-                            <i class="bi-star-fill"></i>
-                            <i class="bi-star-fill"></i>
+                            {% endfor %}
                         </div>
-                        <div>
-                            <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
-                            <span class="fw-bold text-danger ms-2">R {{ product.sale_price }}</span>
-                        </div>
-                    {% else %}
-                        <div>
-                            <span class="fw-bold">R {{ product.price }}</span>
-                        </div>
-                    {% endif %}
-                    <div class="mt-3 mb-2">
-                        <div class="row align-items-center">
-                            <div class="col-auto fw-bold">Quantity:</div>
-                            <div class="col-auto">
-                                <select class="form-select form-select-sm" id="qty-cart" style="width: 90px;">
-                                    <option value="1" selected>1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-                        </div>
+                        <span class="badge bg-danger text-white ms-2">On Sale!</span>
                     </div>
-                    <div class="d-flex gap-2 mt-4">
-                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">Back</a>
-                        <button class="btn btn-warning" value="{{ product.id }}" id="add-cart">Add (+)</button>
+
+                    <div class="mb-3">
+                        <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
+                        <span class="fw-bold text-danger ms-2 fs-5">R {{ product.sale_price }}</span>
+                    </div>
+
+                    {% else %}
+                    <div class="mb-3">
+                        <span class="fw-bold fs-5">R {{ product.price }}</span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Quantity Selector -->
+                    <div class="mt-3 mb-4">
+                        <label for="qty-cart" class="fw-semibold me-2">Quantity:</label>
+                        <select class="form-select d-inline-block w-auto" id="qty-cart">
+                            {% for i in "12345" %}
+                            <option value="{{ i }}">{{ i }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="d-flex gap-3">
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4">
+                            <i class="bi bi-arrow-left"></i> Back
+                        </a>
+                        <button class="btn btn-warning px-4 fw-semibold shadow-sm" value="{{ product.id }}" id="add-cart">
+                            <i class="bi bi-cart-plus-fill"></i> Add to Cart
+                        </button>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-<br/><br/>
 
+<br><br>
+
+<!-- JavaScript (AJAX for Cart) -->
 <script>
 $(document).on('click', '#add-cart', function(e){
     e.preventDefault();
@@ -71,10 +90,20 @@ $(document).on('click', '#add-cart', function(e){
             location.reload();
         },
         error: function(xhr, errmsg, err){
-            // Handle error if needed
+            console.log("Error adding to cart:", errmsg);
         }
     });
 });
 </script>
+
+<style>
+.card-body {
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+}
+.btn-warning:hover {
+    background-color: #f7c948;
+    transition: all 0.3s ease;
+}
+</style>
 
 {% endblock %}

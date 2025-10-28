@@ -1,29 +1,34 @@
 {% extends 'base.html' %}
-{% block content %}
 
-<header class="bg-dark py-3">
-    <div class="container px-4 px-lg-3 my-2">
-        <div class="text-center text-white">
-            <h1 class="display-8 fw-bolder">Search</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Find the electronic components you're looking for</p>
-        </div>
+{% block content %}
+<br/><br/><br/>
+
+<header class="bg-dark py-4 shadow-sm">
+    <div class="container text-center">
+        <h1 class="display-6 fw-bold text-white" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+            Search
+        </h1>
+        <p class="lead text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+            Find the electronic components you're looking for
+        </p>
     </div>
 </header>
 
-<section class="py-5">
+<section class="py-5 bg-light">
     <div class="container">
-        <!-- Search box -->
+
+        <!-- Search Box -->
         <div class="row justify-content-center mb-5">
             <div class="col-md-8">
-                <div class="card shadow-sm border-0">
-                    <div class="card-header bg-secondary text-white fw-semibold">
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-header bg-secondary text-white fw-semibold rounded-top-4">
                         Search For Products
                     </div>
                     <div class="card-body">
                         <form action="{% url 'search' %}" method="POST" class="d-flex flex-column flex-md-row gap-2">
                             {% csrf_token %}
                             <input type="text" class="form-control" name="searched" placeholder="Enter product name..." required>
-                            <button type="submit" class="btn btn-dark">Search</button>
+                            <button type="submit" class="btn btn-dark rounded-pill">Search</button>
                         </form>
                     </div>
                 </div>
@@ -32,39 +37,39 @@
 
         <!-- Search Results -->
         {% if searched %}
-        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+        <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
             {% for product in searched %}
             <div class="col mb-5">
-                <div class="card h-100 product-card border-0 shadow-sm">
+                <div class="card h-100 product-card border-0 shadow-sm rounded-4 position-relative overflow-hidden">
+
                     {% if product.is_sale %}
-                    <div class="badge bg-danger text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                    <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow-sm">SALE</span>
                     {% endif %}
 
-                    <!-- Product image -->
-                    <img class="card-img-top product-img" src="{{ product.image.url }}" alt="{{ product.name }}" />
+                    <!-- Product Image -->
+                    <img class="card-img-top product-img" src="{{ product.image.url }}" alt="{{ product.name }}" style="height: 220px; object-fit: cover;">
 
-                    <!-- Product details -->
-                    <div class="card-body p-4">
-                        <div class="text-center">
-                            <h5 class="fw-bolder">{{ product.name }}</h5>
-                            {% if product.is_sale %}
-                            <p class="mb-0">
-                                <strike class="text-muted">R {{ product.price }}</strike>
-                                &nbsp; <strong>R {{ product.sale_price }}</strong>
-                            </p>
-                            {% else %}
-                            <p class="mb-0 fw-semibold">R {{ product.price }}</p>
-                            {% endif %}
-                            <small class="text-muted d-block mt-2">{{ product.description|truncatechars:60 }}</small>
-                        </div>
+                    <!-- Product Details -->
+                    <div class="card-body p-4 text-center">
+                        <h5 class="fw-bold text-dark">{{ product.name }}</h5>
+                        {% if product.is_sale %}
+                        <p class="mb-1">
+                            <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
+                            <span class="fw-bold text-success ms-2">R {{ product.sale_price }}</span>
+                        </p>
+                        {% else %}
+                        <p class="fw-bold fs-5 text-dark mb-1">R {{ product.price }}</p>
+                        {% endif %}
+                        <small class="text-muted d-block mt-2">{{ product.description|truncatewords:12 }}</small>
                     </div>
 
-                    <!-- Product actions -->
-                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                        <div class="text-center">
-                            <a class="btn btn-outline-dark mt-auto" href="{% url 'product' product.id %}">Buy</a>
-                        </div>
+                    <!-- Product Action -->
+                    <div class="card-footer bg-transparent border-0 text-center pb-4">
+                        <a href="{% url 'product' product.id %}" class="btn btn-outline-dark rounded-pill shadow-sm">
+                            <i class="bi bi-cart-plus"></i> Buy Now
+                        </a>
                     </div>
+
                 </div>
             </div>
             {% endfor %}
@@ -77,15 +82,15 @@
 <style>
 .product-card {
     transition: all 0.3s ease;
-    border-radius: 10px;
+    border-radius: 1rem;
 }
 .product-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
 }
 .product-img {
     transition: transform 0.4s ease;
-    border-radius: 10px 10px 0 0;
+    border-radius: 1rem 1rem 0 0;
 }
 .product-card:hover .product-img {
     transform: scale(1.05);

@@ -1,36 +1,74 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<br/><br/><br/>
 
-<header class="bg-dark py-4 mb-3">
-    <div class="container px-4 px-lg-5 my-2">
-        <div class="text-center text-white">
-            <h1 class="display-8 fw-bolder" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; font-weight: 700; letter-spacing: 1px;">
-                Register
-            </h1>
-            <p class="lead fw-normal text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-                Register for your user account...
-            </p>
-        </div>
+<header class="bg-dark py-4 mb-4 shadow-sm">
+    <div class="container text-center">
+        <h1 class="display-6 fw-bold text-white" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; letter-spacing: 1px;">
+            Register
+        </h1>
+        <p class="lead text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+            Create your account to get started
+        </p>
     </div>
 </header>
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <div class="card border-0 shadow-sm mt-4">
-                <div class="card-body">
+            <div class="card border-0 shadow-lg rounded-4 mt-4">
+                <div class="card-body p-4">
                     <form method="post" action="{% url 'register' %}">
                         {% csrf_token %}
-                        {{ form.as_p }}
+
+                        <!-- Form Fields -->
+                        {{ form.non_field_errors }}
+                        {% for field in form %}
+                        <div class="mb-3">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.help_text %}
+                                <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                            {% for error in field.errors %}
+                                <div class="text-danger small">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                        <!-- Submit Button -->
                         <div class="d-grid gap-2 mt-3">
-                            <button type="submit" class="btn btn-success btn-lg" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">Register</button>
+                            <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm" 
+                                style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                                Register
+                            </button>
                         </div>
                     </form>
+
+                    <!-- Already have account -->
+                    <div class="mt-3 text-center">
+                        <small class="text-muted" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+                            Already have an account? <a href="{% url 'login' %}">Login here</a>
+                        </small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <br/><br/>
 </div>
+<br/><br/>
+
+<!-- Optional Custom CSS -->
+<style>
+.card-body input, .card-body select {
+    border-radius: 0.5rem;
+    padding: 0.6rem 0.75rem;
+}
+.btn-success:hover {
+    background-color: #198754;
+    color: white;
+}
+</style>
 
 {% endblock %}

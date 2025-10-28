@@ -2,45 +2,70 @@
 
 {% block content %}
 
-<header class="bg-dark py-5">
-    <div class="container px-4 px-lg-3 my-5">
-        <div class="text-center text-white">
-            <h1 class="display-8 fw-bolder">Categories</h1>
-            <p class="lead fw-normal text-white-50 mb-0">Choose your category below!</p>
-        </div>
+<!-- Header -->
+<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #007bff, #00b894);">
+  <div class="container px-4 px-lg-3 my-5">
+    <div class="text-center text-white">
+      <h1 class="display-6 fw-bold">Medicine Categories</h1>
+      <p class="lead fw-normal text-white-50 mb-0">
+        Find the right medicine for your needs — fast, safe, and reliable.
+      </p>
     </div>
+  </div>
 </header>
 
-<div class="container my-5">
+<!-- Category Section -->
+<section class="py-5">
+  <div class="container">
     <div class="row justify-content-center">
-        {% for category in categories %}
-        <div class="col-md-3 col-sm-6 mb-4">
-            <a href="{% url 'category' category %}" class="text-decoration-none">
-                <div class="card text-center category-card shadow-sm border-0 py-4">
-                    <div class="card-body">
-                        <h5 class="card-title text-dark fw-bold">{{ category }}</h5>
-                    </div>
-                </div>
-            </a>
-        </div>
-        {% endfor %}
+      {% for category in categories %}
+      <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+        <a href="{% url 'category' category %}" class="text-decoration-none">
+          <div class="card text-center category-card border-0 shadow-sm p-4">
+            <div class="card-body">
+              <i class="bi bi-capsule-pill fs-1 text-success mb-3"></i>
+              <h5 class="card-title fw-semibold text-dark">{{ category }}</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% empty %}
+      <div class="text-center text-muted py-5">
+        <i class="bi bi-clipboard-x fs-3 mb-3"></i>
+        <p>No categories available yet.</p>
+      </div>
+      {% endfor %}
     </div>
-</div>
+  </div>
+</section>
 
+<!-- Page Styles -->
 <style>
-/* Category Card Hover Effect */
-.category-card {
+  .category-card {
     transition: all 0.3s ease-in-out;
-    border-radius: 10px;
-}
-.category-card:hover {
+    border-radius: 12px;
+    background-color: #ffffff;
+  }
+
+  .category-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    background-color: #f8f9fa;
-}
-.category-card:hover .card-title {
-    color: #0d6efd; /* Bootstrap primary color */
-}
+    background-color: #f0fdf4; /* light green tint */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  }
+
+  .category-card:hover .card-title {
+    color: #007bff; /* primary blue */
+  }
+
+  .category-card i {
+    color: #00b894;
+    transition: transform 0.3s ease, color 0.3s ease;
+  }
+
+  .category-card:hover i {
+    transform: scale(1.1);
+    color: #007bff;
+  }
 </style>
 
 {% endblock %}

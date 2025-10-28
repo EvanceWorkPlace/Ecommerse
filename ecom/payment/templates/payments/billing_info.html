@@ -15,7 +15,7 @@
 
 <div class="container">
 
-    <!-- Order Summary (display only) -->
+    <!-- Order Summary -->
     <div class="card mb-4 shadow-sm border-0 rounded-4">
         <div class="card-header bg-primary text-white fw-bold rounded-top-4">Order Summary</div>
         <div class="card-body">
@@ -50,7 +50,7 @@
         </div>
     </div>
 
-    <!-- Shipping Info (display only) -->
+    <!-- Shipping Info -->
     <div class="card mb-4 shadow-sm border-0 rounded-4">
         <div class="card-header bg-info text-white fw-bold rounded-top-4">Shipping Info</div>
         <div class="card-body">
@@ -61,32 +61,58 @@
             <p class="mb-1"><strong>State:</strong> {{ shipping_info.shipping_state }}</p>
             <p class="mb-1"><strong>Zipcode:</strong> {{ shipping_info.shipping_zipcode }}</p>
             <p class="mb-1"><strong>Country:</strong> {{ shipping_info.shipping_country }}</p>
-            <a href="{% url 'checkout' %}" class="btn btn-outline-dark mt-2 shadow-sm">Update Shipping</a>
+            <a href="{% url 'checkout' %}" class="btn btn-outline-dark mt-2 shadow-sm rounded-4">Update Shipping</a>
         </div>
     </div>
 
-    <!-- Billing Form (internal POST) -->
-    <!-- <div class="card mb-4 shadow-sm border-0 rounded-4">
-        <div class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing Info</div>
+    <!-- PayPal / Billing Form -->
+    <div class="card mb-4 shadow-sm border-0 rounded-4">
+        <div class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing & Payment</div>
         <div class="card-body">
-            <form method="POST" action="{% url 'billing_info' %}">
+            <form method="POST">
                 {% csrf_token %}
+                {{ shipping_form.as_p }}
                 {{ billing_form.as_p }}
                 <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-success btn-lg px-5 shadow-sm rounded-4">Continue</button>
+                    <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm rounded-4">
+                        Proceed to PayPal
+                    </button>
                 </div>
             </form>
         </div>
-    </div> -->
-
-    <!-- PayPal Form (external POST to PayPal) -->
-<form method="POST">
-  {% csrf_token %}
-  {{ shipping_form.as_p }}
-  {{ billing_form.as_p }}
-  <button type="submit" class="btn btn-primary">Proceed to PayPal</button>
-</form>
+    </div>
 
 </div>
+
+<!-- Custom Styling -->
+<style>
+    .card {
+        border-radius: 1rem;
+        transition: all 0.3s ease;
+    }
+    .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .btn {
+        border-radius: 0.6rem;
+        transition: all 0.3s ease;
+    }
+    .btn-outline-secondary:hover {
+        background-color: #6c757d;
+        color: white;
+    }
+    .btn-primary:hover {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        transform: translateY(-2px);
+    }
+    form p {
+        margin-bottom: 1rem;
+    }
+    .text-muted {
+        font-size: 0.9rem;
+    }
+</style>
 
 {% endblock %}

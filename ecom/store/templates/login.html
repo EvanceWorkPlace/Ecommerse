@@ -39,5 +39,54 @@
     <br/>
 
 </div>
+<style>
+/* Subtle hover and focus effects for form fields */
+.form-control {
+  border-radius: 10px;
+  padding: 12px 15px;
+  border: 1px solid #ced4da;
+  transition: all 0.3s ease-in-out;
+}
+.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+}
+
+/* Card styling */
+.card {
+  border-radius: 15px;
+  background: #ffffff;
+}
+.card-body {
+  padding: 2rem;
+}
+
+/* Login button styling */
+.btn-success {
+  background-color: #198754;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+}
+.btn-success:hover {
+  background-color: #157347;
+  box-shadow: 0 6px 20px rgba(21, 115, 71, 0.25);
+}
+
+/* Header gradient */
+header.bg-dark {
+  background: linear-gradient(135deg, #0d6efd 0%, #212529 100%);
+}
+
+/* Center card vertically for tall screens */
+@media (min-height: 700px) {
+  .container {
+    min-height: 70vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+</style>
 
 {% endblock %}

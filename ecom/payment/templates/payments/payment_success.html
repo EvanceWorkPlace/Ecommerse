@@ -1,1 +1,36 @@
-<h1>Payment success</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- Fail/Error Section -->
+<section class="vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="text-center">
+        <div class="display-1 fw-bold text-danger mb-4" style="font-size: 6rem;">❌</div>
+        <h1 class="display-5 fw-bold mb-3" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+            Something Went Wrong
+        </h1>
+        <p class="lead mb-4 text-muted" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
+            We were unable to complete your request. Please try again or contact support if the issue persists.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="{% url 'home' %}" class="btn btn-dark btn-lg shadow-sm">Go to Home</a>
+            <a href="javascript:history.back()" class="btn btn-outline-dark btn-lg shadow-sm">Go Back</a>
+        </div>
+    </div>
+</section>
+
+<!-- Optional Styling -->
+<style>
+    .btn-dark:hover {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        transform: translateY(-2px);
+    }
+    .btn-outline-dark:hover {
+        background-color: #0d6efd;
+        color: #fff;
+        transform: translateY(-2px);
+    }
+</style>
+
+{% endblock %}
