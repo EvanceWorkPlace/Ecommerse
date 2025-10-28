@@ -1,4 +1,3 @@
-
 import os
 from pathlib import Path
 from dotenv import load_dotenv
@@ -13,13 +12,19 @@ load_dotenv()  # Load .env file
 # -------------------------------
 # SECURITY
 # -------------------------------
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY","django-insecure-default-key")
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-key")
 
-DEBUG = os.getenv("DEBUG", "True") == "True"
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost 127.0.0.1 ecommerse-96t7.onrender.com").split()
-CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS", "https://ecommerse-96t7.onrender.com").split()
+ALLOWED_HOSTS = os.getenv(
+    "ALLOWED_HOSTS",
+    "localhost 127.0.0.1 ecommerse-96t7.onrender.com"
+).split()
 
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS",
+    "https://ecommerse-96t7.onrender.com"
+).split()
 
 # -------------------------------
 # APPS
@@ -86,11 +91,7 @@ TEMPLATES = [
 # DATABASES
 # -------------------------------
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.getenv("DATABASE_URL"),
-        conn_max_age=600,
-        ssl_require=True
-    )
+    "default": dj_database_url.config(default=os.getenv("DATABASE_URL"))
 }
 
 # -------------------------------
@@ -116,9 +117,9 @@ USE_TZ = True
 # -------------------------------
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / "staticfiles"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
