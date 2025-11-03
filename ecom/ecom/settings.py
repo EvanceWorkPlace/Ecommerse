@@ -23,9 +23,8 @@ ALLOWED_HOSTS = os.getenv(
 
 CSRF_TRUSTED_ORIGINS = os.getenv(
     "CSRF_TRUSTED_ORIGINS",
-    "https://ecommerse-96t7.onrender.com",
-    "ecommerse-96t7.onrender.com"
-).split()
+    "https://ecommerse-96t7.onrender.com https://www.ecommerse-96t7.onrender.com"
+    ).split()
 
 # -------------------------------
 # APPS
@@ -124,8 +123,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = "/media"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media/"
 
 # -------------------------------
 # DEFAULT FIELD TYPE
