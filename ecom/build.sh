@@ -12,4 +12,4 @@ python manage.py migrate
 python manage.py collectstatic --noinput
 
 # Start gunicorn server
-gunicorn ecom.ecom.wsgi
+gunicorn ecom.wsgi
