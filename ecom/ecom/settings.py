@@ -16,15 +16,13 @@ SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-key")
 
 DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = os.getenv(
-    "ALLOWED_HOSTS",
-    "ecommerse-2-4k35.onrender.com localhost 127.0.0.1"
-).split()
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split()
 
-CSRF_TRUSTED_ORIGINS = os.getenv(
-    "CSRF_TRUSTED_ORIGINS",
-    "https://ecommerse-2-4k35.onrender.com"
-    ).split()
+CSRF_TRUSTED_ORIGINS = os.getenv("CSRF_TRUSTED_ORIGINS").split()
+
+DATABASES = {
+    "default": dj_database_url.config(default=os.getenv("DATABASE_URL1"), conn_max_age=600, ssl_require=True)
+}
 
 # -------------------------------
 # APPS
