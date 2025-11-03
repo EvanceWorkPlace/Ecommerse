@@ -9,14 +9,14 @@
 
   services:
   - type: web
-    name: ecommerce-app
+    name: ecom
     env: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: bash ./install_requirements.sh
     startCommand: gunicorn ecom.wsgi:application
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: ecom.settings
       - key: SECRET_KEY
-        value: your-secret-key
+        value: DJANGO_SECRET_KEY
       - key: DATABASE_URL
-        value: your-database-url
+        value: DATABASE_URL1
