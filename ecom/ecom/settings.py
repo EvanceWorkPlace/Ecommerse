@@ -23,7 +23,8 @@ ALLOWED_HOSTS = os.getenv(
 
 CSRF_TRUSTED_ORIGINS = os.getenv(
     "CSRF_TRUSTED_ORIGINS",
-    "https://ecommerse-96t7.onrender.com"
+    "https://ecommerse-96t7.onrender.com",
+    "ecommerse-96t7.onrender.com"
 ).split()
 
 # -------------------------------
