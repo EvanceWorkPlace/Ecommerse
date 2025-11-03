@@ -18,7 +18,7 @@ DEBUG = os.getenv("DEBUG", "False") == "True"
 
 ALLOWED_HOSTS = os.getenv(
     "ALLOWED_HOSTS",
-    "localhost 127.0.0.1 ecommerse-2-4k35.onrender.com"
+    "ecommerse-2-4k35.onrender.com localhost 127.0.0.1"
 ).split()
 
 CSRF_TRUSTED_ORIGINS = os.getenv(
