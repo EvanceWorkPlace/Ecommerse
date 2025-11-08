@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Header -->
-<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #007bff, #00b894);">
+<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
   <div class="container px-4 px-lg-3 my-5">
     <div class="text-center text-white">
       <h1 class="display-6 fw-bold">{{ categories }}</h1>
@@ -13,17 +13,16 @@
 </header>
 
 <!-- Product Section -->
-<section class="py-5">
+<section class="py-5" style="background-color: #fdfdfd;">
   <div class="container px-4 px-lg-5 mt-4">
     {% if products %}
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
       {% for product in products %}
       <div class="col mb-5">
-        <div class="card h-100 product-card border-0 shadow-sm">
-          
-          <!-- Sale Badge -->
+        <div class="card h-100 product-card border-0 shadow-sm rounded-4 position-relative">
+
           {% if product.is_sale %}
-          <div class="badge bg-danger position-absolute top-0 end-0 m-2 shadow-sm">Sale</div>
+          <div class="badge bg-rose position-absolute top-0 end-0 m-2 shadow-sm">Sale</div>
           {% endif %}
 
           <!-- Product Image -->
@@ -36,7 +35,7 @@
             {% if product.is_sale %}
             <p class="mb-0">
               <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
-              <span class="text-danger fw-bold"> R {{ product.sale_price }}</span>
+              <span class="text-rose fw-bold">R {{ product.sale_price }}</span>
             </p>
             {% else %}
             <p class="fw-bold text-success mb-0">R {{ product.price }}</p>
@@ -47,8 +46,8 @@
 
           <!-- Product Actions -->
           <div class="card-footer p-3 pt-0 border-top-0 bg-transparent text-center">
-            <a class="btn btn-primary rounded-pill mt-auto px-4 shadow-sm" href="{% url 'product' product.id %}">
-              <i class="bi bi-bag-check"></i> Buy Item
+            <a class="btn btn-rose rounded-pill mt-auto px-4 shadow-sm" href="{% url 'product' product.id %}">
+              <i class="bi bi-bag-check me-1"></i> Buy Item
             </a>
           </div>
         </div>
@@ -66,14 +65,27 @@
 
 <!-- Page Styles -->
 <style>
+  /* Rose color */
+  .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #e91e63 !important; }
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+  }
+
   /* Product Card */
   .product-card {
     border-radius: 12px;
     transition: all 0.3s ease;
-    overflow: hidden;
     background-color: #fff;
+    overflow: hidden;
   }
-
   .product-card:hover {
     transform: translateY(-6px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
@@ -85,28 +97,16 @@
     object-fit: cover;
     transition: transform 0.4s ease;
   }
-
   .product-card:hover .product-img {
-    transform: scale(1.05);
-  }
-
-  /* Buttons */
-  .btn-primary {
-    background: linear-gradient(135deg, #007bff, #00b894);
-    border: none;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-
-  .btn-primary:hover {
-    background: linear-gradient(135deg, #00b894, #007bff);
     transform: scale(1.05);
   }
 
   /* Sale Badge */
   .badge {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     border-radius: 50px;
     padding: 0.4rem 0.8rem;
+    color: #fff;
   }
 </style>
 

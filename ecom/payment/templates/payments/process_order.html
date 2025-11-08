@@ -1,78 +1,121 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<header class="bg-dark py-3">
-    <div class="container px-2 px-lg-2 my-2">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">process_order</h1>
-            <p class="lead fw-normal font-sans text-white-50 mb-0">View Your process_order information</p>
-        </div>
-    </div>
+<!-- Header -->
+<header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+  <div class="container text-center text-white">
+    <h1 class="display-4 fw-bold">Process Order</h1>
+    <p class="lead text-white-50 mb-0">View your order and billing information</p>
+  </div>
 </header>
 
-<br/><br/> 
+<div class="container py-5">
 
-
-<div class="container">
-  <br/>
-    <div class="card">
-        <h5 class="card-header">Order Summary</h5>
-        <div class="card-body">
-            {% for product in cart_products %}
-                {{ product.name }}:
-                {% if product.is_sale %}
-                    R{{ product.sale_price }}
-                {% else %}
-                    R{{ product.price }}
-                {% endif %}
-<br/>
-                <small>Quantity:
-                {% for key, value in quantities.items %}
-                    {% if key == product.id|stringformat:"s" %}
-                        {{ value }}
-                    {% endif %}
-                {% endfor %}</small>
-                <br/><br/>
-                
-            {% endfor %}
-            Total: R {{ totals }}
-            <br/><br/>
-            <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-secondary">Update Items</a>
-        </div>
-        <br/>
-        
+  <!-- Order Summary -->
+  <div class="card mb-4 shadow-sm border-0 rounded-4">
+    <h5 class="card-header bg-rose text-white fw-bold rounded-top-4">Order Summary</h5>
+    <div class="card-body">
+      {% for product in cart_products %}
+      <p class="mb-1">
+        <strong>{{ product.name }}:</strong>
+        {% if product.is_sale %}
+        <span class="text-rose fw-bold">R{{ product.sale_price }}</span>
+        {% else %}
+        <span>R{{ product.price }}</span>
+        {% endif %}
+      </p>
+      <small class="text-muted">
+        Quantity:
+        {% for key, value in quantities.items %}
+        {% if key == product.id|stringformat:"s" %}
+        {{ value }}
+        {% endif %}
+        {% endfor %}
+      </small>
+      <hr>
+      {% endfor %}
+      <p class="fw-bold fs-5 mt-3">Total: <span class="text-success">R {{ totals }}</span></p>
+      <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark btn-sm rounded-pill mt-2">Update Items</a>
     </div>
-    <br/><br/>
-    <div class="card">
-  <h5 class="card-header">Shipping Info</h5>
-  <div class="card-body">
-    
-     Name:  {{ shipping_info.shipping_full_name }}<br/>
-     Email:  {{ shipping_info.shipping_email }}<br/>
-     Address 1:  {{ shipping_info.shipping_address1 }}<br/>
-     Address 2:  {{ shipping_info.shipping_address2 }}<br/>
-     City:  {{ shipping_info.shipping_city }}<br/>
-     state:  {{ shipping_info.state }}<br/>
-     Zipcode:  {{ shipping_info.shipping_zipcode }}<br/>
-     Country:  {{ shipping_info.shipping_country }}<br/>
-     <br/>
-     <a href="{% url 'checkout' %}" class="btn btn-outline-dark">Update Shipping</a>
   </div>
-</div>
-<br/>
-<div class="card">
-  <h5 class="card-header">Billing Info</h5>
-  <div class="card-body">
-    <form method="POST" action="{% url 'process_order' %}">
-        {% csrf_token %}
-   {{ billing_form.as_p }}
 
-    </form>
+  <!-- Shipping Info -->
+  <div class="card mb-4 shadow-sm border-0 rounded-4">
+    <h5 class="card-header bg-dark text-white fw-bold rounded-top-4">Shipping Info</h5>
+    <div class="card-body">
+      <p><strong>Name:</strong> {{ shipping_info.shipping_full_name }}</p>
+      <p><strong>Email:</strong> {{ shipping_info.shipping_email }}</p>
+      <p><strong>Address 1:</strong> {{ shipping_info.shipping_address1 }}</p>
+      <p><strong>Address 2:</strong> {{ shipping_info.shipping_address2 }}</p>
+      <p><strong>City:</strong> {{ shipping_info.shipping_city }}</p>
+      <p><strong>State:</strong> {{ shipping_info.state }}</p>
+      <p><strong>Zipcode:</strong> {{ shipping_info.shipping_zipcode }}</p>
+      <p><strong>Country:</strong> {{ shipping_info.shipping_country }}</p>
+      <a href="{% url 'checkout' %}" class="btn btn-outline-rose mt-2 rounded-pill">Update Shipping</a>
+    </div>
+  </div>
+
+  <!-- Billing Info -->
+  <div class="card mb-4 shadow-sm border-0 rounded-4">
+    <h5 class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing Info</h5>
+    <div class="card-body">
+      <form method="POST" action="{% url 'process_order' %}">
+        {% csrf_token %}
+        {{ billing_form.as_p }}
+        <div class="text-center mt-4">
+          <button class="btn btn-rose btn-lg px-5 shadow-sm rounded-pill" type="submit">Pay Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 </div>
-</div>
-<br/><br/>
-<button class="btn btn-secondary" type="submit">Pay Now</button>
-<br/><br/>
-</div>
+
+<!-- Custom Styling -->
+<style>
+  .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #e91e63 !important; }
+
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+  }
+
+  .btn-outline-rose {
+    border: 2px solid #e91e63;
+    color: #e91e63;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-rose:hover {
+    background-color: #e91e63;
+    color: #fff;
+    transform: scale(1.05);
+  }
+
+  .card {
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  form p {
+    margin-bottom: 1rem;
+  }
+</style>
 
 {% endblock %}

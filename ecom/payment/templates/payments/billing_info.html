@@ -2,117 +2,145 @@
 {% block content %}
 
 <!-- Header -->
-<header class="bg-dark py-5 mb-4 shadow-sm">
-    <div class="container text-center text-white">
-        <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-            Billing Information
-        </h1>
-        <p class="lead fw-normal text-white-50" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-            Review and confirm your billing details
-        </p>
-    </div>
+<header class="py-5 mb-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+  <div class="container text-center text-white">
+    <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI';">
+      Billing Information
+    </h1>
+    <p class="lead text-white-50" style="font-family: 'Montserrat', 'Segoe UI';">
+      Review and confirm your billing details
+    </p>
+  </div>
 </header>
 
 <div class="container">
 
-    <!-- Order Summary -->
-    <div class="card mb-4 shadow-sm border-0 rounded-4">
-        <div class="card-header bg-primary text-white fw-bold rounded-top-4">Order Summary</div>
-        <div class="card-body">
-            {% for product in cart_products %}
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span>{{ product.name }}</span>
-                    <span>
-                        {% if product.is_sale %}
-                            <span class="text-danger fw-bold">R{{ product.sale_price }}</span>
-                        {% else %}
-                            <span>R{{ product.price }}</span>
-                        {% endif %}
-                    </span>
-                </div>
-                <small class="text-muted ms-1">
-                    Quantity:
-                    {% for key, value in quantities.items %}
-                        {% if key == product.id|stringformat:"s" %}
-                            {{ value }}
-                        {% endif %}
-                    {% endfor %}
-                </small>
-                <hr class="my-2">
-            {% endfor %}
-            <div class="d-flex justify-content-between mt-3">
-                <strong>Total:</strong>
-                <span class="text-success fw-bold fs-5">R {{ totals }}</span>
-            </div>
-            <div class="mt-3">
-                <a href="{% url 'cart_summary' %}" class="btn btn-outline-secondary btn-sm shadow-sm">Update Items</a>
-            </div>
-        </div>
+  <!-- Order Summary -->
+  <div class="card mb-4 shadow-sm border-0 rounded-4">
+    <div class="card-header bg-rose text-white fw-bold rounded-top-4">Order Summary</div>
+    <div class="card-body">
+      {% for product in cart_products %}
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <span>{{ product.name }}</span>
+        <span>
+          {% if product.is_sale %}
+          <span class="text-rose fw-bold">R{{ product.sale_price }}</span>
+          {% else %}
+          <span>R{{ product.price }}</span>
+          {% endif %}
+        </span>
+      </div>
+      <small class="text-muted ms-1">
+        Quantity:
+        {% for key, value in quantities.items %}
+        {% if key == product.id|stringformat:"s" %}
+        {{ value }}
+        {% endif %}
+        {% endfor %}
+      </small>
+      <hr class="my-2">
+      {% endfor %}
+      <div class="d-flex justify-content-between mt-3">
+        <strong>Total:</strong>
+        <span class="text-success fw-bold fs-5">R {{ totals }}</span>
+      </div>
+      <div class="mt-3">
+        <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark btn-sm shadow-sm rounded-pill">Update Items</a>
+      </div>
     </div>
+  </div>
 
-    <!-- Shipping Info -->
-    <div class="card mb-4 shadow-sm border-0 rounded-4">
-        <div class="card-header bg-info text-white fw-bold rounded-top-4">Shipping Info</div>
-        <div class="card-body">
-            <p class="mb-1"><strong>Name:</strong> {{ shipping_info.shipping_full_name }}</p>
-            <p class="mb-1"><strong>Email:</strong> {{ shipping_info.shipping_email }}</p>
-            <p class="mb-1"><strong>Address:</strong> {{ shipping_info.shipping_address1 }} {{ shipping_info.shipping_address2 }}</p>
-            <p class="mb-1"><strong>City:</strong> {{ shipping_info.shipping_city }}</p>
-            <p class="mb-1"><strong>State:</strong> {{ shipping_info.shipping_state }}</p>
-            <p class="mb-1"><strong>Zipcode:</strong> {{ shipping_info.shipping_zipcode }}</p>
-            <p class="mb-1"><strong>Country:</strong> {{ shipping_info.shipping_country }}</p>
-            <a href="{% url 'checkout' %}" class="btn btn-outline-dark mt-2 shadow-sm rounded-4">Update Shipping</a>
-        </div>
+  <!-- Shipping Info -->
+  <div class="card mb-4 shadow-sm border-0 rounded-4">
+    <div class="card-header bg-dark text-white fw-bold rounded-top-4">Shipping Info</div>
+    <div class="card-body">
+      <p class="mb-1"><strong>Name:</strong> {{ shipping_info.shipping_full_name }}</p>
+      <p class="mb-1"><strong>Email:</strong> {{ shipping_info.shipping_email }}</p>
+      <p class="mb-1"><strong>Address 1:</strong> {{ shipping_info.shipping_address1 }}</p>
+      <p class="mb-1"><strong>Address 2:</strong> {{ shipping_info.shipping_address2 }}</p>
+      <p class="mb-1"><strong>City:</strong> {{ shipping_info.shipping_city }}</p>
+      <p class="mb-1"><strong>State:</strong> {{ shipping_info.shipping_state }}</p>
+      <p class="mb-1"><strong>Zipcode:</strong> {{ shipping_info.shipping_zipcode }}</p>
+      <p class="mb-1"><strong>Country:</strong> {{ shipping_info.shipping_country }}</p>
+      <a href="{% url 'checkout' %}" class="btn btn-outline-rose mt-2 shadow-sm rounded-pill">Update Shipping</a>
     </div>
+  </div>
 
-    <!-- PayPal / Billing Form -->
-    <div class="card mb-4 shadow-sm border-0 rounded-4">
-        <div class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing & Payment</div>
-        <div class="card-body">
-            <form method="POST">
-                {% csrf_token %}
-                {{ shipping_form.as_p }}
-                {{ billing_form.as_p }}
-                <div class="text-center mt-3">
-                    <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm rounded-4">
-                        Proceed to PayPal
-                    </button>
-                </div>
-            </form>
-        </div>
+  <!-- PayPal Form -->
+  <div class="text-center mb-4">
+    {{ paypal_form.render }}
+  </div>
+
+  <!-- Billing Form -->
+  <div class="card mb-4 shadow-sm border-0 rounded-4">
+    <div class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing Info</div>
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+        {{ billing_form.as_p }}
+      </form>
     </div>
+  </div>
 
+  <!-- Confirm Button -->
+  <div class="text-center mt-3">
+    <button type="submit" class="btn btn-rose btn-lg px-5 shadow-sm rounded-pill">
+      Confirm
+    </button>
+  </div>
+  <br/>
 </div>
 
 <!-- Custom Styling -->
 <style>
-    .card {
-        border-radius: 1rem;
-        transition: all 0.3s ease;
-    }
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    .btn {
-        border-radius: 0.6rem;
-        transition: all 0.3s ease;
-    }
-    .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: white;
-    }
-    .btn-primary:hover {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-        transform: translateY(-2px);
-    }
-    form p {
-        margin-bottom: 1rem;
-    }
-    .text-muted {
-        font-size: 0.9rem;
-    }
+  .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #e91e63 !important; }
+
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+  }
+
+  .btn-outline-rose {
+    border: 2px solid #e91e63;
+    color: #e91e63;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-rose:hover {
+    background-color: #e91e63;
+    color: #fff;
+    transform: scale(1.05);
+  }
+
+  .card {
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  form p {
+    margin-bottom: 1rem;
+  }
+
+  .text-muted {
+    font-size: 0.9rem;
+  }
 </style>
 
 {% endblock %}

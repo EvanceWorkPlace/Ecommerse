@@ -1,130 +1,163 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<header class="bg-dark py-3">
-    <div class="container px-2 px-lg-5 text-center text-white">
-        <h1 class="display-4 fw-bolder">Shopping Cart</h1>
-        <p class="lead fw-normal text-white-50 mb-0">Review and manage your cart items below</p>
-    </div>
+<!-- Header -->
+<header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+  <div class="container px-2 px-lg-5 text-center text-white">
+    <h1 class="display-8 fw-bold">Med Cart</h1>
+    <p class="lead text-white-50 mb-0">Review and manage your cart items below</p>
+  </div>
 </header>
 
-<section class="py-5">
-    <div class="container">
-        {% if cart_products %}
-            {% for product in cart_products %}
-                <div class="card mb-4 shadow-sm rounded-4">
-                    <div class="row g-0 align-items-center">
-                        <div class="col-md-4 text-center p-3">
-                            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ product.name }}</h5>
-                                <p class="card-text text-muted">{{ product.description }}</p>
+<section class="py-5" style="background-color: #fdfdfd;">
+  <div class="container">
+    {% if cart_products %}
+      {% for product in cart_products %}
+      <div class="card mb-4 shadow-sm rounded-4">
+        <div class="row g-0 align-items-center">
+          <div class="col-md-4 text-center p-3">
+            <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+          </div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title text-rose">{{ product.name }}</h5>
+              <p class="card-text text-muted">{{ product.description }}</p>
 
-                                {% if product.is_sale %}
-                                    <div class="d-flex justify-content-start align-items-center mb-2">
-                                        <div class="me-2 small text-warning">
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                            <i class="bi bi-star-fill"></i>
-                                        </div>
-                                        <strike class="me-2">R {{ product.price }}</strike>
-                                        <span class="fw-bold">R {{ product.sale_price }}</span>
-                                    </div>
-                                {% else %}
-                                    <p class="fw-bold mb-2">R {{ product.price }}</p>
-                                {% endif %}
-
-                                <div class="row align-items-center mb-3">
-                                    <div class="col-auto">Quantity:</div>
-                                    <div class="col-auto">
-                                        <select class="form-select form-select-sm" id="select{{ product.id }}">
-                                            {% for key, value in quantities.items %}
-                                                {% if key == product.id|slugify %}
-                                                    <option selected>{{ value }}</option>
-                                                {% endif %}
-                                            {% endfor %}
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex gap-2">
-                                    <a href="{% url 'home' %}" class="btn btn-secondary btn-sm">Back</a>
-                                    <button class="btn btn-success btn-sm update-cart" data-index="{{ product.id }}">Update</button>
-                                    <button class="btn btn-danger btn-sm delete-cart" data-index="{{ product.id }}">Delete</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              {% if product.is_sale %}
+              <div class="d-flex align-items-center mb-2">
+                <div class="me-2 small text-warning">
+                  {% for i in "12345" %}
+                  <i class="bi bi-star-fill"></i>
+                  {% endfor %}
                 </div>
-            {% endfor %}
+                <strike class="me-2">R {{ product.price }}</strike>
+                <span class="fw-bold text-rose">R {{ product.sale_price }}</span>
+              </div>
+              {% else %}
+              <p class="fw-bold mb-2">R {{ product.price }}</p>
+              {% endif %}
 
-            <div class="card p-2 shadow-lg d-flex gap-2 rounded-4 text-center">
-                <h4>Total: R {{ totals }}</h4>
-                <a href="{% url 'checkout' %}" class="btn btn-outline-success btn-lg mt-3">Proceed to Checkout</a>
-            </div>
+              <div class="row align-items-center mb-3">
+                <div class="col-auto">Quantity:</div>
+                <div class="col-auto">
+                  <select class="form-select form-select-sm rounded-pill" id="select{{ product.id }}">
+                    {% for key, value in quantities.items %}
+                      {% if key == product.id|slugify %}
+                        <option selected>{{ value }}</option>
+                      {% endif %}
+                    {% endfor %}
+                    {% for i in "12345" %}
+                      <option value="{{ i }}">{{ i }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
 
-        {% else %}
-            <div class="text-center py-5">
-                <h5>Your cart is empty.</h5>
-                <a href="{% url 'home' %}" class="btn btn-primary mt-3">Go Shopping</a>
+              <div class="d-flex gap-2">
+                <a href="{% url 'home' %}" class="btn btn-outline-dark btn-sm rounded-pill">Back</a>
+                <button class="btn btn-rose btn-sm update-cart rounded-pill" data-index="{{ product.id }}">Update</button>
+                <button class="btn btn-outline-danger btn-sm delete-cart rounded-pill" data-index="{{ product.id }}">Delete</button>
+              </div>
             </div>
-        {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+
+      <div class="card p-4 shadow-lg rounded-4 text-center">
+        <h4 class="fw-bold">Total: <span class="text-success">R {{ totals }}</span></h4>
+        <a href="{% url 'checkout' %}" class="btn btn-rose btn-lg mt-3 rounded-pill">Proceed to Checkout</a>
+      </div>
+
+    {% else %}
+    <div class="text-center py-5">
+      <h5 class="text-muted">Your cart is empty.</h5>
+      <a href="{% url 'home' %}" class="btn btn-rose mt-3 rounded-pill">Go Shopping</a>
     </div>
+    {% endif %}
+  </div>
 </section>
 
+<!-- AJAX Cart Script -->
 <script>
-$(document).on('click', '.update-cart', function(e){
+  $(document).on('click', '.update-cart', function(e){
     e.preventDefault();
     var product_id = $(this).data('index');
     var product_qty = $('#select' + product_id).val();
 
     $.ajax({
-        type: 'POST',
-        url: '{% url "cart_update" %}',
-        data: {
-            product_id: product_id,
-            product_qty: product_qty,
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            action: 'post',
-        },
-        success: function(json){
-            location.reload();
-        },
-        error: function(xhr, errmsg, err){
-            console.log(errmsg);
-        }
+      type: 'POST',
+      url: '{% url "cart_update" %}',
+      data: {
+        product_id: product_id,
+        product_qty: product_qty,
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        action: 'post',
+      },
+      success: function(json){
+        location.reload();
+      },
+      error: function(xhr, errmsg, err){
+        console.log(errmsg);
+      }
     });
-});
+  });
 
-$(document).on('click', '.delete-cart', function(e){
+  $(document).on('click', '.delete-cart', function(e){
     e.preventDefault();
     var product_id = $(this).data('index');
 
     $.ajax({
-        type: 'POST',
-        url: '{% url "cart_delete" %}',
-        data: {
-            product_id: product_id,
-            csrfmiddlewaretoken: '{{ csrf_token }}',
-            action: 'post',
-        },
-        success: function(json){
-            location.reload();
-        },
-        error: function(xhr, errmsg, err){
-            console.log(errmsg);
-        }
+      type: 'POST',
+      url: '{% url "cart_delete" %}',
+      data: {
+        product_id: product_id,
+        csrfmiddlewaretoken: '{{ csrf_token }}',
+        action: 'post',
+      },
+      success: function(json){
+        location.reload();
+      },
+      error: function(xhr, errmsg, err){
+        console.log(errmsg);
+      }
     });
-});
+  });
 </script>
+
+<!-- Custom Styling -->
+<style>
+  .text-rose { color: #e91e63; }
+
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.25);
+  }
+
+  .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+    transform: translateY(-1px);
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+
+  .form-select:focus {
+    border-color: #e91e63;
+    box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
+  }
+</style>
 
 {% endblock %}

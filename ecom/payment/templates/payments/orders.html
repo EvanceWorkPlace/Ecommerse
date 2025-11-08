@@ -1,100 +1,120 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <!-- Order Details Section -->
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
+<section class="py-5" style="background-color: #fdfdfd;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
 
-                <div class="card shadow-sm rounded-4 border-0">
-                    <div class="card-header bg-dark text-white fw-bold rounded-top-4">
-                        Order {{ order.id }} - R{{ order.amount_paid }}
-                    </div>
+        <div class="card shadow-sm rounded-4 border-0">
+          <div class="card-header bg-rose text-white fw-bold rounded-top-4">
+            Order {{ order.id }} — R{{ order.amount_paid }}
+          </div>
 
-                    <div class="card-body">
-                        <p class="mb-1"><strong>Email:</strong> {{ order.email }}</p>
-                        {% if order.date_shipped %}
-                            <p class="mb-1"><strong>Date Shipped:</strong> {{ order.date_shipped }}</p>
-                        {% else %}
-                            <p class="mb-1"><strong>Date Ordered:</strong> {{ order.date_ordered }}</p>
-                        {% endif %}
-                        <p class="mb-1"><strong>Name:</strong> {{ order.full_name }}</p>
-                        <p class="mb-1"><strong>Shipping Address:</strong></p>
-                        <pre class="ms-3">{{ order.shipping_address }}</pre>
+          <div class="card-body">
+            <p class="mb-1"><strong>Email:</strong> {{ order.email }}</p>
+            {% if order.date_shipped %}
+              <p class="mb-1"><strong>Date Shipped:</strong> {{ order.date_shipped }}</p>
+            {% else %}
+              <p class="mb-1"><strong>Date Ordered:</strong> {{ order.date_ordered }}</p>
+            {% endif %}
+            <p class="mb-1"><strong>Name:</strong> {{ order.full_name }}</p>
+            <p class="mb-1"><strong>Shipping Address:</strong></p>
+            <pre class="ms-3">{{ order.shipping_address }}</pre>
 
-                        <hr>
+            <hr>
 
-                        <h5 class="fw-bold mb-3">Items</h5>
-                        <ul class="list-group mb-4">
-                            {% for item in items %}
-                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                    {{ item.product }} (x{{ item.Quantity }})
-                                    <span class="fw-bold">R {{ item.price }}</span>
-                                </li>
-                            {% endfor %}
-                        </ul>
+            <h5 class="fw-bold mb-3 text-rose">Items</h5>
+            <ul class="list-group mb-4">
+              {% for item in items %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                {{ item.product }} (x{{ item.Quantity }})
+                <span class="fw-bold text-dark">R {{ item.price }}</span>
+              </li>
+              {% endfor %}
+            </ul>
 
-                        <!-- Shipping Action -->
-                        {% if not order.shipped %}
-                        <form method="POST" class="d-inline-block">
-                            {% csrf_token %}
-                            <input type="hidden" name="shipping_status" value="true">
-                            <button type="submit" class="btn btn-success shadow-sm">Mark As Shipped</button>
-                        </form>
-                        {% else %}
-                        <form method="POST" class="d-inline-block">
-                            {% csrf_token %}
-                            <input type="hidden" name="shipping_status" value="false">
-                            <button type="submit" class="btn btn-danger shadow-sm">Mark As Not Shipped</button>
-                        </form>
-                        {% endif %}
-                    </div>
+            <!-- Shipping Action -->
+            {% if not order.shipped %}
+            <form method="POST" class="d-inline-block">
+              {% csrf_token %}
+              <input type="hidden" name="shipping_status" value="true">
+              <button type="submit" class="btn btn-rose shadow-sm rounded-pill">Mark As Shipped</button>
+            </form>
+            {% else %}
+            <form method="POST" class="d-inline-block">
+              {% csrf_token %}
+              <input type="hidden" name="shipping_status" value="false">
+              <button type="submit" class="btn btn-outline-rose shadow-sm rounded-pill">Mark As Not Shipped</button>
+            </form>
+            {% endif %}
+          </div>
 
-                    <div class="card-footer text-center text-muted rounded-bottom-4">
-                        Thank you for supporting MrTrackShop
-                    </div>
-                </div>
-
-                <div class="text-center mt-4">
-                    <a href="{% url 'not_shipped_dash' %}" class="btn btn-outline-dark shadow-sm">
-                        ← Back to Orders
-                    </a>
-                </div>
-
-            </div>
+          <div class="card-footer text-center text-muted rounded-bottom-4">
+            Thank you for supporting MrTrackShop
+          </div>
         </div>
+
+        <div class="text-center mt-4">
+          <a href="{% url 'not_shipped_dash' %}" class="btn btn-outline-dark shadow-sm rounded-pill">
+            ← Back to Orders
+          </a>
+        </div>
+
+      </div>
     </div>
+  </div>
 </section>
 
 <!-- Custom Styling -->
 <style>
-    pre {
-        background-color: #f8f9fa;
-        padding: 0.75rem 1rem;
-        border-radius: 0.5rem;
-        font-family: 'Segoe UI', sans-serif;
-    }
+  .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #e91e63 !important; }
 
-    .btn-success:hover {
-        background-color: #198754;
-        transform: translateY(-1px);
-    }
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
 
-    .btn-danger:hover {
-        background-color: #dc3545;
-        transform: translateY(-1px);
-    }
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.25);
+  }
 
-    .list-group-item {
-        border-radius: 0.5rem;
-        transition: all 0.2s ease;
-    }
+  .btn-outline-rose {
+    border: 2px solid #e91e63;
+    color: #e91e63;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
 
-    .list-group-item:hover {
-        background-color: rgba(13, 110, 253, 0.05);
-    }
+  .btn-outline-rose:hover {
+    background-color: #e91e63;
+    color: #fff;
+    transform: scale(1.05);
+  }
+
+  pre {
+    background-color: #f8f9fa;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  .list-group-item {
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+  }
+
+  .list-group-item:hover {
+    background-color: rgba(233, 30, 99, 0.05);
+  }
 </style>
 
 {% endblock %}

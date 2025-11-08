@@ -1,36 +1,54 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <!-- Fail/Error Section -->
-<section class="vh-100 d-flex align-items-center justify-content-center bg-light">
-    <div class="text-center">
-        <div class="display-1 fw-bold text-danger mb-4" style="font-size: 6rem;">❌</div>
-        <h1 class="display-5 fw-bold mb-3" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-            Something Went Wrong
-        </h1>
-        <p class="lead mb-4 text-muted" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-            We were unable to complete your request. Please try again or contact support if the issue persists.
-        </p>
-        <div class="d-flex justify-content-center gap-3">
-            <a href="{% url 'home' %}" class="btn btn-dark btn-lg shadow-sm">Go to Home</a>
-            <a href="javascript:history.back()" class="btn btn-outline-dark btn-lg shadow-sm">Go Back</a>
-        </div>
+<section class="vh-100 d-flex align-items-center justify-content-center" style="background-color: #fdfdfd;">
+  <div class="text-center">
+    <div class="display-1 fw-bold text-rose mb-4" style="font-size: 6rem;">❌</div>
+    <h1 class="display-5 fw-bold mb-3" style="font-family: 'Montserrat', 'Segoe UI';">
+      Something Went Wrong
+    </h1>
+    <p class="lead mb-4 text-muted" style="font-family: 'Montserrat', 'Segoe UI';">
+      We were unable to complete your request. Please try again or contact support if the issue persists.
+    </p>
+    <div class="d-flex justify-content-center gap-3">
+      <a href="{% url 'home' %}" class="btn btn-rose btn-lg shadow-sm rounded-pill">Go to Home</a>
+      <a href="javascript:history.back()" class="btn btn-outline-rose btn-lg shadow-sm rounded-pill">Go Back</a>
     </div>
+  </div>
 </section>
 
-<!-- Optional Styling -->
+<!-- Custom Styling -->
 <style>
-    .btn-dark:hover {
-        background-color: #0d6efd;
-        border-color: #0d6efd;
-        transform: translateY(-2px);
-    }
-    .btn-outline-dark:hover {
-        background-color: #0d6efd;
-        color: #fff;
-        transform: translateY(-2px);
-    }
+  .text-rose { color: #e91e63; }
+
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.25);
+  }
+
+  .btn-outline-rose {
+    border: 2px solid #e91e63;
+    color: #e91e63;
+    background-color: transparent;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-rose:hover {
+    background-color: #e91e63;
+    color: #fff;
+    transform: scale(1.05);
+  }
 </style>
 
 {% endblock %}

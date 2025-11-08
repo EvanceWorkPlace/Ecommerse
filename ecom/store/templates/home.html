@@ -3,44 +3,34 @@
 {% block content %}
 
 <!-- Header -->
-<header class="bg-gradient bg-dark text-white py-5 shadow-sm">
+<header class="bg-black text-white py-4 shadow-sm">
   <div class="container text-center">
-    <h1 class="display-5 fw-bold">store</h1>
-    <p class="lead text-white-50 mb-0">Welcome to the IoT Store — Select your favorite products</p>
+    <h1 class="display-6 fw-bold" style="letter-spacing: 1px;">medPharm</h1>
+    <p class="lead text-light opacity-75 mb-0">Your trusted source for smart, safe medication</p>
   </div>
 </header>
 
 <!-- Product Section -->
-<section class="py-5 bg-light">
+<section class="py-5" style="background: #fdfdfd;">
   <div class="container px-4 px-lg-5 mt-4">
     <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
 
       {% for product in products %}
       <div class="col mb-5">
-        <div class="card h-100 border-0 shadow-sm hover-shadow transition-all position-relative rounded-4 overflow-hidden">
-
-          <!-- Sale Badge -->
+        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative transition-all" style="transition: transform 0.3s ease;">
+          
           {% if product.is_sale %}
-          <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow-sm">SALE</span>
+          <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow">SALE</span>
           {% endif %}
 
           <!-- Product Image -->
-          <img src="{{ product.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}" style="height: 220px;">
+          <img src="{{ product.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}" style="height: 220px; object-fit: cover;">
 
           <!-- Card Body -->
           <div class="card-body p-4 text-center">
-            <h5 class="card-title fw-bold text-dark">{{ product.name }}</h5>
-            
-            <!-- Star Rating -->
-            <div class="d-flex justify-content-center text-warning mb-2 small">
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-              <i class="bi bi-star-fill"></i>
-            </div>
+            <h5 class="card-title fw-semibold text-dark mb-2">{{ product.name }}</h5>
 
-            <!-- Product Price -->
+            <!-- Price -->
             {% if product.is_sale %}
             <p class="mb-1">
               <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
@@ -51,16 +41,15 @@
             {% endif %}
 
             <!-- Description -->
-            <p class="text-muted small mt-2 mb-0">{{ product.description|truncatewords:20 }}</p>
+            <p class="text-muted small mt-2 mb-0">{{ product.description|truncatewords:18 }}</p>
           </div>
 
           <!-- Footer -->
           <div class="card-footer bg-transparent border-0 text-center pb-4">
-            <a href="{% url 'product' product.id %}" class="btn btn-dark px-4 rounded-pill shadow-sm">
-              <i class="bi bi-cart-plus"></i> Buy Now
+            <a href="{% url 'product' product.id %}" class="btn btn-outline-dark px-4 rounded-pill shadow-sm">
+              <i class="bi bi-cart-plus me-1"></i> Buy Now
             </a>
           </div>
-
         </div>
       </div>
       {% endfor %}
@@ -69,5 +58,24 @@
   </div>
 </section>
 
+<!-- Custom Styling -->
+<style>
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+  }
+  .btn-outline-dark {
+    border-color: #e91e63;
+    color: #000;
+  }
+  .btn-outline-dark:hover {
+    background-color: #e91e63;
+    color: #fff;
+    border-color: #e91e63;
+  }
+  .badge.bg-danger {
+    background-color: #e91e63 !important;
+  }
+</style>
 
 {% endblock %}

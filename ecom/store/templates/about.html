@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Header -->
-<header class="bg-primary py-5 shadow-sm">
+<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
   <div class="container px-4 px-lg-5 my-4">
     <div class="text-center text-white">
       <h1 class="display-6 fw-bold">About Us</h1>
@@ -15,36 +15,36 @@
 </header>
 
 <!-- About Section -->
-<section class="py-5 bg-light">
+<section class="py-5" style="background-color: #fdfdfd;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10">
         <article class="bg-white p-5 rounded-4 shadow-sm">
-          <h2 class="fw-bold text-center mb-4 text-primary">Welcome to <span class="text-success">MediShop</span></h2>
+          <h2 class="fw-bold text-center mb-4" style="color: #e91e63;">Welcome to <span class="text-black">MediShop</span></h2>
 
-          <p class="text-muted fs-6" align="justify">
+          <p class="text-muted fs-6" style="text-align: justify;">
             At <strong>MediShop</strong>, we aim to make healthcare easier for everyone. Our platform allows clinics, hospitals, and individuals to manage medicine purchases online, making it convenient to find the right medications and complete payments securely from anywhere.
           </p>
 
-          <p class="text-muted fs-6" align="justify">
+          <p class="text-muted fs-6" style="text-align: justify;">
             Whether you’re a healthcare provider or a patient, our online store simplifies medicine procurement. We carefully list verified medicines and health products to ensure safety, authenticity, and fast delivery. Our goal is to empower medical facilities to streamline operations and improve patient care.
           </p>
 
-          <p class="text-muted fs-6" align="justify">
+          <p class="text-muted fs-6" style="text-align: justify;">
             Our platform is built with modern web technologies, offering a smooth and intuitive experience. Users can search, compare, and purchase medicines, track orders in real-time, and manage payments securely—all in one place.
           </p>
 
-          <p class="text-muted fs-6" align="justify">
+          <p class="text-muted fs-6" style="text-align: justify;">
             <strong>MediShop</strong> is more than just an online pharmacy. We are a bridge between healthcare providers and patients, committed to improving accessibility, efficiency, and transparency in medicine management. Our team ensures that every listed product meets strict quality standards.
           </p>
 
-          <p class="text-muted fs-6" align="justify">
+          <p class="text-muted fs-6" style="text-align: justify;">
             Join us in making healthcare smarter, safer, and more convenient. <em>With MediShop, managing medicines has never been easier.</em>
           </p>
 
           <div class="text-center mt-5">
-            <a href="{% url 'home' %}" class="btn btn-success px-4 rounded-pill">
-              <i class="bi bi-shop"></i> Visit Our Store
+            <a href="{% url 'home' %}" class="btn btn-rose px-4 rounded-pill shadow-sm">
+              <i class="bi bi-shop me-1"></i> Visit Our Store
             </a>
           </div>
         </article>
@@ -52,5 +52,19 @@
     </div>
   </div>
 </section>
+
+<!-- Custom Styling -->
+<style>
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+  }
+</style>
 
 {% endblock %}

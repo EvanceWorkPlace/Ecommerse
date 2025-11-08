@@ -10,4 +10,6 @@ urlpatterns = [
     path('chatbot/', include('chatbot.urls')),
     path('', include('store.urls')),  # or whatever your app name is
     path('chatbot/', include('chatbot.urls')),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

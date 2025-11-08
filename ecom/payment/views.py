@@ -160,93 +160,6 @@ def process_order(request):
 
 # 🧾 BILLING INFORMATION PAGE
 
-def billing_info(request):
-    cart = Cart(request)
-    cart_products = cart.get_prods()
-    quantities = cart.get_quants()
-    totals = cart.cart_total()
-
-    if request.method == "POST":
-        shipping_form = ShippingForm(request.POST)
-        billing_form = PaymentForm(request.POST)
-
-        if shipping_form.is_valid() and billing_form.is_valid():
-            shipping_data = shipping_form.cleaned_data
-            request.session['my_shipping'] = shipping_data
-
-            my_invoice = str(uuid.uuid4())
-
-            if request.user.is_authenticated:
-                order = Order(
-                    user=request.user,
-                    full_name=shipping_data['shipping_full_name'],
-                    email=shipping_data['shipping_email'],
-                    shipping_address=(
-                        f"{shipping_data['shipping_address1']}\n"
-                        f"{shipping_data['shipping_address2']}\n"
-                        f"{shipping_data['shipping_city']}\n"
-                        f"{shipping_data['shipping_state']}\n"
-                        f"{shipping_data['shipping_zipcode']}\n"
-                        f"{shipping_data['shipping_country']}"
-                    ),
-                    amount_paid=totals,
-                    invoice=my_invoice
-                )
-            else:
-                order = Order(
-                    full_name=shipping_data['shipping_full_name'],
-                    email=shipping_data['shipping_email'],
-                    shipping_address=(
-                        f"{shipping_data['shipping_address1']}\n"
-                        f"{shipping_data['shipping_address2']}\n"
-                        f"{shipping_data['shipping_city']}\n"
-                        f"{shipping_data['shipping_state']}\n"
-                        f"{shipping_data['shipping_zipcode']}\n"
-                        f"{shipping_data['shipping_country']}"
-                    ),
-                    amount_paid=totals,
-                    invoice=my_invoice
-                )
-
-            order.save()
-            # Save order items here...
-
-            host = request.get_host()
-            paypal_dict = {
-                'business': settings.PAYPAL_RECEIVER_EMAIL,
-                'amount': totals,
-                'item_name': 'Book Order',
-                'invoice': my_invoice,
-                'currency_code': 'ZAR',
-                'notify_url': f'https://{host}{reverse("paypal-ipn")}',
-                'return_url': f'https://{host}{reverse("payment_success")}',
-                'cancel_return': f'https://{host}{reverse("payment_failed")}',
-                'no_shipping': '2',
-            }
-
-            paypal_form = PayPalPaymentsForm(initial=paypal_dict)
-
-            return render(request, 'payments/billing_info.html', {
-                'paypal_form': paypal_form,
-                'cart_products': cart_products,
-                'quantities': quantities,
-                'totals': totals,
-                'shipping_form': shipping_form,
-                'billing_form': billing_form
-            })
-
-    else:
-        shipping_form = ShippingForm()
-        billing_form = PaymentForm()
-
-    return render(request, 'payments/billing_info.html', {
-        'paypal_form': None,
-        'cart_products': cart_products,
-        'quantities': quantities,
-        'totals': totals,
-        'shipping_form': shipping_form,
-        'billing_form': billing_form
-    })
 # def billing_info(request):
 #     cart = Cart(request)
 #     cart_products = cart.get_prods()
@@ -254,37 +167,136 @@ def billing_info(request):
 #     totals = cart.cart_total()
 
 #     if request.method == "POST":
-#         # Save shipping info in session
-#         request.session['my_shipping'] = request.POST
-
+#         shipping_form = ShippingForm(request.POST)
+#         billing_form = PaymentForm(request.POST)
+        
 #         host = request.get_host()
-#         paypal_dict = {
-#             'business': settings.PAYPAL_RECEIVER_EMAIL,
-#             'amount': totals,
-#             'item_name': 'Book Order',
-#             'no_shipping': '2',
-#             'invoice': str(uuid.uuid4()),
-#             'currency_code': 'ZAR',
-#             'notify_url': 'https://{}{}'.format(host, reverse('paypal-ipn')),
-#             'return_url': 'https://{}{}'.format(host, reverse('payment_success')),
-#             'cancel_return': 'https://{}{}'.format(host, reverse('payment_failed')),
-#         }
 
-#         paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+#         if shipping_form.is_valid() and billing_form.is_valid():
+#             shipping_data = shipping_form.cleaned_data
+#             request.session['my_shipping'] = shipping_data
+
+#             my_invoice = str(uuid.uuid4())
+
+#             if request.user.is_authenticated:
+#                 order = Order(
+#                     user=request.user,
+#                     full_name=shipping_data['shipping_full_name'],
+#                     email=shipping_data['shipping_email'],
+#                     shipping_address=(
+#                         f"{shipping_data['shipping_address1']}\n"
+#                         f"{shipping_data['shipping_address2']}\n"
+#                         f"{shipping_data['shipping_city']}\n"
+#                         f"{shipping_data['shipping_state']}\n"
+#                         f"{shipping_data['shipping_zipcode']}\n"
+#                         f"{shipping_data['shipping_country']}"
+#                     ),
+#                     amount_paid=totals,
+#                     invoice=my_invoice
+#                 )
+#             else:
+#                 order = Order(
+#                     full_name=shipping_data['shipping_full_name'],
+#                     email=shipping_data['shipping_email'],
+#                     shipping_address=(
+#                         f"{shipping_data['shipping_address1']}\n"
+#                         f"{shipping_data['shipping_address2']}\n"
+#                         f"{shipping_data['shipping_city']}\n"
+#                         f"{shipping_data['shipping_state']}\n"
+#                         f"{shipping_data['shipping_zipcode']}\n"
+#                         f"{shipping_data['shipping_country']}"
+#                     ),
+#                     amount_paid=totals,
+#                     invoice=my_invoice
+#                 )
+
+#             order.save()
+#             # Save order items here...
+
+#             host = request.get_host()
+#             paypal_dict = {
+#                 'business': settings.PAYPAL_RECEIVER_EMAIL,
+#                 'amount': totals,
+#                 'item_name': 'Book Order',
+#                 'invoice': str(uuid.uuid4()),
+#                 'currency_code': 'USD',
+#                 'notify_url': f'https://{host}{reverse("paypal-ipn")}',
+#                 'return_url': f'https://{host}{reverse("payment_success")}',
+#                 'cancel_return': f'https://{host}{reverse("payment_failed")}',
+#                 'no_shipping': '2',
+#             }
+
+#             paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+
+#             return render(request, 'payments/billing_info.html', {
+#                 'paypal_form': paypal_form,
+#                 'cart_products': cart_products,
+#                 'quantities': quantities,
+#                 'totals': totals,
+#                 'shipping_form': shipping_form,
+#                 'billing_form': billing_form
+#             })
+
+#     else:
+#         shipping_form = ShippingForm()
 #         billing_form = PaymentForm()
 
+#     return render(request, 'payments/billing_info.html', {
+#         'paypal_form': None,
+#         'cart_products': cart_products,
+#         'quantities': quantities,
+#         'totals': totals,
+#         'shipping_form': shipping_form,
+#         'billing_form': billing_form
+#     })
+def billing_info(request):
+    cart = Cart(request)
+    cart_products = cart.get_prods()
+    quantities = cart.get_quants()
+    totals = cart.cart_total()
 
-#         return render(request, 'payments/billing_info.html', {
-#             'paypal_form': paypal_form,
-#             'cart_products': cart_products,
-#             'quantities': quantities,
-#             'totals': totals,
-#             'shipping_info': request.POST,
-#             'billing_form': billing_form
-#         })
+    if request.method == "POST":
+        # Save shipping info in session
+        request.session['my_shipping'] = request.POST
 
-#     messages.error(request, "Access Denied.")
-#     return redirect('home')
+        host = request.get_host()
+        paypal_dict = {
+            'business': settings.PAYPAL_RECEIVER_EMAIL,
+            'amount': totals,
+            'item_name': 'Book Order',
+            'no_shipping': '2',
+            'invoice': str(uuid.uuid4()),
+            'currency_code': 'USD',
+            'notify_url': 'https://{}{}'.format(host, reverse('paypal-ipn')),
+            'return_url': 'https://{}{}'.format(host, reverse('payment_success')),
+            'cancel_return': 'https://{}{}'.format(host, reverse('payment_failed')),
+        }
+
+        paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+        billing_form = PaymentForm()
+
+        if request.user.is_authenticated:
+            billing_form =PaymentForm()
+            return render(request, "payments/billing_info.html",{
+            'paypal_form': paypal_form,
+            'cart_products': cart_products,
+            'quantities': quantities,
+            'totals': totals,
+            'shipping_info': request.POST,
+            'billing_form': billing_form,
+            })
+
+        return render(request, 'payments/billing_info.html', {
+            'paypal_form': paypal_form,
+            'cart_products': cart_products,
+            'quantities': quantities,
+            'totals': totals,
+            'shipping_info': request.POST,
+            'billing_form': billing_form,
+        })
+
+    messages.error(request, "Access Denied.")
+    return redirect('home')
 
 
 # ✅ SUCCESS PAGE

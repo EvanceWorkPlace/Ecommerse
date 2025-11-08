@@ -1,35 +1,35 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+from django.utils import timezone
 
-User = get_user_model()
-
-class ChatSession(models.Model):
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
-    session_id = models.CharField(max_length=128, unique=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-# class ChatMessage(models.Model):
-    # session = models.ForeignKey(ChatSession, related_name="messages", on_delete=models.CASCADE)
-    # role = models.CharField(max_length=20)  # 'user' or 'assistant' or 'system'
-    # content = models.TextField()
-    # created_at = models.DateTimeField(auto_now_add=True)
-
-class UploadedImage(models.Model):
-    session = models.ForeignKey(ChatSession, null=True, blank=True, on_delete=models.SET_NULL)
-    image = models.ImageField(upload_to='uploads/chatbot/')
-    label = models.CharField(max_length=255, blank=True)  # store model prediction (if any)
-    created_at = models.DateTimeField(auto_now_add=True)
-
-class ChatMessage(models.Model):
-    ROLE_CHOICES = [
-        ('user', 'User'),
-        ('bot', 'Bot'),
-    ]
-
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES)
-    message = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+class Patient(models.Model):
+    full_name = models.CharField(max_length=200)
+    date_of_birth = models.DateField()
+    gender = models.CharField(max_length=32)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.role.capitalize()} - {self.message[:40]}"
+        return f"{self.full_name} ({self.id})"
+
+class Consultation(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='consultations')
+    reported_illness = models.TextField(blank=True)
+    symptoms = models.TextField(blank=True)
+    allergies = models.TextField(blank=True)
+    current_medications = models.TextField(blank=True)
+    consent_given = models.BooleanField(default=False)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Consultation {self.id} for {self.patient}"
+
+class Recommendation(models.Model):
+    consultation = models.ForeignKey(Consultation, on_delete=models.CASCADE, related_name='recommendations')
+    recommended_text = models.TextField(blank=True)   # raw LLM output
+    parsed_json = models.JSONField(default=dict)      # structured result parsed from LLM
+    clinician_approved = models.BooleanField(default=False)
+    escalation = models.BooleanField(default=False)   # whether LLM flagged urgent care
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Recommendation {self.id} (approved={self.clinician_approved})"

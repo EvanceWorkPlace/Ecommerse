@@ -13,13 +13,17 @@ load_dotenv()  # Load .env file
 # SECURITY
 # -------------------------------
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-key")
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-DEBUG = os.getenv("DEBUG", "False") == "True"
+DEBUG = os.getenv("DEBUG", "True") == "False"
 ALLOWED_HOSTS = ["ecommerse-2-4k35.onrender.com", "localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = ["https://ecommerse-2-4k35.onrender.com"]
-
-
+# ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1 localhost").split()
+# CSRF_TRUSTED_ORIGINS = os.getenv(
+#     "CSRF_TRUSTED_ORIGINS",
+#     "https://ecommerse-2-4k35.onrender.com"
+# ).split()
 DATABASES = {
     "default": dj_database_url.config(
         default=os.getenv("DATABASE_URL1"),
@@ -44,6 +48,7 @@ INSTALLED_APPS = [
     "cart",
     "payment",
     "chatbot",
+    "rest_framework",
 
     # Third-party apps
     "whitenoise.runserver_nostatic",
@@ -120,21 +125,29 @@ USE_TZ = True
 # STATIC & MEDIA FILES
 # -------------------------------
 STATIC_URL = "/static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+#STATICFILES_DIRS = [BASE_DIR / "static"]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+
+
+
+
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media/"
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # -------------------------------
 # DEFAULT FIELD TYPE
-# -------------------------------
+# ------------------------------- 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # -------------------------------
 # PAYPAL SETTINGS
 # -------------------------------
 PAYPAL_TEST = True
-PAYPAL_RECEIVER_EMAIL = "business@markettest.com"
+PAYPAL_RECEIVER_EMAIL = 'business@markettest.com'

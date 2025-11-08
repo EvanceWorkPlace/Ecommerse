@@ -5,9 +5,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="MediShop — Your trusted online pharmacy for secure medicine purchases and healthcare management." />
-  <meta name="author" content="MediShop Team" />
-  <title>MediShop | Online Medical Store</title>
+  <meta name="description" content="MedClinic — Your trusted online pharmacy for secure medicine purchases and healthcare management." />
+  <meta name="author" content="MedClinic Team" />
+  <title>MedClinic | Online Medical Pharmacy</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="{% static 'assets/favicon.ico' %}" />
@@ -22,10 +22,7 @@
   <link href="{% static 'css/styles.css' %}" rel="stylesheet">
 
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-    crossorigin="anonymous">
-  </script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
 
   <style>
     /* --------------------------
@@ -33,7 +30,7 @@
     --------------------------- */
     body {
       font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background-color: #f8f9fa;
+      background-color: #fdfdfd;
       color: #212529;
     }
 
@@ -45,16 +42,17 @@
        Navbar
     --------------------------- */
     nav.navbar {
-      background: linear-gradient(135deg, #007bff, #00b894);
+      background: linear-gradient(135deg, #000000, #e91e63);
     }
 
     nav .nav-link, nav .navbar-brand {
       color: #fff !important;
       font-weight: 500;
+      transition: color 0.3s ease;
     }
 
     nav .nav-link:hover {
-      color: #d1e7dd !important;
+      color: #f8bbd0 !important;
     }
 
     /* --------------------------
@@ -77,7 +75,7 @@
        Footer
     --------------------------- */
     footer {
-      background: linear-gradient(135deg, #007bff, #00b894);
+      background: linear-gradient(135deg, #000000, #e91e63);
     }
 
     footer p {
@@ -92,7 +90,7 @@
       position: fixed;
       bottom: 1.5rem;
       right: 1.5rem;
-      background: #0d6efd;
+      background: #e91e63;
       color: #fff;
       border: none;
       border-radius: 50%;
@@ -104,7 +102,7 @@
     }
 
     .theme-toggle:hover {
-      background: #0b5ed7;
+      background: #c2185b;
     }
   </style>
 </head>
@@ -135,7 +133,7 @@
   <!-- Footer -->
   <footer class="py-4 mt-auto text-center text-white">
     <div class="container">
-      <p>&copy; 2025 MediShop — Secure Online Pharmacy | All Rights Reserved</p>
+      <p>&copy; 2025 MedClinic — Secure Online Pharmacy | All Rights Reserved</p>
     </div>
   </footer>
 

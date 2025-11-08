@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Header -->
-<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #007bff, #00b894);">
+<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
   <div class="container px-4 px-lg-3 my-5">
     <div class="text-center text-white">
       <h1 class="display-6 fw-bold">Medicine Categories</h1>
@@ -15,7 +15,7 @@
 </header>
 
 <!-- Category Section -->
-<section class="py-5">
+<section class="py-5" style="background-color: #fdfdfd;">
   <div class="container">
     <div class="row justify-content-center">
       {% for category in categories %}
@@ -23,7 +23,7 @@
         <a href="{% url 'category' category %}" class="text-decoration-none">
           <div class="card text-center category-card border-0 shadow-sm p-4">
             <div class="card-body">
-              <i class="bi bi-capsule-pill fs-1 text-success mb-3"></i>
+              <i class="bi bi-capsule-pill fs-1 text-rose mb-3"></i>
               <h5 class="card-title fw-semibold text-dark">{{ category }}</h5>
             </div>
           </div>
@@ -41,6 +41,11 @@
 
 <!-- Page Styles -->
 <style>
+  /* Rose color */
+  .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #e91e63 !important; }
+
+  /* Category Card */
   .category-card {
     transition: all 0.3s ease-in-out;
     border-radius: 12px;
@@ -49,22 +54,22 @@
 
   .category-card:hover {
     transform: translateY(-5px);
-    background-color: #f0fdf4; /* light green tint */
+    background-color: #fff0f5; /* soft rose tint */
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   }
 
   .category-card:hover .card-title {
-    color: #007bff; /* primary blue */
+    color: #e91e63;
   }
 
   .category-card i {
-    color: #00b894;
+    color: #000000;
     transition: transform 0.3s ease, color 0.3s ease;
   }
 
   .category-card:hover i {
     transform: scale(1.1);
-    color: #007bff;
+    color: #e91e63;
   }
 </style>
 

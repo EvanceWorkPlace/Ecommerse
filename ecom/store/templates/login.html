@@ -2,91 +2,92 @@
 
 {% block content %}
 
-<header class="bg-dark py-4 mb-3">
-    <div class="container px-4 px-lg-5 my-2">
-        <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif; font-weight: 700; letter-spacing: 1px;">
-                Login
-            </h1>
-            <p class="lead fw-normal text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-                Log In to your account
-            </p>
-        </div>
+<!-- Header -->
+<header class="py-5 mb-3" style="background: linear-gradient(135deg, #000000, #e91e63);">
+  <div class="container px-4 px-lg-5 my-2">
+    <div class="text-center text-white">
+      <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI'; letter-spacing: 1px;">
+        Login
+      </h1>
+      <p class="lead text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
+        Access your MediShop account securely
+      </p>
     </div>
+  </div>
 </header>
+
+<!-- Login Form -->
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card border-0 shadow-sm mt-4">
-                <div class="card-body">
-                    <form method="POST" action="{% url 'login' %}">
-                        {% csrf_token %}
-                        <div class="mb-3">
-                            <input type="text" class="form-control" name="username" placeholder="Enter your user name" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-                        </div>
-                        <div class="mb-3">
-                            <input type="password" class="form-control" name="password" placeholder="Enter your user password" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-                        </div>
-                        <br/>
-                        <div class="d-grid gap-2">
-                            <button type="submit" class="btn btn-success btn-lg" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">Login</button>
-                        </div>
-                    </form>
-                </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card border-0 shadow-sm mt-4">
+        <div class="card-body">
+          <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <input type="text" class="form-control" name="username" placeholder="Username" required>
             </div>
+            <div class="mb-3">
+              <input type="password" class="form-control" name="password" placeholder="Password" required>
+            </div>
+            <div class="d-grid gap-2 mt-4">
+              <button type="submit" class="btn btn-rose btn-lg">Log In</button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
-    <br/>
-
+  </div>
 </div>
+
+<!-- Custom Styling -->
 <style>
-/* Subtle hover and focus effects for form fields */
-.form-control {
-  border-radius: 10px;
-  padding: 12px 15px;
-  border: 1px solid #ced4da;
-  transition: all 0.3s ease-in-out;
-}
-.form-control:focus {
-  border-color: #0d6efd;
-  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
-}
-
-/* Card styling */
-.card {
-  border-radius: 15px;
-  background: #ffffff;
-}
-.card-body {
-  padding: 2rem;
-}
-
-/* Login button styling */
-.btn-success {
-  background-color: #198754;
-  border-radius: 8px;
-  font-weight: 600;
-  transition: all 0.3s ease-in-out;
-}
-.btn-success:hover {
-  background-color: #157347;
-  box-shadow: 0 6px 20px rgba(21, 115, 71, 0.25);
-}
-
-/* Header gradient */
-header.bg-dark {
-  background: linear-gradient(135deg, #0d6efd 0%, #212529 100%);
-}
-
-/* Center card vertically for tall screens */
-@media (min-height: 700px) {
-  .container {
-    min-height: 70vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* Form Fields */
+  .form-control {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease-in-out;
+    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
   }
-}
+  .form-control:focus {
+    border-color: #e91e63;
+    box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
+  }
+
+  /* Card */
+  .card {
+    border-radius: 15px;
+    background: #ffffff;
+  }
+  .card-body {
+    padding: 2rem;
+  }
+
+  /* Rose Button */
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+  }
+
+  /* Center card vertically for tall screens */
+  @media (min-height: 700px) {
+    .container {
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
 </style>
 
 {% endblock %}

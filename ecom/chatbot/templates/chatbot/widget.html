@@ -1,76 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Mentor Chatbot</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background: #f4f4f9; }
-        .chat-container {
-            max-width: 600px;
-            margin: 50px auto;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            padding: 20px;
-        }
-        .chat-box {
-            height: 400px;
-            overflow-y: scroll;
-            padding: 10px;
-            border: 1px solid #ddd;
-            margin-bottom: 10px;
-        }
-        .user-message {
-  background-color: #007bff;
-  color: white;
-  border-radius: 20px;
-  padding: 10px 15px;
-  text-align: right;
-  margin-bottom: 10px;
-}
-
-.bot-message {
-  background-color: #f1f1f1;
-  border-radius: 20px;
-  padding: 10px 15px;
-  text-align: left;
-  margin-bottom: 10px;
-}
-
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Chatbot Consultation</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
-<body>
-<div class="chat-container">
-    <h4 class="text-center">💬 Mentor Chatbot</h4>
-    <div id="chat-box" class="chat-box"></div>
-    <div id="typing-indicator" style="display:none;">Mentor is typing...</div>
-    <div class="input-group">
-        <input id="message-input" type="text" class="form-control" placeholder="Type your message...">
-            
-        <button id="send-btn" class="btn btn-primary">Send</button>
-    </div>
-</div>
+<body class="bg-light">
+  <div class="container py-5">
+    <h2 class="mb-4 text-center">🩺 Start a Medical Consultation</h2>
 
-<script>
-document.getElementById('typing-indicator').style.display = 'block';
+    <!-- Start Consultation Form -->
+    <form id="startForm" class="card p-4 mb-4">
+      <h5>Patient Info</h5>
+      <input type="text" class="form-control mb-2" name="full_name" placeholder="Full Name" required />
+      <input type="date" class="form-control mb-2" name="date_of_birth" required />
+      <select class="form-control mb-2" name="gender" required>
+        <option value="">Select Gender</option>
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+      </select>
 
-document.getElementById('send-btn').addEventListener('click', function() {
-    let message = document.getElementById('message-input').value;
-    if (message.trim() === '') return;
+      <h5 class="mt-3">Consultation Details</h5>
+      <textarea class="form-control mb-2" name="reported_illness" placeholder="Reported Illness"></textarea>
+      <textarea class="form-control mb-2" name="symptoms" placeholder="Symptoms"></textarea>
+      <textarea class="form-control mb-2" name="allergies" placeholder="Allergies"></textarea>
+      <textarea class="form-control mb-2" name="current_medications" placeholder="Current Medications"></textarea>
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" name="consent_given" id="consentCheck" required />
+        <label class="form-check-label" for="consentCheck">I give consent for AI-based recommendation</label>
+      </div>
+      <button type="submit" class="btn btn-primary">Start Consultation</button>
+    </form>
 
-    let chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML += `<p class="user-message"><b>You:</b> ${message}</p>`;
+    <!-- Add Answers Form -->
+    <form id="answersForm" class="card p-4 mb-4">
+      <h5>Add More Details</h5>
+      <input type="number" class="form-control mb-2" name="consultation_id" placeholder="Consultation ID" required />
+      <textarea class="form-control mb-2" name="symptoms" placeholder="Updated Symptoms"></textarea>
+      <textarea class="form-control mb-2" name="current_medications" placeholder="Updated Medications"></textarea>
+      <button type="submit" class="btn btn-secondary">Add Answers</button>
+    </form>
 
-    fetch(`/chatbot/send_message/?message=${encodeURIComponent(message)}`)
-        .then(response => response.json())
-        .then(data => {
-            chatBox.innerHTML += `<p class="bot-message"><b>Bot:</b> ${data.response}</p>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-        });
+    <!-- Generate Recommendation -->
+    <form id="recommendForm" class="card p-4 mb-4">
+      <h5>Generate Recommendation</h5>
+      <input type="number" class="form-control mb-2" name="consultation_id" placeholder="Consultation ID" required />
+      <button type="submit" class="btn btn-success">Generate Recommendation</button>
+    </form>
 
-    document.getElementById('message-input').value = '';
-});
-</script>
+    <!-- Get Recommendation -->
+    <form id="getRecForm" class="card p-4 mb-4">
+      <h5>View Recommendation</h5>
+      <input type="number" class="form-control mb-2" name="recommendation_id" placeholder="Recommendation ID" required />
+      <button type="submit" class="btn btn-info">Get Recommendation</button>
+    </form>
+
+    <div id="responseBox" class="mt-4"></div>
+  </div>
+
+  <script>
+    const apiBase = "http://localhost:8000"; // Update if hosted elsewhere
+
+    function postData(url, data) {
+      return fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      }).then(res => res.json());
+    }
+
+    function getData(url) {
+      return fetch(url, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" }
+      }).then(res => res.json());
+    }
+
+    document.getElementById("startForm").onsubmit = async e => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        patient: {
+          full_name: form.full_name.value,
+          date_of_birth: form.date_of_birth.value,
+          gender: form.gender.value
+        },
+        reported_illness: form.reported_illness.value,
+        symptoms: form.symptoms.value,
+        allergies: form.allergies.value,
+        current_medications: form.current_medications.value,
+        consent_given: form.consent_given.checked
+      };
+      const res = await postData(`${apiBase}/start/`, data);
+      document.getElementById("responseBox").innerText = JSON.stringify(res, null, 2);
+    };
+
+    document.getElementById("answersForm").onsubmit = async e => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.consultation_id.value;
+      const data = {
+        symptoms: form.symptoms.value,
+        current_medications: form.current_medications.value
+      };
+      const res = await postData(`${apiBase}/consultation/${id}/answers/`, data);
+      document.getElementById("responseBox").innerText = JSON.stringify(res, null, 2);
+    };
+
+    document.getElementById("recommendForm").onsubmit = async e => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.consultation_id.value;
+      const res = await postData(`${apiBase}/consultation/${id}/recommend/`, {});
+      document.getElementById("responseBox").innerText = JSON.stringify(res, null, 2);
+    };
+
+    document.getElementById("getRecForm").onsubmit = async e => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.recommendation_id.value;
+      const res = await getData(`${apiBase}/recommendation/${id}/`);
+      document.getElementById("responseBox").innerText = JSON.stringify(res, null, 2);
+    };
+  </script>
 </body>
 </html>

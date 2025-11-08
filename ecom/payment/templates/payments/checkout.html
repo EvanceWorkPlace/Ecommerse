@@ -1,111 +1,125 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<!-- Modern Header -->
-<header class="bg-dark py-5 mb-4 shadow-sm">
-    <div class="container text-center text-white">
-        <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-            Checkout Information
-        </h1>
-        <p class="lead fw-normal text-white-50" style="font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;">
-            Review and confirm your checkout details
-        </p>
-    </div>
+<!-- Header -->
+<header class="py-5 mb-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+  <div class="container text-center text-white">
+    <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI';">
+      Checkout Information
+    </h1>
+    <p class="lead text-white-50" style="font-family: 'Montserrat', 'Segoe UI';">
+      Review and confirm your checkout details
+    </p>
+  </div>
 </header>
 
 <div class="container">
-    <form method="POST" action="{% url 'billing_info' %}" class="row g-4">
-        {% csrf_token %}
+  <form method="POST" action="{% url 'billing_info' %}" class="row g-4">
+    {% csrf_token %}
 
-        <!-- Order Summary -->
-        <div class="col-lg-6">
-            <div class="card shadow-sm rounded-4 border-0">
-                <div class="card-header bg-primary text-white fw-bold py-2 rounded-top-4">
-                    Order Summary
-                </div>
-                <div class="card-body">
-                    {% for product in cart_products %}
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="fw-semibold">{{ product.name }}</span>
-                            <span>
-                                {% if product.is_sale %}
-                                    <span class="text-danger fw-bold">R{{ product.sale_price }}</span>
-                                {% else %}
-                                    <span>R{{ product.price }}</span>
-                                {% endif %}
-                            </span>
-                        </div>
-                        <div class="text-muted ms-2 mb-2">
-                            Quantity:
-                            {% for key, value in quantities.items %}
-                                {% if key == product.id|stringformat:"s" %}
-                                    <span class="badge bg-secondary">{{ value }}</span>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    {% endfor %}
-
-                    <hr>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <span class="fw-bold fs-5">Total:</span>
-                        <span class="text-success fw-bold fs-5">R {{ totals }}</span>
-                    </div>
-
-                    <div class="mt-3">
-                        <a href="{% url 'cart_summary' %}" class="btn btn-outline-secondary btn-sm shadow-sm">
-                            Update Items
-                        </a>
-                    </div>
-                </div>
-            </div>
+    <!-- Order Summary -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-rose text-white fw-bold py-2 rounded-top-4">
+          Order Summary
         </div>
+        <div class="card-body">
+          {% for product in cart_products %}
+          <div class="d-flex justify-content-between align-items-center mb-1">
+            <span class="fw-semibold">{{ product.name }}</span>
+            <span>
+              {% if product.is_sale %}
+              <span class="text-rose fw-bold">R{{ product.sale_price }}</span>
+              {% else %}
+              <span>R{{ product.price }}</span>
+              {% endif %}
+            </span>
+          </div>
+          <div class="text-muted ms-2 mb-2">
+            Quantity:
+            {% for key, value in quantities.items %}
+            {% if key == product.id|stringformat:"s" %}
+            <span class="badge bg-secondary">{{ value }}</span>
+            {% endif %}
+            {% endfor %}
+          </div>
+          {% endfor %}
 
-        <!-- Shipping Info -->
-        <div class="col-lg-6">
-            <div class="card shadow-sm rounded-4 border-0">
-                <div class="card-header bg-info text-white fw-bold py-2 rounded-top-4">
-                    Shipping Info
-                </div>
-                <div class="card-body">
-                    {{ shipping_form.as_p }}
-                </div>
-            </div>
-        </div>
+          <hr>
+          <div class="d-flex justify-content-between align-items-center">
+            <span class="fw-bold fs-5">Total:</span>
+            <span class="text-success fw-bold fs-5">R {{ totals }}</span>
+          </div>
 
-        <!-- Submit Button -->
-        <div class="col-12 text-center mt-3">
-            <button type="submit" class="btn btn-success btn-lg px-5 shadow-sm rounded-4">
-                Continue to Billing
-            </button>
+          <div class="mt-3">
+            <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark btn-sm shadow-sm rounded-pill">
+              Update Items
+            </a>
+          </div>
         </div>
-    </form>
+      </div>
+    </div>
+
+    <!-- Shipping Info -->
+    <div class="col-lg-6">
+      <div class="card shadow-sm rounded-4 border-0">
+        <div class="card-header bg-dark text-white fw-bold py-2 rounded-top-4">
+          Shipping Info
+        </div>
+        <div class="card-body">
+          {{ shipping_form.as_p }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="col-12 text-center mt-3">
+      <button type="submit" class="btn btn-rose btn-lg px-5 shadow-sm rounded-pill">
+        Continue to Billing
+      </button>
+    </div>
+  </form>
+  <br/>
 </div>
 
 <!-- Custom Styling -->
 <style>
-    .card {
-        border-radius: 1rem;
-        transition: all 0.3s ease;
-    }
-    .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    .btn {
-        border-radius: 0.6rem;
-        transition: all 0.3s ease;
-    }
-    .btn-outline-secondary:hover {
-        background-color: #6c757d;
-        color: white;
-    }
-    .btn-success:hover {
-        background-color: #198754;
-        transform: translateY(-2px);
-    }
-    form p {
-        margin-bottom: 1rem;
-    }
+  .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #e91e63 !important; }
+
+  .btn-rose {
+    background: linear-gradient(135deg, #e91e63, #000000);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #e91e63);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+  }
+
+  .card {
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-outline-dark:hover {
+    background-color: #e91e63;
+    border-color: #e91e63;
+    color: white;
+  }
+
+  form p {
+    margin-bottom: 1rem;
+  }
 </style>
 
 {% endblock %}
