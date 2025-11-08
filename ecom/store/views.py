@@ -110,16 +110,18 @@ def login_user(request):
                 #Loop thru the cart and add the items from the database
                 for key,value in converted_cart.items():
                     cart.db_add(product=key, quantity=value)
+                    
 
 
-            messages.success(request, ("You have been Log In..."))
+            messages.success(request, ("You have been Loggin Successful!"))
+
             return redirect('home')
         else:
-            messages.success(request, ("There was an error, Try again!"))
+            messages.success(request, ("Check your user or password!, and Try again!"))
             return redirect('login')
 
     else:
-        return render(request, 'login.html', {})
+        return render(request, 'login.html', {'hide_nav': True})
 
 def logout_user(request):
     logout(request)
