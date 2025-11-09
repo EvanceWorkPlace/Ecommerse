@@ -2,19 +2,19 @@
 {% block content %}
 
 <!-- Header -->
-<header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+<header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #2196f3);">
   <div class="container text-center text-white">
     <h1 class="display-6 fw-bold" style="font-family: 'Montserrat', 'Segoe UI';">
-      Update User Info
+      Update Your Information
     </h1>
     <p class="lead text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
-      Manage and update your billing & shipping details below
+      Manage your billing and shipping details securely below
     </p>
   </div>
 </header>
 
 <!-- Form Section -->
-<section class="py-5" style="background-color: #fdfdfd;">
+<section class="py-5" style="background-color: #f9fbfc;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-10">
@@ -26,7 +26,9 @@
 
                 <!-- Billing Info -->
                 <div class="col-md-6">
-                  <h4 class="fw-bold text-rose mb-3">Billing Information</h4>
+                  <h4 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-credit-card me-2"></i>Billing Information
+                  </h4>
                   <div class="form-section">
                     {{ form.as_p }}
                   </div>
@@ -34,7 +36,9 @@
 
                 <!-- Shipping Info -->
                 <div class="col-md-6">
-                  <h4 class="fw-bold text-rose mb-3">Shipping Information</h4>
+                  <h4 class="fw-bold text-primary mb-3">
+                    <i class="bi bi-truck me-2"></i>Shipping Information
+                  </h4>
                   <div class="form-section">
                     {{ shipping_form.as_p }}
                   </div>
@@ -43,8 +47,8 @@
               </div>
 
               <div class="text-center mt-5">
-                <button type="submit" class="btn btn-rose btn-lg px-5 shadow-sm rounded-pill">
-                  Update Info
+                <button type="submit" class="btn btn-blue btn-lg px-5 shadow-sm rounded-pill">
+                  <i class="bi bi-save me-2"></i>Save Changes
                 </button>
               </div>
             </form>
@@ -57,37 +61,52 @@
 
 <!-- Custom Styling -->
 <style>
-  .text-rose { color: #e91e63; }
-  .bg-rose { background-color: #e91e63 !important; }
+  /* Blue Theme */
+  .text-primary { color: #2196f3 !important; }
+  .bg-primary { background-color: #2196f3 !important; }
 
+  /* Form Elements */
   .form-section p {
     margin-bottom: 1rem;
   }
 
   .form-control {
     border-radius: 0.5rem;
-    box-shadow: none;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #ced4da;
     transition: all 0.3s ease;
     font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
   }
 
   .form-control:focus {
-    border-color: #e91e63;
-    box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
+    border-color: #2196f3;
+    box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
   }
 
-  .btn-rose {
-    background: linear-gradient(135deg, #e91e63, #000000);
+  /* Button */
+  .btn-blue {
+    background: linear-gradient(135deg, #2196f3, #000000);
     color: #fff;
     border: none;
     font-weight: 600;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
   }
 
-  .btn-rose:hover {
-    background: linear-gradient(135deg, #000000, #e91e63);
+  .btn-blue:hover {
+    background: linear-gradient(135deg, #000000, #2196f3);
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.25);
+  }
+
+  /* Card */
+  .card {
+    background: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
 
   @media (max-width: 768px) {

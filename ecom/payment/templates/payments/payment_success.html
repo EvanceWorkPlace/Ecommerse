@@ -2,25 +2,48 @@
 {% block content %}
 
 <!-- Payment Success Section -->
-<section class="vh-100 d-flex align-items-center justify-content-center" style="background-color: #fdfdfd;">
-  <div class="text-center">
-    <div class="display-1 fw-bold text-rose mb-4" style="font-size: 6rem;">✅</div>
-    <h1 class="display-5 fw-bold mb-3" style="font-family: 'Montserrat', 'Segoe UI';">
-      Payment Success!
-    </h1>
-    <p class="lead mb-4 text-muted" style="font-family: 'Montserrat', 'Segoe UI';">
-      Thank you for your purchase. Feel free to shop again or contact support if needed.
-    </p>
-    <div class="d-flex justify-content-center gap-3">
-      <a href="{% url 'home' %}" class="btn btn-rose btn-lg shadow-sm rounded-pill">Go to Home</a>
-      <a href="javascript:history.back()" class="btn btn-outline-rose btn-lg shadow-sm rounded-pill">Go Back</a>
+<section class="d-flex align-items-center justify-content-center min-vh-100" 
+  style="background: linear-gradient(135deg, #ffffff, #f8f8f8);">
+
+  <div class="text-center p-5 shadow-lg rounded-4 bg-white fade-in" style="max-width: 600px;">
+
+    <!-- Success Icon -->
+    <div class="mb-4 bounce-in">
+      <div class="rounded-circle d-inline-flex align-items-center justify-content-center shadow-sm"
+        style="width: 110px; height: 110px; background: linear-gradient(135deg, #e91e63, #000000);">
+        <i class="bi bi-check-lg text-white" style="font-size: 3rem;"></i>
+      </div>
     </div>
+
+    <!-- Title -->
+    <h1 class="display-6 fw-bold mb-3" style="font-family: 'Montserrat', 'Segoe UI'; color: #000;">
+      Payment Successful
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="lead mb-4 text-muted" style="font-family: 'Montserrat', 'Segoe UI';">
+      Thank you for your purchase! Your payment has been received successfully.
+      <br>
+      You’ll receive an email confirmation shortly.
+    </p>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-center gap-3 mt-4 fade-up">
+      <a href="{% url 'home' %}" class="btn btn-rose btn-lg shadow-sm rounded-pill px-4">
+        <i class="bi bi-house-door me-2"></i> Go to Home
+      </a>
+      <a href="{% url 'shop' %}" class="btn btn-outline-rose btn-lg shadow-sm rounded-pill px-4">
+        <i class="bi bi-bag-heart me-2"></i> Continue Shopping
+      </a>
+    </div>
+
   </div>
 </section>
 
 <!-- Custom Styling -->
 <style>
   .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #e91e63 !important; }
 
   .btn-rose {
     background: linear-gradient(135deg, #e91e63, #000000);
@@ -33,7 +56,7 @@
   .btn-rose:hover {
     background: linear-gradient(135deg, #000000, #e91e63);
     transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(233, 30, 99, 0.25);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
   }
 
   .btn-outline-rose {
@@ -48,6 +71,39 @@
     background-color: #e91e63;
     color: #fff;
     transform: scale(1.05);
+  }
+
+  .shadow-lg {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+  }
+
+  /* ✨ Animations */
+  .fade-in {
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .fade-up {
+    animation: fadeUp 1.2s ease-in-out;
+  }
+
+  .bounce-in {
+    animation: bounceIn 0.9s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes bounceIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    60% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); }
   }
 </style>
 

@@ -1,154 +1,183 @@
 <!-- Include Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-black shadow-sm sticky-top" style="background: linear-gradient(90deg, #1a1a1a, #000);">
+<nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm border-bottom border-primary-subtle py-3">
   <div class="container px-4 px-lg-5">
 
     <!-- Brand -->
-    <a class="navbar-brand fw-bold fs-4 text-white" href="{% url 'home' %}" style="font-family: 'Montserrat', 'Segoe UI'; letter-spacing: 1px;">
-      <i class="bi bi-heart-fill text-rose me-2"></i>MedClinic
+    <a class="navbar-brand fw-bold text-primary fs-4 d-flex align-items-center" href="{% url 'home' %}" style="font-family: 'Montserrat', sans-serif;">
+      <i class="bi bi-capsule-pill me-2 text-primary"></i> MedClinic
     </a>
 
-    <!-- Toggler for Mobile -->
-    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <i class="bi bi-list text-white fs-2"></i>
+    <!-- Toggler for mobile -->
+    <button class="navbar-toggler border-0 text-primary" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
+      <i class="bi bi-list fs-2"></i>
     </button>
 
-    <!-- Nav Links -->
+    <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 mt-3 mt-lg-0">
 
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'home' %}"><i class="bi bi-house-door-fill me-1"></i>Home</a>
+          <a class="nav-link fw-semibold text-dark" href="{% url 'home' %}">
+            <i class="bi bi-house-door-fill me-1 text-primary"></i> Home
+          </a>
         </li>
+
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'about' %}"><i class="bi bi-info-circle-fill me-1">Service</i></a>
+          <a class="nav-link fw-semibold text-dark" href="{% url 'about' %}">
+            <i class="bi bi-info-circle-fill me-1 text-primary"></i> Services
+          </a>
         </li>
-        
+
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'search' %}"><i class="bi bi-search me-1"></i>Search</a>
+          <a class="nav-link fw-semibold text-dark" href="{% url 'search' %}">
+            <i class="bi bi-search me-1 text-primary"></i> Search
+          </a>
         </li>
-        
 
         {% if user.is_authenticated %}
-        <!-- Profile -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="bi bi-person-circle me-1"></i> Profile
+          <a class="nav-link dropdown-toggle fw-semibold text-dark" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle me-1 text-primary"></i> Profile
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu shadow-sm">
             <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
-            <li><a class="dropdown-item" href="{% url 'update_info' %}">User Info</a></li>
+            <li><a class="dropdown-item" href="{% url 'update_info' %}">User Information</a></li>
           </ul>
         </li>
 
         {% if user.is_superuser %}
-        <!-- Orders -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="bi bi-box-seam me-1"></i> Orders
+          <a class="nav-link dropdown-toggle fw-semibold text-dark" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-box-seam me-1 text-primary"></i> Orders
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu shadow-sm">
+            <li><a class="dropdown-item" href="{% url 'order_dashboard' %}">🧾 Dashboard</a></li>
             <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Shipped</a></li>
             <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Pending</a></li>
           </ul>
         </li>
         {% endif %}
 
-        <!-- AI Help -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="bi bi-robot me-1"></i> AI-Help
+          <a class="nav-link dropdown-toggle fw-semibold text-dark" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-robot me-1 text-primary"></i> AI Tools
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'widget' %}">Assistance</a></li>
-            <li><a class="dropdown-item" href="{% url 'home' %}">Design-Your-Style</a></li>
+          <ul class="dropdown-menu shadow-sm">
+            <li><a class="dropdown-item" href="{% url 'widget' %}">Agent Assist</a></li>
+            <li><a class="dropdown-item" href="{% url 'chatbot_view' %}">Chatbot</a></li>
           </ul>
         </li>
 
-        <!-- Categories -->
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-            <i class="bi bi-grid-fill me-1"></i> Categories
+          <a class="nav-link dropdown-toggle fw-semibold text-dark" href="#" role="button" data-bs-toggle="dropdown">
+            <i class="bi bi-grid-fill me-1 text-primary"></i> Categories
           </a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu shadow-sm">
             <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Switch NVR' %}">Tech-Devices</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Camera Doom' %}">Wear-Clothes</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Screen Monitor' %}">eSkills-Selling</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'Normal Medicine' %}">Normal Medicine</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'Tech-Devices' %}">Tech Devices</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'Chronic Medicine' %}">Chronic</a></li>
           </ul>
         </li>
 
-        <!-- Logout -->
         <li class="nav-item">
-          <a class="nav-link text-danger fw-semibold" href="{% url 'logout' %}">
+          <a class="nav-link fw-semibold text-danger" href="{% url 'logout' %}">
             <i class="bi bi-box-arrow-right me-1"></i> Logout
           </a>
         </li>
 
         {% else %}
-        <!-- Login/Register -->
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'login' %}"><i class="bi bi-person-fill me-1"></i> Log In</a>
+          <a class="nav-link fw-semibold text-dark" href="{% url 'login' %}">
+            <i class="bi bi-person-fill me-1 text-primary"></i> Log In
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'register' %}"><i class="bi bi-pencil-square me-1"></i> Register</a>
+          <a class="nav-link fw-semibold text-dark" href="{% url 'register' %}">
+            <i class="bi bi-pencil-square me-1 text-primary"></i> Register
+          </a>
         </li>
         {% endif %}
       </ul>
 
-      <!-- Cart -->
-      <form class="d-flex ms-lg-4">
-        <a href="{% url 'cart_summary' %}" class="btn btn-outline-light position-relative shadow-sm">
+      <!-- Cart (right on desktop) -->
+      <div class="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0">
+        <a href="{% url 'cart_summary' %}" class="btn btn-outline-primary position-relative rounded-pill px-3 py-1 shadow-sm">
           <i class="bi bi-cart-fill me-1"></i> Cart
-          <span class="badge bg-danger text-white rounded-pill position-absolute top-0 start-100 translate-middle" id="cart_quantity">
+          <span class="badge bg-primary text-white rounded-pill position-absolute top-0 start-100 translate-middle" id="cart_quantity">
             {{ cart|length }}
           </span>
         </a>
-      </form>
+      </div>
     </div>
   </div>
 </nav>
 
-<!-- Custom Styling -->
+<!-- Custom Styles -->
 <style>
   .navbar {
-    background-color: #000;
-    border-bottom: 2px solid #e91e63;
-  }
-  .navbar-brand i {
-    color: #e91e63;
-  }
-  .nav-link {
-    color: white !important;
-    font-family: 'Montserrat', sans-serif;
     transition: all 0.3s ease;
   }
+
+  .navbar.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #f8fbff !important;
+  }
+
+  .nav-link {
+    color: #000 !important;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+  }
+
   .nav-link:hover {
-    color: #e91e63 !important;
+    color: #007bff !important;
     transform: scale(1.05);
   }
+
   .dropdown-menu {
-    background-color: #1a1a1a;
-    border: 1px solid #e91e63;
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    background-color: #ffffff;
   }
-  .dropdown-item {
-    color: white;
-  }
+
   .dropdown-item:hover {
-    background-color: #e91e63;
+    background-color: #007bff;
+    color: #fff;
+  }
+
+  .btn-outline-primary {
+    border: 2px solid #007bff;
+    color: #007bff;
+    font-weight: 600;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #007bff;
     color: white;
   }
-  .btn-outline-light {
-    border-color: #e91e63;
-    color: white;
+
+  .badge.bg-primary {
+    font-size: 0.7rem;
+    padding: 0.4em 0.5em;
   }
-  .btn-outline-light:hover {
-    background-color: #e91e63;
-    border-color: #e91e63;
-  }
-  .text-rose {
-    color: #e91e63;
+
+  @media (max-width: 992px) {
+    .navbar-brand {
+      font-size: 1.2rem;
+    }
   }
 </style>
+
+<!-- JS: navbar scroll shadow -->
+<script>
+  window.addEventListener("scroll", function () {
+    const navbar = document.querySelector(".navbar");
+    if (window.scrollY > 10) navbar.classList.add("scrolled");
+    else navbar.classList.remove("scrolled");
+  });
+</script>

@@ -158,6 +158,35 @@ def process_order(request):
     return redirect('home')
 
 
+# 📊 ADMIN DASHBOARD: ORDER OVERVIEW
+def order_dashboard(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        # Fetch orders
+        total_orders = Order.objects.all().count()
+        shipped_orders = Order.objects.filter(shipped=True)
+        not_shipped_orders = Order.objects.filter(shipped=False)
+
+        shipped_count = shipped_orders.count()
+        not_shipped_count = not_shipped_orders.count()
+
+        # Get the 5 most recent orders (for quick overview)
+        recent_orders = Order.objects.order_by('-date_ordered')[:5]
+
+        context = {
+            'total_orders': total_orders,
+            'shipped_count': shipped_count,
+            'not_shipped_count': not_shipped_count,
+            'recent_orders': recent_orders,
+        }
+
+        return render(request, 'payments/order_dashboard.html', context)
+
+    messages.error(request, "Access Denied.")
+    return redirect('home')
+
+
+
+
 # 🧾 BILLING INFORMATION PAGE
 def billing_info(request):
     cart = Cart(request)

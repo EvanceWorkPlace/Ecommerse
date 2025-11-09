@@ -30,7 +30,7 @@
     --------------------------- */
     body {
       font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-      background-color: #fdfdfd;
+      background-color: #f8fbff;
       color: #212529;
     }
 
@@ -42,68 +42,115 @@
        Navbar
     --------------------------- */
     nav.navbar {
-      background: linear-gradient(135deg, #000000, #e91e63);
+      background: linear-gradient(135deg, #007bff, #003366);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     }
 
-    nav .nav-link, nav .navbar-brand {
+    nav .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
       color: #fff !important;
+      letter-spacing: 0.5px;
+    }
+
+    nav .nav-link {
+      color: #eaf3ff !important;
       font-weight: 500;
-      transition: color 0.3s ease;
+      transition: all 0.3s ease;
     }
 
     nav .nav-link:hover {
-      color: #f8bbd0 !important;
+      color: #b3e5fc !important;
+      transform: translateY(-1px);
+    }
+
+    .navbar-toggler {
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .navbar-toggler-icon {
+      filter: invert(1);
     }
 
     /* --------------------------
        Alerts & Messages
     --------------------------- */
     .alert {
-      border-radius: 0.5rem;
-      box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      border: none;
+      background: #e3f2fd;
+      color: #0d47a1;
+      font-weight: 500;
+      box-shadow: 0 0.4rem 1rem rgba(0, 123, 255, 0.15);
     }
 
-    .fade.show {
-      transition: opacity 0.4s ease-in-out;
+    .alert-success {
+      background: #d0f0e0;
+      color: #155724;
+    }
+
+    .alert-danger {
+      background: #fdecea;
+      color: #b71c1c;
     }
 
     .btn-close {
-      filter: invert(1);
+      filter: invert(0);
     }
 
     /* --------------------------
        Footer
     --------------------------- */
     footer {
-      background: linear-gradient(135deg, #000000, #e91e63);
+      background: linear-gradient(135deg, #003366, #0056b3);
+      color: #ffffff;
+      padding: 1.5rem 0;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     }
 
     footer p {
       font-size: 0.95rem;
       margin: 0;
+      opacity: 0.9;
+    }
+
+    footer a {
+      color: #b3e5fc;
+      text-decoration: underline;
     }
 
     /* --------------------------
-       Optional: Dark Mode Toggle
+       Floating Theme Toggle (Optional)
     --------------------------- */
     .theme-toggle {
       position: fixed;
       bottom: 1.5rem;
       right: 1.5rem;
-      background: #e91e63;
+      background: #007bff;
       color: #fff;
       border: none;
       border-radius: 50%;
-      width: 45px;
-      height: 45px;
+      width: 50px;
+      height: 50px;
       cursor: pointer;
-      box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
-      transition: background 0.3s;
+      box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.25);
+      transition: background 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .theme-toggle:hover {
-      background: #c2185b;
+      background: #0056b3;
     }
+
+    /* --------------------------
+       Smooth Fade Animations
+    --------------------------- */
+    .fade.show {
+      transition: opacity 0.5s ease-in-out;
+    }
+
   </style>
 </head>
 
@@ -116,8 +163,8 @@
   {% if messages %}
   <div class="container mt-3">
     {% for message in messages %}
-    <div class="alert alert-warning text-center alert-dismissible fade show" role="alert">
-      {{ message }}
+    <div class="alert alert-info text-center alert-dismissible fade show" role="alert">
+      <i class="bi bi-info-circle-fill me-2"></i>{{ message }}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
     {% endfor %}
@@ -131,16 +178,17 @@
   </main>
 
   <!-- Footer -->
-  <footer class="py-4 mt-auto text-center text-white">
+  <footer class="mt-auto text-center">
     <div class="container">
-      <p>&copy; 2025 MedClinic — Secure Online Pharmacy | All Rights Reserved</p>
+      <p>&copy; 2025 <strong>MedClinic</strong> — Secure Online Pharmacy | All Rights Reserved</p>
+      <p><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
     </div>
   </footer>
 
   <!-- Optional Theme Toggle -->
   <!--
   <button id="themeToggle" class="theme-toggle" title="Toggle dark/light mode">
-    <i class="bi bi-moon-fill"></i>
+    <i class="bi bi-moon-fill fs-5"></i>
   </button>
   -->
 
@@ -160,8 +208,8 @@
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         html.setAttribute('data-bs-theme', newTheme);
         themeToggle.innerHTML = newTheme === 'dark'
-          ? '<i class="bi bi-sun-fill"></i>'
-          : '<i class="bi bi-moon-fill"></i>';
+          ? '<i class="bi bi-sun-fill fs-5"></i>'
+          : '<i class="bi bi-moon-fill fs-5"></i>';
       });
     }
   </script>

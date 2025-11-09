@@ -2,7 +2,7 @@
 {% block content %}
 
 <!-- Header -->
-<header class="py-5 mb-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+<header class="py-5 mb-4 shadow-sm" style="background: linear-gradient(135deg, #007bff, #003366);">
   <div class="container text-center text-white">
     <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI';">
       Checkout Information
@@ -13,15 +13,15 @@
   </div>
 </header>
 
-<div class="container">
+<div class="container pb-5">
   <form method="POST" action="{% url 'billing_info' %}" class="row g-4">
     {% csrf_token %}
 
     <!-- Order Summary -->
     <div class="col-lg-6">
-      <div class="card shadow-sm rounded-4 border-0">
-        <div class="card-header bg-rose text-white fw-bold py-2 rounded-top-4">
-          Order Summary
+      <div class="card shadow-lg rounded-4 border-0">
+        <div class="card-header bg-primary text-white fw-bold py-2 rounded-top-4">
+          <i class="bi bi-receipt me-2"></i> Order Summary
         </div>
         <div class="card-body">
           {% for product in cart_products %}
@@ -29,7 +29,7 @@
             <span class="fw-semibold">{{ product.name }}</span>
             <span>
               {% if product.is_sale %}
-              <span class="text-rose fw-bold">R{{ product.sale_price }}</span>
+              <span class="text-primary fw-bold">R{{ product.sale_price }}</span>
               {% else %}
               <span>R{{ product.price }}</span>
               {% endif %}
@@ -52,8 +52,8 @@
           </div>
 
           <div class="mt-3">
-            <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark btn-sm shadow-sm rounded-pill">
-              Update Items
+            <a href="{% url 'cart_summary' %}" class="btn btn-outline-primary btn-sm shadow-sm rounded-pill">
+              <i class="bi bi-pencil-square me-1"></i> Update Items
             </a>
           </div>
         </div>
@@ -62,9 +62,9 @@
 
     <!-- Shipping Info -->
     <div class="col-lg-6">
-      <div class="card shadow-sm rounded-4 border-0">
+      <div class="card shadow-lg rounded-4 border-0">
         <div class="card-header bg-dark text-white fw-bold py-2 rounded-top-4">
-          Shipping Info
+          <i class="bi bi-truck me-2"></i> Shipping Info
         </div>
         <div class="card-body">
           {{ shipping_form.as_p }}
@@ -74,31 +74,38 @@
 
     <!-- Submit Button -->
     <div class="col-12 text-center mt-3">
-      <button type="submit" class="btn btn-rose btn-lg px-5 shadow-sm rounded-pill">
-        Continue to Billing
+      <button type="submit" class="btn btn-primary btn-lg px-5 shadow-sm rounded-pill">
+        Continue to Billing <i class="bi bi-arrow-right ms-1"></i>
       </button>
     </div>
   </form>
-  <br/>
 </div>
 
-<!-- Custom Styling -->
+<!-- Page-specific Styling -->
 <style>
-  .text-rose { color: #e91e63; }
-  .bg-rose { background-color: #e91e63 !important; }
-
-  .btn-rose {
-    background: linear-gradient(135deg, #e91e63, #000000);
-    color: #fff;
+  .btn-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3);
     border: none;
-    font-weight: 600;
-    transition: background 0.3s ease, transform 0.2s ease;
+    transition: all 0.3s ease;
   }
 
-  .btn-rose:hover {
-    background: linear-gradient(135deg, #000000, #e91e63);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+  .btn-primary:hover {
+    background: linear-gradient(135deg, #0056b3, #007bff);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 123, 255, 0.25);
+  }
+
+  .btn-outline-primary {
+    border: 2px solid #007bff;
+    color: #007bff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+    transform: translateY(-2px);
   }
 
   .card {
@@ -111,14 +118,17 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
 
-  .btn-outline-dark:hover {
-    background-color: #e91e63;
-    border-color: #e91e63;
-    color: white;
-  }
-
   form p {
     margin-bottom: 1rem;
+  }
+
+  input, select, textarea {
+    border-radius: 0.5rem !important;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: #007bff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.15) !important;
   }
 </style>
 

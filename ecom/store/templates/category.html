@@ -3,17 +3,21 @@
 {% block content %}
 
 <!-- Header -->
-<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #1976d2);">
   <div class="container px-4 px-lg-3 my-5">
     <div class="text-center text-white">
-      <h1 class="display-6 fw-bold">{{ categories }}</h1>
-      <p class="lead fw-normal text-white-50 mb-0">Explore trusted medicines and healthcare products in this category.</p>
+      <h1 class="display-6 fw-bold" style="font-family: 'Montserrat', 'Segoe UI'; letter-spacing: 1px;">
+        {{ categories }}
+      </h1>
+      <p class="lead fw-normal text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
+        Explore trusted medicines and healthcare essentials in this category.
+      </p>
     </div>
   </div>
 </header>
 
 <!-- Product Section -->
-<section class="py-5" style="background-color: #fdfdfd;">
+<section class="py-5" style="background-color: #f8f9fb;">
   <div class="container px-4 px-lg-5 mt-4">
     {% if products %}
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
@@ -22,7 +26,7 @@
         <div class="card h-100 product-card border-0 shadow-sm rounded-4 position-relative">
 
           {% if product.is_sale %}
-          <div class="badge bg-rose position-absolute top-0 end-0 m-2 shadow-sm">Sale</div>
+          <div class="badge bg-blue position-absolute top-0 end-0 m-2 shadow-sm">Sale</div>
           {% endif %}
 
           <!-- Product Image -->
@@ -35,7 +39,7 @@
             {% if product.is_sale %}
             <p class="mb-0">
               <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
-              <span class="text-rose fw-bold">R {{ product.sale_price }}</span>
+              <span class="text-blue fw-bold">R {{ product.sale_price }}</span>
             </p>
             {% else %}
             <p class="fw-bold text-success mb-0">R {{ product.price }}</p>
@@ -46,7 +50,7 @@
 
           <!-- Product Actions -->
           <div class="card-footer p-3 pt-0 border-top-0 bg-transparent text-center">
-            <a class="btn btn-rose rounded-pill mt-auto px-4 shadow-sm" href="{% url 'product' product.id %}">
+            <a class="btn btn-blue rounded-pill mt-auto px-4 shadow-sm" href="{% url 'product' product.id %}">
               <i class="bi bi-bag-check me-1"></i> Buy Item
             </a>
           </div>
@@ -65,30 +69,34 @@
 
 <!-- Page Styles -->
 <style>
-  /* Rose color */
-  .text-rose { color: #e91e63; }
-  .bg-rose { background-color: #e91e63 !important; }
-  .btn-rose {
-    background: linear-gradient(135deg, #e91e63, #000000);
+  /* Blue Color Palette */
+  .text-blue { color: #1976d2; }
+  .bg-blue { background-color: #1976d2 !important; }
+
+  /* Button */
+  .btn-blue {
+    background: linear-gradient(135deg, #1976d2, #000000);
     color: #fff;
     border: none;
+    font-weight: 600;
     transition: background 0.3s ease, transform 0.2s ease;
   }
-  .btn-rose:hover {
-    background: linear-gradient(135deg, #000000, #e91e63);
+  .btn-blue:hover {
+    background: linear-gradient(135deg, #000000, #1976d2);
     transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(25, 118, 210, 0.25);
   }
 
   /* Product Card */
   .product-card {
-    border-radius: 12px;
+    border-radius: 14px;
     transition: all 0.3s ease;
     background-color: #fff;
     overflow: hidden;
   }
   .product-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 8px 24px rgba(25, 118, 210, 0.15);
   }
 
   /* Product Image */
@@ -107,6 +115,13 @@
     border-radius: 50px;
     padding: 0.4rem 0.8rem;
     color: #fff;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 576px) {
+    .product-img {
+      height: 200px;
+    }
   }
 </style>
 

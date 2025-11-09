@@ -2,52 +2,59 @@
 {% load static %}
 {% block content %}
 
-<!-- Header -->
-<header class="bg-black text-white py-4 shadow-sm">
-  <div class="container text-center">
-    <h1 class="display-6 fw-bold" style="letter-spacing: 1px;">medPharm</h1>
-    <p class="lead text-light opacity-75 mb-0">Your trusted source for smart, safe medication</p>
+<!-- Hero Header -->
+<header class="py-5 bg-gradient shadow-sm" style="background: linear-gradient(135deg, #007bff, #003366);">
+  <div class="container text-center text-blue">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <i class="bi bi-capsule-pill display-4 mb-2"></i>
+      <h1 class="fw-bold text-dark display-6" style="letter-spacing: 1px;">MedClinic Pharmacy</h1>
+      <p class="lead text-dark opacity-75 mb-0">Trusted care — medicines, wellness, and more at your fingertips</p>
+    </div>
   </div>
 </header>
 
 <!-- Product Section -->
-<section class="py-5" style="background: #fdfdfd;">
-  <div class="container px-4 px-lg-5 mt-4">
-    <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 justify-content-center">
+<section class="py-5" style="background-color: #f8fbff;">
+  <div class="container px-3 px-lg-5 mt-4">
+    <h2 class="text-center mb-4 fw-bold text-dark">Our Featured Products</h2>
+
+    <div class="row gx-3 gy-4 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center">
 
       {% for product in products %}
-      <div class="col mb-5">
-        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative transition-all" style="transition: transform 0.3s ease;">
+      <div class="col">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 position-relative product-card">
           
           {% if product.is_sale %}
-          <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow">SALE</span>
+          <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow-sm">SALE</span>
           {% endif %}
 
           <!-- Product Image -->
-          <img src="{{ product.image.url }}" class="card-img-top object-fit-cover" alt="{{ product.name }}" style="height: 220px; object-fit: cover;">
+          <div class="ratio ratio-1x1 bg-light">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top img-fluid rounded-top" style="object-fit: cover; border-bottom: 1px solid #eee;">
+          </div>
 
-          <!-- Card Body -->
-          <div class="card-body p-4 text-center">
-            <h5 class="card-title fw-semibold text-dark mb-2">{{ product.name }}</h5>
+          <!-- Product Details -->
+          <div class="card-body text-center p-3">
+            <h6 class="card-title fw-semibold text-dark mb-1">{{ product.name|truncatechars:30 }}</h6>
 
             <!-- Price -->
             {% if product.is_sale %}
             <p class="mb-1">
-              <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
-              <span class="fw-bold text-success fs-5 ms-2">R {{ product.sale_price }}</span>
+              <span class="text-muted text-decoration-line-through small">R {{ product.price }}</span>
+              <span class="fw-bold text-success ms-1">R {{ product.sale_price }}</span>
             </p>
             {% else %}
-            <p class="fw-bold fs-5 text-dark mb-1">R {{ product.price }}</p>
+            <p class="fw-bold text-primary mb-1">R {{ product.price }}</p>
             {% endif %}
 
-            <!-- Description -->
-            <p class="text-muted small mt-2 mb-0">{{ product.description|truncatewords:18 }}</p>
+            <!-- Short Description -->
+            <p class="text-muted small mb-2">{{ product.description|truncatewords:10 }}</p>
           </div>
 
-          <!-- Footer -->
-          <div class="card-footer bg-transparent border-0 text-center pb-4">
-            <a href="{% url 'product' product.id %}" class="btn btn-outline-dark px-4 rounded-pill shadow-sm">
-              <i class="bi bi-cart-plus me-1"></i> Buy Now
+          <!-- Action Button -->
+          <div class="card-footer bg-transparent border-0 text-center pb-3">
+            <a href="{% url 'product' product.id %}" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">
+              <i class="bi bi-cart-plus me-1"></i> Buy
             </a>
           </div>
         </div>
@@ -58,23 +65,66 @@
   </div>
 </section>
 
-<!-- Custom Styling -->
+<!-- Styles -->
 <style>
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+  .product-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: #ffffff;
   }
-  .btn-outline-dark {
-    border-color: #e91e63;
-    color: #000;
+
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 123, 255, 0.15);
   }
-  .btn-outline-dark:hover {
-    background-color: #e91e63;
+
+  .card-title {
+    font-size: 0.95rem;
+  }
+
+  .btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+    font-weight: 500;
+  }
+
+  .btn-outline-primary:hover {
+    background-color: #007bff;
     color: #fff;
-    border-color: #e91e63;
   }
+
   .badge.bg-danger {
     background-color: #e91e63 !important;
+    font-size: 0.7rem;
+    padding: 0.35em 0.6em;
+  }
+
+  /* Responsive image and spacing adjustments */
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 0.75rem !important;
+    }
+    .card-footer {
+      padding-bottom: 0.75rem !important;
+    }
+    .card-title {
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Section Title underline accent */
+  h2.text-center {
+    position: relative;
+    display: inline-block;
+  }
+
+  h2.text-center::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    margin: 0.5rem auto 0;
+    border-radius: 3px;
   }
 </style>
 

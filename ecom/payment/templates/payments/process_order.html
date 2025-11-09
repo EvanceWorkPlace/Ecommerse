@@ -5,71 +5,85 @@
 <header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
   <div class="container text-center text-white">
     <h1 class="display-4 fw-bold">Process Order</h1>
-    <p class="lead text-white-50 mb-0">View your order and billing information</p>
+    <p class="lead text-white-50 mb-0">Review your order and confirm payment</p>
   </div>
 </header>
 
-<div class="container py-5">
+<!-- Main Section -->
+<section class="py-5" style="background-color: #fdfdfd;">
+  <div class="container">
 
-  <!-- Order Summary -->
-  <div class="card mb-4 shadow-sm border-0 rounded-4">
-    <h5 class="card-header bg-rose text-white fw-bold rounded-top-4">Order Summary</h5>
-    <div class="card-body">
-      {% for product in cart_products %}
-      <p class="mb-1">
-        <strong>{{ product.name }}:</strong>
-        {% if product.is_sale %}
-        <span class="text-rose fw-bold">R{{ product.sale_price }}</span>
-        {% else %}
-        <span>R{{ product.price }}</span>
-        {% endif %}
-      </p>
-      <small class="text-muted">
-        Quantity:
-        {% for key, value in quantities.items %}
-        {% if key == product.id|stringformat:"s" %}
-        {{ value }}
-        {% endif %}
-        {% endfor %}
-      </small>
-      <hr>
-      {% endfor %}
-      <p class="fw-bold fs-5 mt-3">Total: <span class="text-success">R {{ totals }}</span></p>
-      <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark btn-sm rounded-pill mt-2">Update Items</a>
-    </div>
-  </div>
-
-  <!-- Shipping Info -->
-  <div class="card mb-4 shadow-sm border-0 rounded-4">
-    <h5 class="card-header bg-dark text-white fw-bold rounded-top-4">Shipping Info</h5>
-    <div class="card-body">
-      <p><strong>Name:</strong> {{ shipping_info.shipping_full_name }}</p>
-      <p><strong>Email:</strong> {{ shipping_info.shipping_email }}</p>
-      <p><strong>Address 1:</strong> {{ shipping_info.shipping_address1 }}</p>
-      <p><strong>Address 2:</strong> {{ shipping_info.shipping_address2 }}</p>
-      <p><strong>City:</strong> {{ shipping_info.shipping_city }}</p>
-      <p><strong>State:</strong> {{ shipping_info.state }}</p>
-      <p><strong>Zipcode:</strong> {{ shipping_info.shipping_zipcode }}</p>
-      <p><strong>Country:</strong> {{ shipping_info.shipping_country }}</p>
-      <a href="{% url 'checkout' %}" class="btn btn-outline-rose mt-2 rounded-pill">Update Shipping</a>
-    </div>
-  </div>
-
-  <!-- Billing Info -->
-  <div class="card mb-4 shadow-sm border-0 rounded-4">
-    <h5 class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing Info</h5>
-    <div class="card-body">
-      <form method="POST" action="{% url 'process_order' %}">
-        {% csrf_token %}
-        {{ billing_form.as_p }}
-        <div class="text-center mt-4">
-          <button class="btn btn-rose btn-lg px-5 shadow-sm rounded-pill" type="submit">Pay Now</button>
+    <!-- Order Summary -->
+    <div class="card mb-4 shadow-sm border-0 rounded-4">
+      <div class="card-header bg-rose text-white fw-bold rounded-top-4">Order Summary</div>
+      <div class="card-body">
+        {% for product in cart_products %}
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div>
+            <strong>{{ product.name }}</strong><br>
+            <small class="text-muted">
+              Quantity:
+              {% for key, value in quantities.items %}
+                {% if key == product.id|stringformat:"s" %}
+                  {{ value }}
+                {% endif %}
+              {% endfor %}
+            </small>
+          </div>
+          <div>
+            {% if product.is_sale %}
+              <span class="fw-bold text-rose">R{{ product.sale_price }}</span>
+            {% else %}
+              <span class="fw-semibold text-dark">R{{ product.price }}</span>
+            {% endif %}
+          </div>
         </div>
-      </form>
+        <hr>
+        {% endfor %}
+        <p class="fw-bold fs-5 mt-3 text-end">Total: <span class="text-success">R {{ totals }}</span></p>
+        <div class="text-end">
+          <a href="{% url 'cart_summary' %}" class="btn btn-outline-dark btn-sm rounded-pill mt-2">Update Items</a>
+        </div>
+      </div>
     </div>
-  </div>
 
-</div>
+    <!-- Shipping Info -->
+    <div class="card mb-4 shadow-sm border-0 rounded-4">
+      <div class="card-header bg-dark text-white fw-bold rounded-top-4">Shipping Info</div>
+      <div class="card-body">
+        <p><strong>Name:</strong> {{ shipping_info.shipping_full_name }}</p>
+        <p><strong>Email:</strong> {{ shipping_info.shipping_email }}</p>
+        <p><strong>Address 1:</strong> {{ shipping_info.shipping_address1 }}</p>
+        <p><strong>Address 2:</strong> {{ shipping_info.shipping_address2 }}</p>
+        <p><strong>City:</strong> {{ shipping_info.shipping_city }}</p>
+        <p><strong>State:</strong> {{ shipping_info.shipping_state }}</p>
+        <p><strong>Zipcode:</strong> {{ shipping_info.shipping_zipcode }}</p>
+        <p><strong>Country:</strong> {{ shipping_info.shipping_country }}</p>
+        <a href="{% url 'checkout' %}" class="btn btn-outline-rose mt-2 rounded-pill">Update Shipping</a>
+      </div>
+    </div>
+
+    <!-- Billing + Payment -->
+    <div class="card shadow-sm border-0 rounded-4">
+      <div class="card-header bg-secondary text-white fw-bold rounded-top-4">Billing & Payment</div>
+      <div class="card-body">
+        <form method="POST" action="{% url 'process_order' %}">
+          {% csrf_token %}
+          {{ billing_form.as_p }}
+          <div class="text-center my-4">
+            {{ paypal_form.render }}
+          </div>
+          <div class="text-center">
+            <button class="btn btn-rose btn-lg px-5 shadow-sm rounded-pill" type="submit">
+              Confirm & Pay
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <!-- Custom Styling -->
 <style>
@@ -110,7 +124,7 @@
 
   .card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   }
 
   form p {

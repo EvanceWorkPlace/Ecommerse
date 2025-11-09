@@ -1,4 +1,5 @@
 import os
+import openai
 from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
@@ -13,7 +14,7 @@ load_dotenv()  # Load .env file
 # SECURITY
 # -------------------------------
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "django-insecure-default-key")
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
 
 DEBUG = os.getenv("DEBUG", "True") == "False"
 ALLOWED_HOSTS = ["ecommerse-2-4k35.onrender.com", "localhost", "127.0.0.1"]

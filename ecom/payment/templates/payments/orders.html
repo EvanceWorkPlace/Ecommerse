@@ -2,62 +2,74 @@
 {% block content %}
 
 <!-- Order Details Section -->
-<section class="py-5" style="background-color: #fdfdfd;">
+<section class="py-5 fade-in" style="background: linear-gradient(135deg, #ffffff, #f8f8f8);">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10">
 
-        <div class="card shadow-sm rounded-4 border-0">
-          <div class="card-header bg-rose text-white fw-bold rounded-top-4">
-            Order {{ order.id }} — R{{ order.amount_paid }}
+        <div class="card shadow-lg border-0 rounded-4 overflow-hidden fade-up">
+          <div class="card-header bg-rose text-white fw-bold py-3 rounded-top-4">
+            <div class="d-flex justify-content-between align-items-center">
+              <span>Order #{{ order.id }}</span>
+              <span class="fs-5">R {{ order.amount_paid }}</span>
+            </div>
           </div>
 
-          <div class="card-body">
+          <div class="card-body p-4">
+            <h5 class="fw-bold mb-3 text-dark">Customer Information</h5>
             <p class="mb-1"><strong>Email:</strong> {{ order.email }}</p>
+
             {% if order.date_shipped %}
               <p class="mb-1"><strong>Date Shipped:</strong> {{ order.date_shipped }}</p>
             {% else %}
               <p class="mb-1"><strong>Date Ordered:</strong> {{ order.date_ordered }}</p>
             {% endif %}
+
             <p class="mb-1"><strong>Name:</strong> {{ order.full_name }}</p>
             <p class="mb-1"><strong>Shipping Address:</strong></p>
             <pre class="ms-3">{{ order.shipping_address }}</pre>
 
             <hr>
 
-            <h5 class="fw-bold mb-3 text-rose">Items</h5>
+            <h5 class="fw-bold mb-3 text-rose">Items Ordered</h5>
             <ul class="list-group mb-4">
               {% for item in items %}
               <li class="list-group-item d-flex justify-content-between align-items-center">
-                {{ item.product }} (x{{ item.Quantity }})
-                <span class="fw-bold text-dark">R {{ item.price }}</span>
+                <span>{{ item.product }} (x{{ item.Quantity }})</span>
+                <span class="fw-bold">R {{ item.price }}</span>
               </li>
               {% endfor %}
             </ul>
 
             <!-- Shipping Action -->
-            {% if not order.shipped %}
-            <form method="POST" class="d-inline-block">
-              {% csrf_token %}
-              <input type="hidden" name="shipping_status" value="true">
-              <button type="submit" class="btn btn-rose shadow-sm rounded-pill">Mark As Shipped</button>
-            </form>
-            {% else %}
-            <form method="POST" class="d-inline-block">
-              {% csrf_token %}
-              <input type="hidden" name="shipping_status" value="false">
-              <button type="submit" class="btn btn-outline-rose shadow-sm rounded-pill">Mark As Not Shipped</button>
-            </form>
-            {% endif %}
+            <div class="text-center">
+              {% if not order.shipped %}
+              <form method="POST" class="d-inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="shipping_status" value="true">
+                <button type="submit" class="btn btn-rose shadow-sm rounded-pill px-4">
+                  Mark as Shipped
+                </button>
+              </form>
+              {% else %}
+              <form method="POST" class="d-inline-block">
+                {% csrf_token %}
+                <input type="hidden" name="shipping_status" value="false">
+                <button type="submit" class="btn btn-outline-rose shadow-sm rounded-pill px-4">
+                  Mark as Not Shipped
+                </button>
+              </form>
+              {% endif %}
+            </div>
           </div>
 
-          <div class="card-footer text-center text-muted rounded-bottom-4">
-            Thank you for supporting MrTrackShop
+          <div class="card-footer text-center text-muted py-3 bg-light rounded-bottom-4">
+            Thank you for supporting <span class="text-rose fw-semibold">MrTrackShop</span>
           </div>
         </div>
 
         <div class="text-center mt-4">
-          <a href="{% url 'not_shipped_dash' %}" class="btn btn-outline-dark shadow-sm rounded-pill">
+          <a href="{% url 'not_shipped_dash' %}" class="btn btn-outline-dark shadow-sm rounded-pill px-4">
             ← Back to Orders
           </a>
         </div>
@@ -79,7 +91,6 @@
     font-weight: 600;
     transition: background 0.3s ease, transform 0.2s ease;
   }
-
   .btn-rose:hover {
     background: linear-gradient(135deg, #000000, #e91e63);
     transform: scale(1.05);
@@ -89,15 +100,21 @@
   .btn-outline-rose {
     border: 2px solid #e91e63;
     color: #e91e63;
-    background-color: transparent;
     font-weight: 600;
     transition: all 0.3s ease;
   }
-
   .btn-outline-rose:hover {
     background-color: #e91e63;
     color: #fff;
     transform: scale(1.05);
+  }
+
+  .list-group-item {
+    border-radius: 0.5rem;
+    transition: background-color 0.25s ease;
+  }
+  .list-group-item:hover {
+    background-color: rgba(233, 30, 99, 0.05);
   }
 
   pre {
@@ -107,13 +124,20 @@
     font-family: 'Segoe UI', sans-serif;
   }
 
-  .list-group-item {
-    border-radius: 0.5rem;
-    transition: all 0.2s ease;
+  /* ✨ Animations */
+  .fade-in {
+    animation: fadeIn 1s ease-in-out;
   }
-
-  .list-group-item:hover {
-    background-color: rgba(233, 30, 99, 0.05);
+  .fade-up {
+    animation: fadeUp 1.2s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 

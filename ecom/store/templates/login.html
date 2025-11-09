@@ -1,87 +1,110 @@
 {% extends 'base.html' %}
-
 {% block content %}
 
 <!-- Header -->
-<header class="py-5 mb-3" style="background: linear-gradient(135deg, #000000, #e91e63);">
-  <div class="container px-4 px-lg-5 my-2">
-    <div class="text-center text-white">
-      <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI'; letter-spacing: 1px;">
-        Login
-      </h1>
-      <p class="lead text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
-        Access your MediShop account securely
-      </p>
-    </div>
+<header class="py-5 mb-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+  <div class="container text-center text-white">
+    <h1 class="display-5 fw-bold" style="font-family: 'Montserrat', 'Segoe UI'; letter-spacing: 1px;">
+      Welcome Back
+    </h1>
+    <p class="lead text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
+      Log in to continue to MedClinic
+    </p>
   </div>
 </header>
 
-<!-- Login Form -->
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <div class="card border-0 shadow-sm mt-4">
-        <div class="card-body">
-          <form method="POST" action="{% url 'login' %}">
-            {% csrf_token %}
-            <div class="mb-3">
-              <input type="text" class="form-control" name="username" placeholder="Username" required>
+<!-- Login Form Section -->
+<section class="py-5" style="background-color: #f9fafb;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-5 col-md-7">
+        <div class="card border-0 shadow-lg rounded-4">
+          <div class="card-body p-4 p-md-5">
+            <h4 class="fw-bold mb-4 text-center text-rose" style="font-family: 'Montserrat', 'Segoe UI';">
+              Account Login
+            </h4>
+
+            <form method="POST" action="{% url 'login' %}">
+              {% csrf_token %}
+              
+              <div class="mb-3">
+                <label for="username" class="form-label fw-semibold" style="font-family: 'Montserrat', 'Segoe UI';">
+                  Username
+                </label>
+                <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required>
+              </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label fw-semibold" style="font-family: 'Montserrat', 'Segoe UI';">
+                  Password
+                </label>
+                <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+              </div>
+
+              <div class="d-grid gap-2 mt-4">
+                <button type="submit" class="btn btn-rose btn-lg rounded-pill shadow-sm">
+                  Log In
+                </button>
+              </div>
+            </form>
+
+            <div class="text-center mt-4">
+              <small class="text-muted" style="font-family: 'Montserrat', 'Segoe UI';">
+                Don’t have an account? 
+                <a href="{% url 'register' %}" class="text-rose fw-semibold text-decoration-none">Register here</a>
+              </small>
             </div>
-            <div class="mb-3">
-              <input type="password" class="form-control" name="password" placeholder="Password" required>
-            </div>
-            <div class="d-grid gap-2 mt-4">
-              <button type="submit" class="btn btn-rose btn-lg">Log In</button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- Custom Styling -->
 <style>
-  /* Form Fields */
+  .text-rose { color: #007bff; }
+
+  /* Buttons */
+  .btn-rose {
+    background: linear-gradient(135deg, #007bff, #000000);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  .btn-rose:hover {
+    background: linear-gradient(135deg, #000000, #007bff);
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+  }
+
+  /* Input Fields */
   .form-control {
-    border-radius: 10px;
-    padding: 12px 15px;
-    border: 1px solid #ced4da;
-    transition: all 0.3s ease-in-out;
-    font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
+    border-radius: 0.5rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #ddd;
+    font-family: 'Montserrat', 'Segoe UI', sans-serif;
+    transition: all 0.3s ease;
   }
   .form-control:focus {
-    border-color: #e91e63;
+    border-color: #007bff;
     box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.15);
   }
 
   /* Card */
   .card {
-    border-radius: 15px;
-    background: #ffffff;
+    background-color: #fff;
+    transition: all 0.3s ease;
   }
-  .card-body {
-    padding: 2rem;
-  }
-
-  /* Rose Button */
-  .btn-rose {
-    background: linear-gradient(135deg, #e91e63, #000000);
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-  .btn-rose:hover {
-    background: linear-gradient(135deg, #000000, #e91e63);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   }
 
   /* Center card vertically for tall screens */
   @media (min-height: 700px) {
-    .container {
+    section .container {
       min-height: 70vh;
       display: flex;
       align-items: center;

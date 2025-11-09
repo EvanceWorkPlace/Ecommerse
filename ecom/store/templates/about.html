@@ -3,7 +3,7 @@
 {% block content %}
 
 <!-- Header -->
-<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #2196f3);">
   <div class="container px-4 px-lg-5 my-4">
     <div class="text-center text-white">
       <h1 class="display-6 fw-bold">About Us</h1>
@@ -15,12 +15,14 @@
 </header>
 
 <!-- About Section -->
-<section class="py-5" style="background-color: #fdfdfd;">
+<section class="py-5" style="background-color: #f9fbfc;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8 col-md-10">
         <article class="bg-white p-5 rounded-4 shadow-sm">
-          <h2 class="fw-bold text-center mb-4" style="color: #e91e63;">Welcome to <span class="text-black">MediShop</span></h2>
+          <h2 class="fw-bold text-center mb-4 text-primary">
+            Welcome to <span class="text-black">MediShop</span>
+          </h2>
 
           <p class="text-muted fs-6" style="text-align: justify;">
             At <strong>MediShop</strong>, we aim to make healthcare easier for everyone. Our platform allows clinics, hospitals, and individuals to manage medicine purchases online, making it convenient to find the right medications and complete payments securely from anywhere.
@@ -43,7 +45,7 @@
           </p>
 
           <div class="text-center mt-5">
-            <a href="{% url 'home' %}" class="btn btn-rose px-4 rounded-pill shadow-sm">
+            <a href="{% url 'home' %}" class="btn btn-blue px-4 rounded-pill shadow-sm">
               <i class="bi bi-shop me-1"></i> Visit Our Store
             </a>
           </div>
@@ -55,15 +57,29 @@
 
 <!-- Custom Styling -->
 <style>
-  .btn-rose {
-    background: linear-gradient(135deg, #e91e63, #000000);
+  .text-primary { color: #2196f3 !important; }
+
+  .btn-blue {
+    background: linear-gradient(135deg, #2196f3, #000000);
     color: #fff;
     border: none;
+    font-weight: 600;
     transition: background 0.3s ease, transform 0.2s ease;
   }
-  .btn-rose:hover {
-    background: linear-gradient(135deg, #000000, #e91e63);
+
+  .btn-blue:hover {
+    background: linear-gradient(135deg, #000000, #2196f3);
     transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.25);
+  }
+
+  article {
+    transition: all 0.3s ease;
+  }
+
+  article:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
   }
 </style>
 

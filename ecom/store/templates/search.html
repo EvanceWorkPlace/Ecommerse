@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
-<section class="py-5">
+<section class="py-2 bg-light">
   <!-- Header -->
-  <header class="py-4 shadow-sm" style="background: linear-gradient(135deg, #000000, #e91e63);">
+  <header class="py-2 shadow-sm" style="background: linear-gradient(135deg, #ffffff, #007bff);">
     <div class="container text-center">
-      <h1 class="display-6 fw-bold text-white" style="font-family: 'Montserrat', 'Segoe UI';">
-        Search
+      <h1 class="display-8 fw-bold text-dark" style="font-family: 'Montserrat', 'Segoe UI';">
+        Medicine Store Search
       </h1>
-      <p class="lead text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
-        Find the electronic components you're looking for
+      <p class="lead text-secondary mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
+        Find the right medicines and health essentials for your needs
       </p>
     </div>
   </header>
@@ -19,12 +19,12 @@
       <div class="col-md-8">
         <div class="card shadow-sm border-0 rounded-4">
           <div class="card-header bg-rose text-white fw-semibold rounded-top-4">
-            Search For Products
+            Search For Medicines
           </div>
           <div class="card-body">
             <form action="{% url 'search' %}" method="POST" class="d-flex flex-column flex-md-row gap-2">
               {% csrf_token %}
-              <input type="text" class="form-control rounded-pill" name="searched" placeholder="Enter product name..." required>
+              <input type="text" class="form-control rounded-pill" name="searched" placeholder="Enter medicine name..." required>
               <button type="submit" class="btn btn-rose rounded-pill px-4">Search</button>
             </form>
           </div>
@@ -36,9 +36,8 @@
     {% if searched %}
     <div class="row gx-4 gx-lg-5 row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
       {% for product in searched %}
-      <div class="col mb-5">
+      <div class="col mb-4">
         <div class="card h-100 product-card border-0 shadow-sm rounded-4 position-relative overflow-hidden">
-
           {% if product.is_sale %}
           <span class="badge bg-rose position-absolute top-0 end-0 m-2 shadow-sm">SALE</span>
           {% endif %}
@@ -47,29 +46,40 @@
           <img class="card-img-top product-img" src="{{ product.image.url }}" alt="{{ product.name }}">
 
           <!-- Product Details -->
-          <div class="card-body p-4 text-center">
-            <h5 class="fw-bold text-dark">{{ product.name }}</h5>
+          <div class="card-body p-3 text-center">
+            <h6 class="fw-bold text-dark">{{ product.name }}</h6>
             {% if product.is_sale %}
             <p class="mb-1">
-              <span class="text-muted text-decoration-line-through">R {{ product.price }}</span>
+              <span class="text-muted text-decoration-line-through small">R {{ product.price }}</span>
               <span class="fw-bold text-rose ms-2">R {{ product.sale_price }}</span>
             </p>
             {% else %}
-            <p class="fw-bold fs-5 text-dark mb-1">R {{ product.price }}</p>
+            <p class="fw-semibold text-dark mb-1">R {{ product.price }}</p>
             {% endif %}
-            <small class="text-muted d-block mt-2">{{ product.description|truncatewords:12 }}</small>
+            <small class="text-muted d-block mt-1">{{ product.description|truncatewords:10 }}</small>
           </div>
 
           <!-- Product Action -->
-          <div class="card-footer bg-transparent border-0 text-center pb-4">
-            <a href="{% url 'product' product.id %}" class="btn btn-outline-dark rounded-pill shadow-sm">
+          <div class="card-footer bg-transparent border-0 text-center pb-3">
+            <a href="{% url 'product' product.id %}" class="btn btn-outline-dark rounded-pill btn-sm shadow-sm">
               <i class="bi bi-cart-plus"></i> Buy Now
             </a>
           </div>
-
         </div>
       </div>
       {% endfor %}
+    </div>
+
+    {% else %}
+    <!-- Nothing Found Container -->
+    <div class="text-center mt-5">
+      <div class="card shadow-sm border-0 rounded-4 mx-auto" style="max-width: 500px;">
+        <div class="card-body py-5">
+          <i class="bi bi-search text-rose fs-1 mb-3"></i>
+          <h5 class="fw-bold text-dark mb-2">No Results Found</h5>
+          <p class="text-muted mb-0">Try searching with another keyword or check your spelling.</p>
+        </div>
+      </div>
     </div>
     {% endif %}
   </div>
@@ -77,18 +87,18 @@
 
 <!-- Custom Styling -->
 <style>
-  .bg-rose { background-color: #e91e63 !important; }
-  .text-rose { color: #e91e63; }
+  .bg-rose { background-color: #007bff !important; }
+  .text-rose { color: #007bff; }
 
   .btn-rose {
-    background: linear-gradient(135deg, #e91e63, #000000);
+    background: linear-gradient(135deg, #007bff, #000000);
     color: #fff;
     border: none;
     font-weight: 600;
     transition: background 0.3s ease, transform 0.2s ease;
   }
   .btn-rose:hover {
-    background: linear-gradient(135deg, #000000, #e91e63);
+    background: linear-gradient(135deg, #000000, #007bff);
     transform: scale(1.05);
     box-shadow: 0 6px 20px rgba(233, 30, 99, 0.25);
   }
@@ -103,7 +113,7 @@
     box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
   }
   .product-img {
-    height: 220px;
+    height: 180px;
     object-fit: cover;
     transition: transform 0.4s ease;
     border-radius: 1rem 1rem 0 0;
@@ -113,8 +123,8 @@
   }
 
   .btn-outline-dark:hover {
-    background-color: #e91e63;
-    border-color: #e91e63;
+    background-color: #007bff;
+    border-color: #007bff;
     color: white;
   }
 </style>
