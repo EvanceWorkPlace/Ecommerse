@@ -6,6 +6,10 @@ from django.db.models.signals import pre_save
 from django.dispatch import receiver
 import datetime
 
+from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from cart.cart import Cart
 from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
@@ -44,42 +48,53 @@ def orders(request, pk):
     messages.error(request, "Access Denied.")
     return redirect('home')
 
-
-# 🚚 DASHBOARD: NOT SHIPPED ORDERS
+# 🚫 NOT SHIPPED DASHBOARD
 def not_shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=False)
-
-        if request.method == "POST":
-            num = request.POST.get('num')
-            order = Order.objects.filter(id=num)
-            order.update(shipped=False)
-            messages.success(request, "Shipping Status Updated! View the updated Table (Not Shipped).")
-            return redirect('shipped_dash')
-
         return render(request, 'payments/not_shipped_dash.html', {"orders": orders})
-
+    
     messages.error(request, "Access Denied.")
     return redirect('home')
 
 
-# 🚚 DASHBOARD: SHIPPED ORDERS
+# 🚚 SHIPPED DASHBOARD
 def shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         orders = Order.objects.filter(shipped=True)
-
-        if request.method == "POST":
-            num = request.POST.get('num')
-            order = Order.objects.filter(id=num)
-            order.update(shipped=False)
-            messages.success(request, "Shipping Status Updated! View the updated Table (Shipped).")
-            return redirect('not_shipped_dash')
-
         return render(request, 'payments/shipped_dash.html', {"orders": orders})
-
     messages.error(request, "Access Denied.")
     return redirect('home')
 
+
+# ✅ AJAX ENDPOINT: Mark Order as Shipped
+@csrf_exempt
+def mark_as_shipped(request):
+    if request.method == "POST":
+        num = request.POST.get("num")
+        try:
+            order = Order.objects.get(id=num)
+            order.shipped = True
+            order.save()
+            return JsonResponse({"success": True, "message": f"Order #{num} marked as shipped!"})
+        except Order.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Order not found."})
+    return JsonResponse({"success": False, "message": "Invalid request."})
+
+
+# ✅ AJAX ENDPOINT: Mark Order as Not Shipped
+@csrf_exempt
+def mark_as_not_shipped(request):
+    if request.method == "POST":
+        num = request.POST.get("num")
+        try:
+            order = Order.objects.get(id=num)
+            order.shipped = False
+            order.save()
+            return JsonResponse({"success": True, "message": f"Order #{num} marked as not shipped!"})
+        except Order.DoesNotExist:
+            return JsonResponse({"success": False, "message": "Order not found."})
+    return JsonResponse({"success": False, "message": "Invalid request."})
 
 # 💳 PROCESS ORDER (MAIN CHECKOUT FUNCTION)
 def process_order(request):
@@ -205,7 +220,7 @@ def billing_info(request):
             'item_name': 'Book Order',
             'no_shipping': '2',
             'invoice': str(uuid.uuid4()),
-            'currency_code': 'ZAR',
+            'currency_code': 'USD',
             'notify_url': 'https://{}{}'.format(host, reverse('paypal-ipn')),
             'return_url': 'https://{}{}'.format(host, reverse('payment_success')),
             'cancel_return': 'https://{}{}'.format(host, reverse('payment_failed')),
@@ -240,6 +255,18 @@ def billing_info(request):
 
 # ✅ SUCCESS PAGE
 def payment_success(request):
+    # Initialize the cart from session
+    cart = Cart(request)
+
+    # Clear all cart data
+    cart.clear()
+
+    # Optionally clear session data related to shipping
+    request.session.pop('my_shipping', None)
+
+    # Feedback to user
+    messages.success(request, "🎉 Payment successful! Your cart has been cleared.")
+
     return render(request, "payments/payment_success.html", {})
 
 def payment_failed(request):

@@ -1,23 +1,46 @@
 from django.contrib import admin
-from .models import Patient, Consultation, Recommendation
+from .models import HealthRecord
 
-@admin.register(Patient)
-class PatientAdmin(admin.ModelAdmin):
-    list_display = ('id','full_name','date_of_birth','gender','created_at')
-    search_fields = ('full_name',)
+@admin.register(HealthRecord)
+class HealthRecordAdmin(admin.ModelAdmin):
+    list_display = (
+        'id',
+        'disease',
+        'blood_sugar',
+        'blood_pressure_sys',
+        'blood_pressure_dia',
+        'heart_rate',
+        'bmi',
+        'created_at',
+    )
+    list_filter = ('disease', 'created_at')
+    search_fields = (
+        'disease',
+        'blood_sugar',
+        'blood_pressure_sys',
+        'blood_pressure_dia',
+        'heart_rate',
+        'bmi',
+    )
+    ordering = ('-created_at',)
+    date_hierarchy = 'created_at'
+    list_per_page = 20
 
-@admin.register(Consultation)
-class ConsultationAdmin(admin.ModelAdmin):
-    list_display = ('id','patient','reported_illness','consent_given','completed','created_at')
-    list_filter = ('consent_given','completed')
-    search_fields = ('patient__full_name','reported_illness')
+    fieldsets = (
+        ("Patient Health Data", {
+            "fields": (
+                "disease",
+                "blood_sugar",
+                "blood_pressure_sys",
+                "blood_pressure_dia",
+                "heart_rate",
+                "bmi",
+            )
+        }),
+        ("System Info", {
+            "fields": ("created_at",),
+            "classes": ("collapse",),
+        }),
+    )
 
-@admin.register(Recommendation)
-class RecommendationAdmin(admin.ModelAdmin):
-    list_display = ('id','consultation','clinician_approved','escalation','created_at')
-    actions = ['approve_recommendations']
-
-    def approve_recommendations(self, request, queryset):
-        updated = queryset.update(clinician_approved=True)
-        self.message_user(request, f"{updated} recommendations approved.")
-    approve_recommendations.short_description = "Mark selected recommendations as clinician_approved"
+    readonly_fields = ('created_at',)

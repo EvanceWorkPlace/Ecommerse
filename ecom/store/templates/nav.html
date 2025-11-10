@@ -44,7 +44,7 @@
             <i class="bi bi-person-circle me-1 text-primary"></i> Profile
           </a>
           <ul class="dropdown-menu shadow-sm">
-            <li><a class="dropdown-item" href="{% url 'update_user' %}">User Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'update_user' %}">Edit Profile</a></li>
             <li><a class="dropdown-item" href="{% url 'update_info' %}">User Information</a></li>
           </ul>
         </li>
@@ -56,8 +56,8 @@
           </a>
           <ul class="dropdown-menu shadow-sm">
             <li><a class="dropdown-item" href="{% url 'order_dashboard' %}">🧾 Dashboard</a></li>
-            <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">Shipped</a></li>
-            <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}">Pending</a></li>
+            <li><a class="dropdown-item" href="{% url 'shipped_dash' %}">🚚 Shipped</a></li>
+            <li><a class="dropdown-item" href="{% url 'not_shipped_dash' %}"> Pending</a></li>
           </ul>
         </li>
         {% endif %}
@@ -67,8 +67,8 @@
             <i class="bi bi-robot me-1 text-primary"></i> AI Tools
           </a>
           <ul class="dropdown-menu shadow-sm">
-            <li><a class="dropdown-item" href="{% url 'widget' %}">Agent Assist</a></li>
-            <li><a class="dropdown-item" href="{% url 'chatbot_view' %}">Chatbot</a></li>
+            <li><a class="dropdown-item" href="{% url 'widget' %}">Health-Calculator</a></li>
+            <li><a class="dropdown-item" href="{% url 'chatbot_view' %}">Chatbot-Vino</a></li>
           </ul>
         </li>
 
@@ -79,8 +79,8 @@
           <ul class="dropdown-menu shadow-sm">
             <li><a class="dropdown-item" href="{% url 'category_summary' %}">All Products</a></li>
             <li><a class="dropdown-item" href="{% url 'category' 'Normal Medicine' %}">Normal Medicine</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Tech-Devices' %}">Tech Devices</a></li>
-            <li><a class="dropdown-item" href="{% url 'category' 'Chronic Medicine' %}">Chronic</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'Tech-Devices' %}">Technology Devices</a></li>
+            <li><a class="dropdown-item" href="{% url 'category' 'Chronic Medicine' %}">Chronic Med</a></li>
           </ul>
         </li>
 
