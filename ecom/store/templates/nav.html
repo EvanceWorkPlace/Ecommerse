@@ -3,13 +3,12 @@
 
 <nav class="navbar navbar-expand-lg sticky-top bg-white shadow-sm border-bottom border-primary-subtle py-3">
   <div class="container px-4 px-lg-5">
-
     <!-- Brand -->
     <a class="navbar-brand fw-bold text-primary fs-4 d-flex align-items-center" href="{% url 'home' %}" style="font-family: 'Montserrat', sans-serif;">
       <i class="bi bi-capsule-pill me-2 text-primary"></i> MedClinic
     </a>
 
-    <!-- Toggler for mobile -->
+    <!-- Toggler -->
     <button class="navbar-toggler border-0 text-primary" type="button" data-bs-toggle="collapse"
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
       aria-label="Toggle navigation">
@@ -104,7 +103,7 @@
         {% endif %}
       </ul>
 
-      <!-- Cart (right on desktop) -->
+      <!-- Cart -->
       <div class="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0">
         <a href="{% url 'cart_summary' %}" class="btn btn-outline-primary position-relative rounded-pill px-3 py-1 shadow-sm">
           <i class="bi bi-cart-fill me-1"></i> Cart
@@ -122,48 +121,47 @@
   .navbar {
     transition: all 0.3s ease;
   }
-
   .navbar.scrolled {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     background-color: #f8fbff !important;
   }
-
   .nav-link {
     color: #000 !important;
     font-size: 0.95rem;
     transition: all 0.25s ease;
   }
-
   .nav-link:hover {
     color: #007bff !important;
     transform: scale(1.05);
   }
-
   .dropdown-menu {
     border-radius: 0.5rem;
     border: 1px solid #dee2e6;
     background-color: #ffffff;
   }
-
   .dropdown-item:hover {
     background-color: #007bff;
     color: #fff;
   }
-
   .btn-outline-primary {
     border: 2px solid #007bff;
     color: #007bff;
     font-weight: 600;
   }
-
   .btn-outline-primary:hover {
     background-color: #007bff;
     color: white;
   }
-
   .badge.bg-primary {
     font-size: 0.7rem;
     padding: 0.4em 0.5em;
+  }
+
+  /* ✅ Prevent navbar icons or logos from resizing too large */
+  .navbar img {
+    max-height: 40px;
+    width: auto;
+    object-fit: contain;
   }
 
   @media (max-width: 992px) {
@@ -181,3 +179,4 @@
     else navbar.classList.remove("scrolled");
   });
 </script>
+
