@@ -4,128 +4,134 @@
 
 <!-- Hero Header -->
 <header class="py-5 bg-gradient shadow-sm" style="background: linear-gradient(135deg, #007bff, #003366);">
-  <div class="container text-center text-blue">
-    <div class="d-flex flex-column align-items-center justify-content-center">
-      <i class="bi bi-capsule-pill display-4 mb-2"></i>
-      <h1 class="fw-bold text-dark display-6" style="letter-spacing: 1px;">MedClinic Pharmacy</h1>
-      <p class="lead text-dark opacity-75 mb-0">Trusted care — medicines, wellness, and more at your fingertips</p>
-    </div>
-  </div>
+  <div class="container text-center text-blue">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <i class="bi bi-capsule-pill display-4 mb-2"></i>
+      <h1 class="fw-bold text-dark display-6" style="letter-spacing: 1px;">MedClinic Pharmacy</h1>
+      <p class="lead text-dark opacity-75 mb-0">Trusted care — medicines, wellness, and more at your fingertips</p>
+    </div>
+  </div>
 </header>
 
 <!-- Product Section -->
 <section class="py-5" style="background-color: #f8fbff;">
-  <div class="container px-3 px-lg-5 mt-4">
-    <h2 class="text-center mb-4 fw-bold text-dark">Our Featured Products</h2>
+  <div class="container px-3 px-lg-5 mt-4">
+    <h2 class="text-center mb-4 fw-bold text-dark">Our Featured Products</h2>
 
-    <div class="row gx-3 gy-4 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center">
+    <!-- 👇 Adjusted columns for responsive grid -->
+    <div class="row gx-3 gy-4 row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 justify-content-center">
 
-      {% for product in products %}
-      <div class="col">
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 position-relative product-card">
-          
-          {% if product.is_sale %}
-          <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow-sm">SALE</span>
-          {% endif %}
+      {% for product in products %}
+      <div class="col">
+        <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100 position-relative product-card">
+          
+          {% if product.is_sale %}
+          <span class="badge bg-danger position-absolute top-0 end-0 m-2 shadow-sm">SALE</span>
+          {% endif %}
 
-          <!-- Product Image -->
-          <div class="ratio ratio-1x1 bg-light">
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top img-fluid rounded-top" style="object-fit: cover; border-bottom: 1px solid #eee;">
-          </div>
+          <!-- Product Image -->
+          <div class="ratio ratio-1x1 bg-light">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top img-fluid rounded-top" style="object-fit: cover; border-bottom: 1px solid #eee;">
+          </div>
 
-          <!-- Product Details -->
-          <div class="card-body text-center p-3">
-            <h6 class="card-title fw-semibold text-dark mb-1">{{ product.name|truncatechars:30 }}</h6>
+          <!-- Product Details -->
+          <div class="card-body text-center p-3">
+            <h6 class="card-title fw-semibold text-dark mb-1">{{ product.name|truncatechars:30 }}</h6>
 
-            <!-- Price -->
-            {% if product.is_sale %}
-            <p class="mb-1">
-              <span class="text-muted text-decoration-line-through small">R {{ product.price }}</span>
-              <span class="fw-bold text-success ms-1">R {{ product.sale_price }}</span>
-            </p>
-            {% else %}
-            <p class="fw-bold text-primary mb-1">R {{ product.price }}</p>
-            {% endif %}
+            <!-- Price -->
+            {% if product.is_sale %}
+            <p class="mb-1">
+              <span class="text-muted text-decoration-line-through small">R {{ product.price }}</span>
+              <span class="fw-bold text-success ms-1">R {{ product.sale_price }}</span>
+            </p>
+            {% else %}
+            <p class="fw-bold text-primary mb-1">R {{ product.price }}</p>
+            {% endif %}
 
-            <!-- Short Description -->
-            <p class="text-muted small mb-2">{{ product.description|truncatewords:10 }}</p>
-          </div>
+            <!-- Short Description -->
+            <p class="text-muted small mb-2">{{ product.description|truncatewords:10 }}</p>
+          </div>
 
-          <!-- Action Button -->
-          <div class="card-footer bg-transparent border-0 text-center pb-3">
-            <a href="{% url 'product' product.id %}" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">
-              <i class="bi bi-cart-plus me-1"></i> Buy
-            </a>
-          </div>
-        </div>
-      </div>
-      {% endfor %}
-
-    </div>
-  </div>
+          <!-- Action Button -->
+          <div class="card-footer bg-transparent border-0 text-center pb-3">
+            <a href="{% url 'product' product.id %}" class="btn btn-outline-primary btn-sm px-3 rounded-pill shadow-sm">
+              <i class="bi bi-cart-plus me-1"></i> Buy
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 </section>
 
 <!-- Styles -->
 <style>
-  .product-card {
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    background: #ffffff;
-  }
+  .product-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    background: #ffffff;
+  }
 
-  .product-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 0.75rem 1.5rem rgba(0, 123, 255, 0.15);
-  }
+  .product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 123, 255, 0.15);
+  }
 
-  .card-title {
-    font-size: 0.95rem;
-  }
+  .card-title {
+    font-size: 0.95rem;
+  }
 
-  .btn-outline-primary {
-    border-color: #007bff;
-    color: #007bff;
-    font-weight: 500;
-  }
+  .btn-outline-primary {
+    border-color: #007bff;
+    color: #007bff;
+    font-weight: 500;
+  }
 
-  .btn-outline-primary:hover {
-    background-color: #007bff;
-    color: #fff;
-  }
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
 
-  .badge.bg-danger {
-    background-color: #e91e63 !important;
-    font-size: 0.7rem;
-    padding: 0.35em 0.6em;
-  }
+  .badge.bg-danger {
+    background-color: #e91e63 !important;
+    font-size: 0.7rem;
+    padding: 0.35em 0.6em;
+  }
 
-  /* Responsive image and spacing adjustments */
-  @media (max-width: 768px) {
-    .card-body {
-      padding: 0.75rem !important;
-    }
-    .card-footer {
-      padding-bottom: 0.75rem !important;
-    }
-    .card-title {
-      font-size: 0.85rem;
-    }
-  }
+  /* ✅ Responsive adjustments */
+  @media (max-width: 768px) {
+    .card-body {
+      padding: 0.6rem !important;
+    }
 
-  /* Section Title underline accent */
-  h2.text-center {
-    position: relative;
-    display: inline-block;
-  }
+    .card-footer {
+      padding-bottom: 0.6rem !important;
+    }
 
-  h2.text-center::after {
-    content: "";
-    display: block;
-    width: 60px;
-    height: 3px;
-    background-color: #007bff;
-    margin: 0.5rem auto 0;
-    border-radius: 3px;
-  }
+    .card-title {
+      font-size: 0.85rem;
+    }
+
+    .btn-sm {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Section Title underline accent */
+  h2.text-center {
+    position: relative;
+    display: inline-block;
+  }
+
+  h2.text-center::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 3px;
+    background-color: #007bff;
+    margin: 0.5rem auto 0;
+    border-radius: 3px;
+  }
 </style>
 
 {% endblock %}
