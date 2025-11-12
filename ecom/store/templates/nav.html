@@ -4,15 +4,19 @@
 <nav class="navbar navbar-expand-lg sticky-top shadow-sm py-3"
   style="background: linear-gradient(135deg, #007bff, #00c6ff);">
   <div class="container px-4 px-lg-5">
-
     <!-- Brand -->
     <a class="navbar-brand fw-bold text-white fs-4 d-flex align-items-center" href="{% url 'home' %}"
       style="font-family: 'Montserrat', sans-serif;">
       <i class="bi bi-capsule-pill me-2 text-white"></i> MedClinic
     </a>
 
+<<<<<<< HEAD
     <!-- Toggler for mobile -->
     <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
+=======
+    <!-- Toggler -->
+    <button class="navbar-toggler border-0 text-primary" type="button" data-bs-toggle="collapse"
+>>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
       data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
       aria-label="Toggle navigation">
       <i class="bi bi-list fs-2"></i>
@@ -122,15 +126,25 @@
 
 <!-- Custom Styles -->
 <style>
+<<<<<<< HEAD
+=======
+  .navbar {
+    transition: all 0.3s ease;
+  }
+  .navbar.scrolled {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    background-color: #f8fbff !important;
+  }
+>>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
   .nav-link {
     color: #fff !important;
     transition: all 0.25s ease;
   }
-
   .nav-link:hover {
     color: #dff6ff !important;
     transform: scale(1.05);
   }
+<<<<<<< HEAD
 
   .dropdown-menu-dark {
     background-color: #0a1f3b;
@@ -138,12 +152,18 @@
 
   .dropdown-item {
     color: #e6f4ff !important;
+=======
+  .dropdown-menu {
+    border-radius: 0.5rem;
+    border: 1px solid #dee2e6;
+    background-color: #ffffff;
+>>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
   }
-
   .dropdown-item:hover {
     background-color: #007bff;
     color: #fff !important;
   }
+<<<<<<< HEAD
 
   .btn-light:hover {
     background-color: #eaf6ff;
@@ -156,6 +176,33 @@
   .navbar-toggler:focus {
     outline: none;
     box-shadow: none;
+=======
+  .btn-outline-primary {
+    border: 2px solid #007bff;
+    color: #007bff;
+    font-weight: 600;
+  }
+  .btn-outline-primary:hover {
+    background-color: #007bff;
+    color: white;
+  }
+  .badge.bg-primary {
+    font-size: 0.7rem;
+    padding: 0.4em 0.5em;
+  }
+
+  /* ✅ Prevent navbar icons or logos from resizing too large */
+  .navbar img {
+    max-height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  @media (max-width: 992px) {
+    .navbar-brand {
+      font-size: 1.2rem;
+    }
+>>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
   }
 </style>
 
@@ -167,3 +214,4 @@
     else navbar.style.opacity = "1";
   });
 </script>
+
