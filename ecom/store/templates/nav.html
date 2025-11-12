@@ -1,31 +1,39 @@
 <!-- Include Bootstrap Icons -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+<link
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+  rel="stylesheet"
+/>
 
-<nav class="navbar navbar-expand-lg sticky-top shadow-sm py-3"
-  style="background: linear-gradient(135deg, #007bff, #00c6ff);">
+<nav
+  class="navbar navbar-expand-lg sticky-top shadow-sm py-3"
+  style="background: linear-gradient(135deg, #007bff, #00c6ff);"
+>
   <div class="container px-4 px-lg-5">
     <!-- Brand -->
-    <a class="navbar-brand fw-bold text-white fs-4 d-flex align-items-center" href="{% url 'home' %}"
-      style="font-family: 'Montserrat', sans-serif;">
+    <a
+      class="navbar-brand fw-bold text-white fs-4 d-flex align-items-center"
+      href="{% url 'home' %}"
+      style="font-family: 'Montserrat', sans-serif;"
+    >
       <i class="bi bi-capsule-pill me-2 text-white"></i> MedClinic
     </a>
 
-<<<<<<< HEAD
     <!-- Toggler for mobile -->
-    <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse"
-=======
-    <!-- Toggler -->
-    <button class="navbar-toggler border-0 text-primary" type="button" data-bs-toggle="collapse"
->>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
-      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-      aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler border-0 text-white"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <i class="bi bi-list fs-2"></i>
     </button>
 
     <!-- Navbar Links -->
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 mt-3 mt-lg-0">
-
         <li class="nav-item">
           <a class="nav-link fw-semibold text-white" href="{% url 'home' %}">
             <i class="bi bi-house-door-fill me-1 text-white"></i> Home
@@ -46,7 +54,12 @@
 
         {% if user.is_authenticated %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle fw-semibold text-white" href="#" role="button" data-bs-toggle="dropdown">
+          <a
+            class="nav-link dropdown-toggle fw-semibold text-white"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
             <i class="bi bi-person-circle me-1 text-white"></i> Profile
           </a>
           <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
@@ -57,7 +70,12 @@
 
         {% if user.is_superuser %}
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle fw-semibold text-white" href="#" role="button" data-bs-toggle="dropdown">
+          <a
+            class="nav-link dropdown-toggle fw-semibold text-white"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
             <i class="bi bi-box-seam me-1 text-white"></i> Orders
           </a>
           <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
@@ -69,7 +87,12 @@
         {% endif %}
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle fw-semibold text-white" href="#" role="button" data-bs-toggle="dropdown">
+          <a
+            class="nav-link dropdown-toggle fw-semibold text-white"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
             <i class="bi bi-robot me-1 text-white"></i> AI Tools
           </a>
           <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
@@ -79,7 +102,12 @@
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle fw-semibold text-white" href="#" role="button" data-bs-toggle="dropdown">
+          <a
+            class="nav-link dropdown-toggle fw-semibold text-white"
+            href="#"
+            role="button"
+            data-bs-toggle="dropdown"
+          >
             <i class="bi bi-grid-fill me-1 text-white"></i> Categories
           </a>
           <ul class="dropdown-menu dropdown-menu-dark shadow-lg">
@@ -113,9 +141,15 @@
 
       <!-- Cart -->
       <div class="d-flex align-items-center ms-lg-3 mt-3 mt-lg-0">
-        <a href="{% url 'cart_summary' %}" class="btn btn-light position-relative rounded-pill px-3 py-1 shadow-sm text-primary fw-semibold">
+        <a
+          href="{% url 'cart_summary' %}"
+          class="btn btn-light position-relative rounded-pill px-3 py-1 shadow-sm text-primary fw-semibold"
+        >
           <i class="bi bi-cart-fill me-1"></i> Cart
-          <span class="badge bg-danger text-white rounded-pill position-absolute top-0 start-100 translate-middle" id="cart_quantity">
+          <span
+            class="badge bg-danger text-white rounded-pill position-absolute top-0 start-100 translate-middle"
+            id="cart_quantity"
+          >
             {{ cart|length }}
           </span>
         </a>
@@ -126,16 +160,13 @@
 
 <!-- Custom Styles -->
 <style>
-<<<<<<< HEAD
-=======
   .navbar {
     transition: all 0.3s ease;
   }
   .navbar.scrolled {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    background-color: #f8fbff !important;
   }
->>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
+
   .nav-link {
     color: #fff !important;
     transition: all 0.25s ease;
@@ -144,74 +175,38 @@
     color: #dff6ff !important;
     transform: scale(1.05);
   }
-<<<<<<< HEAD
 
   .dropdown-menu-dark {
     background-color: #0a1f3b;
   }
-
   .dropdown-item {
     color: #e6f4ff !important;
-=======
-  .dropdown-menu {
-    border-radius: 0.5rem;
-    border: 1px solid #dee2e6;
-    background-color: #ffffff;
->>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
   }
   .dropdown-item:hover {
     background-color: #007bff;
     color: #fff !important;
   }
-<<<<<<< HEAD
 
   .btn-light:hover {
     background-color: #eaf6ff;
   }
 
-  .navbar-toggler {
-    color: white !important;
-  }
-
   .navbar-toggler:focus {
     outline: none;
     box-shadow: none;
-=======
-  .btn-outline-primary {
-    border: 2px solid #007bff;
-    color: #007bff;
-    font-weight: 600;
-  }
-  .btn-outline-primary:hover {
-    background-color: #007bff;
-    color: white;
-  }
-  .badge.bg-primary {
-    font-size: 0.7rem;
-    padding: 0.4em 0.5em;
   }
 
-  /* ✅ Prevent navbar icons or logos from resizing too large */
   .navbar img {
     max-height: 40px;
-    width: auto;
     object-fit: contain;
-  }
-
-  @media (max-width: 992px) {
-    .navbar-brand {
-      font-size: 1.2rem;
-    }
->>>>>>> 9ce5cb6f6951f97206b2c87adc342341cce90a83
   }
 </style>
 
 <script>
-  // Navbar scroll fade effect (optional)
+  // Fade effect on scroll
   window.addEventListener("scroll", function () {
     const navbar = document.querySelector(".navbar");
     if (window.scrollY > 10) navbar.style.opacity = "0.95";
     else navbar.style.opacity = "1";
   });
 </script>
-
