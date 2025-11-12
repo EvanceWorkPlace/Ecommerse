@@ -1,22 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<!-- Header -->
-<header class="py-5 shadow-sm" style="background: linear-gradient(135deg, #000000, #1976d2);">
-  <div class="container px-4 px-lg-3 my-5">
-    <div class="text-center text-white">
-      <h1 class="display-6 fw-bold" style="font-family: 'Montserrat', 'Segoe UI'; letter-spacing: 1px;">
-        Medicine Categories
-      </h1>
-      <p class="lead fw-normal text-white-50 mb-0" style="font-family: 'Montserrat', 'Segoe UI';">
-        Explore trusted medicine types — safe, fast, and reliable healthcare solutions.
-      </p>
-    </div>
-  </div>
-</header>
 
-<!-- Category Section -->
-<section class="py-5" style="background-color: #f8f9fb;">
+<section class="py-5 fade-in" style="background: linear-gradient(135deg, #ffffff, #fafafa);">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-rose">Medicine category</h2>
+      <p class="text-muted">Explore trusted medicine types — safe, fast, and reliable healthcare solutions.</p>
+      <hr class="w-25 mx-auto border-2 border-dark">
+    </div>
   <div class="container">
     <div class="row justify-content-center">
       {% for category in categories %}

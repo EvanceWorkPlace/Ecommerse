@@ -10,6 +10,8 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
+from django.db.models.functions import TruncDate
+from django.db.models import Count
 from cart.cart import Cart
 from payment.forms import ShippingForm, PaymentForm
 from payment.models import ShippingAddress, Order, OrderItem
@@ -174,6 +176,32 @@ def process_order(request):
 
 
 # 📊 ADMIN DASHBOARD: ORDER OVERVIEW
+# def order_dashboard(request):
+#     if request.user.is_authenticated and request.user.is_superuser:
+#         # Fetch orders
+#         total_orders = Order.objects.all().count()
+#         shipped_orders = Order.objects.filter(shipped=True)
+#         not_shipped_orders = Order.objects.filter(shipped=False)
+
+#         shipped_count = shipped_orders.count()
+#         not_shipped_count = not_shipped_orders.count()
+
+#         # Get the 5 most recent orders (for quick overview)
+#         recent_orders = Order.objects.order_by('-date_ordered')[:5]
+
+#         context = {
+#             'total_orders': total_orders,
+#             'shipped_count': shipped_count,
+#             'not_shipped_count': not_shipped_count,
+#             'recent_orders': recent_orders,
+#         }
+
+#         return render(request, 'payments/order_dashboard.html', context)
+
+#     messages.error(request, "Access Denied.")
+#     return redirect('home')
+
+
 def order_dashboard(request):
     if request.user.is_authenticated and request.user.is_superuser:
         # Fetch orders
@@ -184,21 +212,33 @@ def order_dashboard(request):
         shipped_count = shipped_orders.count()
         not_shipped_count = not_shipped_orders.count()
 
-        # Get the 5 most recent orders (for quick overview)
+        # Recent orders for table
         recent_orders = Order.objects.order_by('-date_ordered')[:5]
+
+        # Orders over time (group by date)
+        orders_by_date = (
+            Order.objects.annotate(date=TruncDate('date_ordered'))
+            .values('date')
+            .annotate(count=Count('id'))
+            .order_by('date')
+        )
+
+        chart_labels = [entry['date'].strftime('%Y-%m-%d') for entry in orders_by_date]
+        chart_data = [entry['count'] for entry in orders_by_date]
 
         context = {
             'total_orders': total_orders,
             'shipped_count': shipped_count,
             'not_shipped_count': not_shipped_count,
             'recent_orders': recent_orders,
+            'chart_labels': chart_labels,
+            'chart_data': chart_data,
         }
 
         return render(request, 'payments/order_dashboard.html', context)
 
     messages.error(request, "Access Denied.")
     return redirect('home')
-
 
 
 
