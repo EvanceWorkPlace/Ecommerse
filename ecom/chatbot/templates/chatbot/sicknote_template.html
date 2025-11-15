@@ -1,0 +1,14 @@
+<div style="font-family: Arial, Helvetica, sans-serif; padding:12px; color:#222;">
+  <div style="text-align:center;">
+    <h2 style="margin:0;">Sick Note</h2>
+    <small style="color:#666;">Consultation #: {{ consultation.pk }} • Issued: {{ consultation.approved_at|date:"Y-m-d" }}</small>
+  </div>
+
+  <p><strong>Patient:</strong> {{ user.get_full_name }} {% if user.email %} ({{ user.email }}) {% endif %}</p>
+
+  <p><strong>Recommendation:</strong> The patient is advised to rest from <strong>{{ consultation.approved_at|date:"Y-m-d" }}</strong> for <strong>__ days</strong>.</p>
+
+  <div style="margin-top: 16px;">
+    <p>Signature: ____________________________</p>
+  </div>
+</div>

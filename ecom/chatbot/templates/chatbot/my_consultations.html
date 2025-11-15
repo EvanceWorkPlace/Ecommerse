@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container py-5">
+
+  <!-- Page Header -->
+  <div class="text-center mb-4">
+    <h2 class="fw-bold">💬 My Consultations</h2>
+    <p class="text-muted">View your medical consultations and check approval status.</p>
+  </div>
+
+  <!-- Consultations List -->
+  <div class="card shadow-sm rounded-4">
+    <div class="card-body p-0">
+
+      {% if consultations %}
+        <ul class="list-group list-group-flush">
+
+          {% for c in consultations %}
+          <li class="list-group-item py-3">
+
+            <div class="row align-items-center">
+
+              <!-- Left Info -->
+              <div class="col-md-8">
+                <h6 class="fw-bold mb-1">
+                  Consultation #{{ c.pk }}
+                </h6>
+
+                <p class="mb-1 text-muted">
+                  {{ c.question|truncatechars:80 }}
+                </p>
+
+                <small class="text-secondary">
+                  {{ c.created_at|date:"Y-m-d H:i" }}
+                </small>
+              </div>
+
+              <!-- Right Status + Buttons -->
+              <div class="col-md-4 text-end">
+
+                {% if c.status == "approved" %}
+                  <span class="badge bg-success mb-2">Approved</span><br>
+
+                  
+
+                {% elif c.status == "pending" %}
+                  <span class="badge bg-warning text-dark mb-2">Pending Approval</span><br>
+
+                {% else %}
+                  <span class="badge bg-danger mb-2">Rejected</span><br>
+                {% endif %}
+
+                <a href="{% url 'consultation_detail' c.pk %}" class="btn btn-primary btn-sm mt-2">
+                  View Chat
+                </a>
+
+              </div>
+
+            </div>
+          </li>
+          {% endfor %}
+
+        </ul>
+
+      {% else %}
+        <div class="p-4 text-center text-muted">
+          You have no consultations yet.
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

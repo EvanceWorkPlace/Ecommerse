@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-4">
+    <h2>Health Analysis</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <textarea name="question" class="form-control" rows="4" placeholder="Ask anything about your symptoms..."></textarea>
+        <button class="btn btn-primary mt-2">Submit</button>
+    </form>
+
+    {% if answer %}
+    <hr>
+    <h4>AI Response</h4>
+    <div class="alert alert-info">{{ answer|safe }}</div>
+    {% endif %}
+</div>
+{% endblock %}

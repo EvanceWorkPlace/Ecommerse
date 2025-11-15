@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <section class="py-5 bg-light">
   <div class="container">
     <h2 class="text-center fw-bold mb-4 text-primary">🩺 Health Monitoring Widget</h2>
-
     <div class="card shadow-lg border-0 rounded-4 p-4">
       <form id="health-form">
         {% csrf_token %}
         <div class="row g-3">
+          <!-- (form fields same as before) -->
           <div class="col-md-6">
             <label class="form-label fw-semibold">Disease Type</label>
             <select name="disease" class="form-select rounded-pill">
@@ -44,7 +43,6 @@
             Analyze Health
           </button>
 
-          <!-- Loader -->
           <div id="loader" class="mt-3 text-center" style="display:none;">
             <div class="spinner-border text-primary" role="status" style="width: 2rem; height: 2rem;"></div>
             <p class="mt-2 text-secondary fw-semibold">Analyzing your health data... Please wait ⏳</p>
@@ -60,6 +58,14 @@
 
         <h4 class="text-info fw-bold mt-4">💬 AI Insights</h4>
         <p id="ai-feedback" class="text-secondary"></p>
+
+        {% if user.is_authenticated %}
+          <div class="text-end mt-3">
+            <a href="{% url 'my_consultations' %}" class="btn btn-outline-primary">View Consultations</a>
+          </div>
+        {% else %}
+          <div class="text-end mt-3 small text-muted">Log in to save consultations and get official documents after approval.</div>
+        {% endif %}
       </div>
     </div>
   </div>

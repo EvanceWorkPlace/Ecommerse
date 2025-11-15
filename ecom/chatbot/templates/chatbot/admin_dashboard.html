@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2 class="mb-4">Admin Dashboard – Consultations</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>User</th>
+            <th>Question</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Approve</th>
+        </tr>
+    </thead>
+
+    <tbody>
+    {% for c in consultations %}
+        <tr>
+            <td>{{ c.user.username }}</td>
+            <td>{{ c.question|truncatechars:50 }}</td>
+            <td>{{ c.created_at }}</td>
+
+            <td>
+                {% if c.approved %}
+                    <span class="badge bg-success">APPROVED</span>
+                {% else %}
+                    <span class="badge bg-warning">Pending</span>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if not c.approved %}
+                    <a class="btn btn-sm btn-primary"
+                       href="{% url 'approve_consultation' c.id %}">
+                        Approve
+                    </a>
+                {% else %}
+                    <a class="btn btn-sm btn-outline-success"
+                       href="{% url 'view_prescription' c.id %}">
+                        View Prescription
+                    </a>
+                    <a class="btn btn-sm btn-outline-info"
+                       href="{% url 'view_sicknote' c.id %}">
+                        Sick Note
+                    </a>
+                    <a href="{% url 'consultation_results' c.id %}" class="btn btn-info btn-sm">
+    Consultation Results
+</a>
+
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

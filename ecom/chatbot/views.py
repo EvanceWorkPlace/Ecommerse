@@ -1,93 +1,187 @@
-from django.shortcuts import render
-from django.http import JsonResponse
-import json
+from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from .utils import generate_medicine_recommendation
-from .models import HealthRecord
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
+from django.utils import timezone
+import json
 
-
+from .models import Consultation
+from .utils import generate_medicine_recommendation, generate_html_documents_for_consultation
 
 
 def widget(request):
-    return render(request, 'chatbot/widget.html', {})
+    return render(request, "chatbot/widget.html")
+
 
 def chatbot_view(request):
-    return render(request, 'chatbot/chatbot_view.html', {})
+    return render(request, "chatbot/chatbot_view.html")
+
 
 @csrf_exempt
 def chatbot_response(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        user_input = data.get('message', '')
-        response = generate_medicine_recommendation(user_input)
-        return JsonResponse({'reply': response['response']})
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    """Handles chat messages and saves consultation for logged-in users."""
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid method"}, status=400)
+
+    data = json.loads(request.body)
+    message = data.get("message", "").strip()
+
+    if not message:
+        return JsonResponse({"error": "Message required"}, status=400)
+
+    # AI response
+    answer = generate_medicine_recommendation(message)
+
+    consultation_id = None
+
+    # Save consultation if logged in
+    if request.user.is_authenticated:
+        c = Consultation.objects.create(
+            user=request.user,
+            question=message,
+            answer=answer
+        )
+        consultation_id = c.id
+
+    return JsonResponse({
+        "reply": answer,
+        "consultation_id": consultation_id
+    })
+
+
+@login_required
+def my_consultations(request):
+    qs = Consultation.objects.filter(user=request.user).order_by("-created_at")
+    return render(request, "chatbot/my_consultations.html", {"consultations": qs})
+
+
+@login_required
+def consultation_detail(request, pk):
+    c = get_object_or_404(Consultation, pk=pk, user=request.user)
+    return render(request, "chatbot/consultation_detail.html", {"consultation": c})
+
+
+# ===============================
+# ADMIN DASHBOARD + APPROVAL
+# ===============================
+@staff_member_required
+def admin_dashboard(request):
+    """Admin page that shows all consultations."""
+    consultations = Consultation.objects.order_by("-created_at")
+    return render(request, "chatbot/admin_dashboard.html", {
+        "consultations": consultations
+    })
+
+
+@staff_member_required
+def approve_consultation(request, pk):
+    consult = get_object_or_404(Consultation, id=pk)
+
+    if consult.status != "approved":
+        consult.status = "approved"
+        consult.approved_by = request.user
+        consult.approved_at = timezone.now()
+
+        # Generate HTML documents
+        generate_html_documents_for_consultation(consult, email_user=True)
+
+        consult.save()
+
+    return redirect("admin_dashboard")
+
+
+
+
+# ===============================
+# VIEW HTML DOCUMENTS
+# ===============================
+def view_prescription(request, pk):
+    consult = get_object_or_404(Consultation, pk=pk)
+    return HttpResponse(consult.prescription_html)
+
+
+def view_sicknote(request, pk):
+    consult = get_object_or_404(Consultation, pk=pk)
+    return HttpResponse(consult.sicknote_html)
+
+
+@staff_member_required
+def consultation_results(request, pk):
+    """
+    Admin view to see the generated prescription + sick note
+    for an approved consultation.
+    """
+    consult = get_object_or_404(Consultation, pk=pk)
+
+    return render(request, "chatbot/consultation_results.html", {
+        "consultation": consult
+    })
+
 
 
 @csrf_exempt
 def health_analysis(request):
-    if request.method == 'POST':
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid method"}, status=400)
+
+    try:
         data = json.loads(request.body)
+    except:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-        disease = data.get('disease')
-        blood_sugar = float(data.get('blood_sugar', 0))
-        systolic = float(data.get('systolic', 0))
-        diastolic = float(data.get('diastolic', 0))
-        heart_rate = float(data.get('heart_rate', 0))
-        bmi = float(data.get('bmi', 0))
+    disease = data.get("disease")
+    blood_sugar = data.get("blood_sugar")
+    systolic = data.get("systolic")
+    diastolic = data.get("diastolic")
+    heart_rate = data.get("heart_rate")
+    bmi = data.get("bmi")
 
-        # Save to DB
-        HealthRecord.objects.create(
-            disease=disease,
-            blood_sugar=blood_sugar,
-            blood_pressure_sys=systolic,
-            blood_pressure_dia=diastolic,
-            heart_rate=heart_rate,
-            bmi=bmi,
-        )
+    summary = []
 
-        # Simple analysis logic
-        result = []
-        if disease == 'diabetes':
-            if blood_sugar > 180:
-                result.append("⚠️ High blood sugar detected.")
-            elif blood_sugar < 70:
-                result.append("⚠️ Low blood sugar detected.")
-            else:
-                result.append("✅ Blood sugar is in normal range.")
+    if disease == "diabetes" and blood_sugar:
+        sugar = float(blood_sugar)
+        if sugar > 180:
+            summary.append(f"High blood sugar detected: {sugar}")
+        else:
+            summary.append(f"Normal blood sugar: {sugar}")
 
-        if disease == 'hypertension':
-            if systolic > 140 or diastolic > 90:
-                result.append("⚠️ Blood pressure is high.")
-            elif systolic < 90 or diastolic < 60:
-                result.append("⚠️ Blood pressure is low.")
-            else:
-                result.append("✅ Blood pressure looks stable.")
+    if disease == "hypertension" and systolic and diastolic:
+        sys = float(systolic)
+        dia = float(diastolic)
+        if sys > 140 or dia > 90:
+            summary.append(f"High BP: {sys}/{dia}")
+        else:
+            summary.append(f"Normal BP: {sys}/{dia}")
 
-        if disease == 'cardiac':
-            if heart_rate > 100:
-                result.append("⚠️ Elevated heart rate detected.")
-            elif heart_rate < 50:
-                result.append("⚠️ Low heart rate detected.")
-            else:
-                result.append("✅ Heart rate is normal.")
+    if disease == "cardiac" and heart_rate:
+        hr = float(heart_rate)
+        if hr > 100:
+            summary.append(f"High HR: {hr}")
+        else:
+            summary.append(f"Normal HR: {hr}")
 
-        # Generate AI-based recommendation
-        prompt = f"""
-        A patient with {disease} entered the following data:
-        Blood sugar: {blood_sugar}, BP: {systolic}/{diastolic}, HR: {heart_rate}, BMI: {bmi}.
-        Provide personalized, safe health advice in 3 concise bullet points.
-        """
-        ai_feedback = generate_medicine_recommendation(prompt)
+    if bmi:
+        b = float(bmi)
+        if b > 30:
+            summary.append(f"Obesity (BMI {b})")
+        elif b < 18.5:
+            summary.append(f"Underweight (BMI {b})")
+        else:
+            summary.append(f"Healthy BMI {b}")
 
-        return JsonResponse({
-            "summary": result,
-            "ai_feedback": ai_feedback['response']
-        })
+    question = f"""
+    Disease: {disease}
+    Blood Sugar: {blood_sugar}
+    BP: {systolic}/{diastolic}
+    Heart Rate: {heart_rate}
+    BMI: {bmi}
+    """
 
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    ai_feedback = generate_medicine_recommendation(question)
 
-
-
-
+    return JsonResponse({
+        "summary": summary,
+        "ai_feedback": ai_feedback
+    })
 

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container py-4">
+  <h3>Consultation #{{ consultation.pk }}</h3>
+  <p><strong>Question:</strong> {{ consultation.question }}</p>
+  <p><strong>Answer:</strong> {{ consultation.answer|linebreaks }}</p>
+  <p><strong>Status:</strong> {{ consultation.get_status_display }}</p>
+
+  {% if consultation.status == 'approved' %}
+    <hr>
+    <h5>Prescription</h5>
+    <div class="card p-3 mb-3">
+      {{ consultation.prescription_html|safe }}
+    </div>
+
+    <h5>Sick Note</h5>
+    <div class="card p-3 mb-3">
+      {{ consultation.sicknote_html|safe }}
+    </div>
+
+    <div class="small text-muted">These documents were generated when a staff member approved your consultation.</div>
+  {% elif consultation.status == 'pending' %}
+    <div class="alert alert-warning">This consultation is awaiting review by a staff member. You will be notified when documents are available.</div>
+  {% else %}
+    <div class="alert alert-danger">This consultation was rejected by staff.</div>
+  {% endif %}
+</div>
+{% endblock %}

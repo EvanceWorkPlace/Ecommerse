@@ -1,185 +1,214 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<section class="py-2">
-  <!-- Header -->
- 
+<section class="chat-wrapper py-4">
+  <div class="container">
+    <div class="row g-3 justify-content-center">
 
-  <!-- Chat Section -->
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
-          <div class="card-header bg-primary text-white fw-semibold rounded-top-4">
-            Your Health Assistant 💬
-          </div>
+      <!-- LEFT INFO PANEL (visible only on md+) -->
+      <div class="col-md-4 d-none d-md-flex">
+        <div class="info-panel shadow-sm p-4 rounded-4 w-100 bg-white">
 
-          <div class="card-body chat-body" id="chatBody">
-            <div class="text-center text-muted mt-3">
-              👋 Hello! Tell me your symptoms, and I’ll suggest some safe over-the-counter options.
-            </div>
-          </div>
+          <h3 class="fw-bold mb-3">Your Health Assistant</h3>
+          <p class="small text-muted">
+            Ask about symptoms and receive safe, concise over-the-counter suggestions.  
+            Staff will review before official documents (prescription, sick note) are issued.
+          </p>
 
-          <div class="card-footer bg-light border-0">
-            <form id="chatForm" class="d-flex">
-              {% csrf_token %}
-              <input type="text" id="userInput" class="form-control rounded-pill me-2" placeholder="Describe your symptoms..." required>
-              <button type="submit" class="btn btn-blue rounded-pill px-4">Send</button>
-            </form>
+          <hr>
+
+          <a href="{% url 'my_consultations' %}" class="btn btn-outline-primary w-100 mb-3">
+            My Consultations
+          </a>
+
+          <div class="text-center small text-muted mt-auto">
+            Secure • Private • Non-diagnostic
           </div>
         </div>
       </div>
+
+      <!-- CHAT PANEL -->
+      <div class="col-12 col-md-8">
+        <div class="chat-card shadow-sm rounded-4 bg-white d-flex flex-column">
+
+          <!-- HEADER -->
+          <div class="chat-header p-3 border-bottom">
+            <h5 class="mb-0">Health Assistant 💬</h5>
+            <small class="text-muted">AI-powered medical guidance</small>
+          </div>
+
+          <!-- CHAT BODY -->
+          <div id="chatBody" class="chat-body p-3 overflow-auto">
+            <div class="text-center text-muted mt-3">
+              <div class="lead small">
+                👋 Hello! Describe your symptoms and I’ll suggest safe OTC options.
+              </div>
+            </div>
+          </div>
+
+          <!-- FOOTER -->
+          <div class="chat-footer border-top p-3">
+            <form id="chatForm" class="d-flex gap-2">
+              {% csrf_token %}
+              <input type="text" id="userInput"
+                     class="form-control rounded-pill"
+                     placeholder="Describe your symptoms..."
+                     autocomplete="off" required>
+              <button type="submit" id="sendBtn"
+                      class="btn btn-primary rounded-pill px-4">
+                Send
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- JavaScript -->
+
+<!-- ========================= -->
+<!--        CHAT SCRIPT        -->
+<!-- ========================= -->
 <script>
+(function() {
   const chatForm = document.getElementById('chatForm');
   const userInput = document.getElementById('userInput');
   const chatBody = document.getElementById('chatBody');
+  const sendBtn = document.getElementById('sendBtn');
+
+  function appendHTML(html, side='bot') {
+    const wrapper = document.createElement('div');
+    wrapper.className = side === 'user'
+      ? 'user-message mb-2 text-end'
+      : 'bot-message mb-2 text-start';
+    wrapper.innerHTML = html;
+    chatBody.appendChild(wrapper);
+    chatBody.scrollTop = chatBody.scrollHeight;
+  }
+
+  function textBubble(text, cls='') {
+    return `<div class="${cls} p-3 rounded-3 shadow-sm">${text}</div>`;
+  }
 
   chatForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const message = userInput.value.trim();
     if (!message) return;
 
-    appendMessage('user', message);
-    userInput.value = '';
+    appendHTML(textBubble(message, "bg-primary text-white"), "user");
+    userInput.value = "";
+    sendBtn.disabled = true;
+    sendBtn.textContent = "Sending...";
 
-    const typing = document.createElement('div');
-    typing.classList.add('bot-message', 'typing');
-    typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
-    chatBody.appendChild(typing);
+    // typing dots
+    const typingDiv = document.createElement("div");
+    typingDiv.className = "bot-message mb-2";
+    typingDiv.innerHTML = `<div class="typing-dots"><span></span><span></span><span></span></div>`;
+    chatBody.appendChild(typingDiv);
     chatBody.scrollTop = chatBody.scrollHeight;
 
     try {
       const response = await fetch("{% url 'chatbot_response' %}", {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': '{{ csrf_token }}'
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value
         },
         body: JSON.stringify({ message })
       });
 
       const data = await response.json();
-      typing.remove();
+      typingDiv.remove();
 
       if (data.error) {
-        appendMessage('bot', `⚠️ ${data.error}`);
-      } else if (data.condition) {
-        const botReply = `
-          <div class="bot-message card shadow-sm p-3 mt-2 border-0">
-            <strong>Condition:</strong> ${data.condition}<br>
-            <strong>Recommended Medicines:</strong> ${data.recommended_medicines.join(", ")}<br>
-            <strong>Dosage:</strong> ${data.dosage_guidance}<br>
-            <strong>Advice:</strong> ${data.advice}
-          </div>
-        `;
-        chatBody.innerHTML += botReply;
+        appendHTML(textBubble("⚠️ " + data.error, "bg-light text-danger"), "bot");
       } else {
-        appendMessage('bot', data.reply || "I didn’t get that. Please try again.");
+        let replyHTML = `<div>${data.reply}</div>`;
+        if (data.consultation_id) {
+          replyHTML += `
+            <div class="mt-2 small">
+              <a class="text-primary" href="/chatbot/consultation/${data.consultation_id}/">
+                View consultation
+              </a>
+            </div>`;
+        }
+        appendHTML(textBubble(replyHTML, "bg-white border"), "bot");
       }
 
-      chatBody.scrollTop = chatBody.scrollHeight;
-    } catch (error) {
-      typing.remove();
-      appendMessage('bot', "⚠️ Sorry, I couldn't reach the server.");
+    } catch (err) {
+      typingDiv.remove();
+      appendHTML(textBubble("⚠️ Unable to reach server.", "bg-light text-danger"), "bot");
     }
-  });
 
-  function appendMessage(sender, text) {
-    const msgDiv = document.createElement('div');
-    msgDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message', 'fade-in');
-    msgDiv.textContent = text;
-    chatBody.appendChild(msgDiv);
+    sendBtn.disabled = false;
+    sendBtn.textContent = "Send";
     chatBody.scrollTop = chatBody.scrollHeight;
-  }
+  });
+})();
 </script>
 
-<!-- Styling -->
+
+<!-- ========================= -->
+<!--        STYLE FIXES        -->
+<!-- ========================= -->
 <style>
-  .btn-blue {
-    background: linear-gradient(135deg, #2196f3, #000000);
-    color: #fff;
-    border: none;
-    font-weight: 600;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-  .btn-blue:hover {
-    background: linear-gradient(135deg, #000000, #2196f3);
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(33, 150, 243, 0.25);
-  }
+/* Prevent chat from filling the entire screen */
+.chat-wrapper {
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
 
-  .chat-body {
-    height: 450px;
-    overflow-y: auto;
-    background-color: #f8f9fa;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+/* Chat card height stays proportional — DOES NOT BREAK FOOTER */
+.chat-card {
+  height: 75vh;            /* was 100vh — now fixed */
+  max-height: 750px;       /* prevents too large */
+  display: flex;
+  flex-direction: column;
+}
 
-  .user-message, .bot-message {
-    max-width: 75%;
-    padding: 10px 15px;
-    border-radius: 20px;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    word-wrap: break-word;
-    animation: fadeIn 0.3s ease-in-out;
-  }
+/* Scroll area */
+.chat-body {
+  flex: 1;
+  overflow-y: auto;
+}
 
-  .user-message {
-    align-self: flex-end;
-    background: linear-gradient(135deg, #2196f3, #000000);
-    color: white;
-    border-bottom-right-radius: 5px;
-  }
+/* Assistant messages */
+.bot-message div {
+  background: #ffffff;
+}
 
-  .bot-message {
-    align-self: flex-start;
-    background-color: white;
-    border: 1px solid #e9ecef;
-    color: #333;
-    border-bottom-left-radius: 5px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  }
+/* User messages */
+.user-message div {
+  background: linear-gradient(135deg, #2196f3, #0a58ca);
+  color: white;
+}
 
-  .typing {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    margin-left: 10px;
-  }
+/* Typing animation */
+.typing-dots span {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  background: #2196f3;
+  border-radius: 50%;
+  animation: bounce 1s infinite ease-in-out;
+}
+.typing-dots span:nth-child(2) { animation-delay: .15s }
+.typing-dots span:nth-child(3) { animation-delay: .3s }
 
-  .dot {
-    width: 8px;
-    height: 8px;
-    background: #2196f3;
-    border-radius: 50%;
-    animation: blink 1.4s infinite both;
-  }
-  .dot:nth-child(2) { animation-delay: 0.2s; }
-  .dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); opacity: .3 }
+  50% { transform: translateY(-6px); opacity: 1 }
+}
 
-  @keyframes blink {
-    0%, 80%, 100% { opacity: 0; transform: scale(0.8); }
-    40% { opacity: 1; transform: scale(1.1); }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  @media (max-width: 768px) {
-    .user-message, .bot-message { max-width: 90%; font-size: 0.9rem; }
-    .chat-body { height: 400px; }
-  }
+/* Responsive */
+@media (max-width: 767px) {
+  .chat-card { height: 68vh; }
+  .user-message div, .bot-message div { font-size: .95rem; }
+}
 </style>
 
 {% endblock %}

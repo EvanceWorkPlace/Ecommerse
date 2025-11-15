@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<h2>Consultation Results</h2>
+
+<p><strong>User:</strong> {{ consultation.user.username }}</p>
+<p><strong>Question:</strong> {{ consultation.question }}</p>
+<p><strong>AI Answer:</strong> {{ consultation.answer }}</p>
+
+<hr>
+
+<h3>Prescription</h3>
+{% if consultation.prescription_html %}
+    <div style="border:1px solid #ccc; padding:15px;">
+        {{ consultation.prescription_html|safe }}
+    </div>
+{% else %}
+    <p>No prescription available.</p>
+{% endif %}
+
+<hr>
+
+<h3>Sick Note</h3>
+{% if consultation.sicknote_html %}
+    <div style="border:1px solid #ccc; padding:15px;">
+        {{ consultation.sicknote_html|safe }}
+    </div>
+{% else %}
+    <p>No sick note available.</p>
+{% endif %}
+{% endblock %}

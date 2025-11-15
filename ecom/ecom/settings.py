@@ -1,5 +1,4 @@
 import os
-import openai
 from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
@@ -20,6 +19,7 @@ DEBUG = os.getenv("DEBUG", "True") == "False"
 ALLOWED_HOSTS = ["ecommerse-2-4k35.onrender.com", "localhost", "127.0.0.1"]
 
 CSRF_TRUSTED_ORIGINS = ["https://ecommerse-2-4k35.onrender.com"]
+
 # ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1 localhost").split()
 # CSRF_TRUSTED_ORIGINS = os.getenv(
 #     "CSRF_TRUSTED_ORIGINS",
@@ -32,6 +32,7 @@ DATABASES = {
         ssl_require=True
     )
 }
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # -------------------------------
 # APPS
@@ -130,17 +131,10 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-
-
-
-
-
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # -------------------------------
 # DEFAULT FIELD TYPE
