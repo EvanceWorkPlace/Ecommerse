@@ -1,30 +1,68 @@
-name: Django CI
+name: Django + Angular CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
-  build:
 
+  # ----------------------------
+  # BACKEND (DJANGO) JOB
+  # ----------------------------
+  backend:
     runs-on: ubuntu-latest
+
     strategy:
-      max-parallel: 4
       matrix:
-        python-version: [3.7, 3.8, 3.9]
+        python-version: [3.8, 3.9, 3.10, 3.11]
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v3
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Install Dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-    - name: Run Tests
-      run: |
-        python manage.py test
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Django tests
+        working-directory: backend
+        run: |
+          python manage.py test
+
+
+  # ----------------------------
+  # FRONTEND (ANGULAR) JOB
+  # ----------------------------
+  frontend:
+    runs-on: ubuntu-latest
+    needs: backend   # only run Angular after backend passes (optional)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install Angular dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Build Angular project
+        working-directory: frontend
+        run: npm run build --if-present
+
+      - name: Run Angular tests (if you have them)
+        working-directory: frontend
+        run: npm test --if-present
