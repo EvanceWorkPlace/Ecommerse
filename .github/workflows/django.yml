@@ -8,8 +8,10 @@ on:
 
 jobs:
   test:
-    # Use a matrix strategy to test across multiple Python versions
-    runs-on: ubuntu-latest
+    # FIX: Using 'ubuntu-22.04' instead of 'ubuntu-latest' 
+    # to ensure compatibility with Python 3.7.
+    runs-on: ubuntu-22.04 
+    
     strategy:
       matrix:
         python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
@@ -34,14 +36,10 @@ jobs:
           python -m pip install --upgrade pip
           # Install project requirements
           pip install -r requirements.txt
-          # If using Django and need a test database connector (e.g., PostgreSQL for CI)
-          # pip install psycopg2-binary 
 
-      # 4. Run Migrations (Optional, but ensures setup is complete)
+      # 4. Run Migrations (Optional)
       - name: 💾 Run Database Migrations
-        # The `--noinput` flag prevents interactive prompts
         run: python manage.py migrate --noinput
-        # Add 'continue-on-error: true' if you want tests to run even if migrations fail
         
       # 5. Run Tests
       - name: ✅ Run Django Tests
