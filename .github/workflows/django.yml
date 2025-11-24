@@ -1,4 +1,4 @@
-name: Django + Angular CI
+name: Django CI - Multi-Python
 
 on:
   push:
@@ -7,62 +7,42 @@ on:
     branches: ["main"]
 
 jobs:
-
-  # ----------------------------
-  # BACKEND (DJANGO) JOB
-  # ----------------------------
-  backend:
+  test:
+    # Use a matrix strategy to test across multiple Python versions
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        python-version: [3.8, 3.9, 3.10, 3.11]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
 
     steps:
-      - uses: actions/checkout@v4
+      # 1. Checkout Code
+      - name: ⚙️ Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      # 2. Set Up Python Environment
+      - name: 🐍 Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+          # Enable pip caching for faster builds
+          cache: "pip"
 
-      - name: Install dependencies
-        working-directory: backend
+      # 3. Install Dependencies
+      - name: 📦 Install Dependencies
         run: |
+          # Upgrade pip
           python -m pip install --upgrade pip
+          # Install project requirements
           pip install -r requirements.txt
+          # If using Django and need a test database connector (e.g., PostgreSQL for CI)
+          # pip install psycopg2-binary 
 
-      - name: Run Django tests
-        working-directory: backend
-        run: |
-          python manage.py test
-
-
-  # ----------------------------
-  # FRONTEND (ANGULAR) JOB
-  # ----------------------------
-  frontend:
-    runs-on: ubuntu-latest
-    needs: backend   # only run Angular after backend passes (optional)
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-          cache: 'npm'
-          cache-dependency-path: frontend/package-lock.json
-
-      - name: Install Angular dependencies
-        working-directory: frontend
-        run: npm install
-
-      - name: Build Angular project
-        working-directory: frontend
-        run: npm run build --if-present
-
-      - name: Run Angular tests (if you have them)
-        working-directory: frontend
-        run: npm test --if-present
+      # 4. Run Migrations (Optional, but ensures setup is complete)
+      - name: 💾 Run Database Migrations
+        # The `--noinput` flag prevents interactive prompts
+        run: python manage.py migrate --noinput
+        # Add 'continue-on-error: true' if you want tests to run even if migrations fail
+        
+      # 5. Run Tests
+      - name: ✅ Run Django Tests
+        run: python manage.py test
